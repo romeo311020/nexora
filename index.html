@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA - رفيقك اليومي للتفوق</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. Core Variables & Reset
+           ========================================== */
+        :root {
+            --primary: #2563EB;
+            --primary-hover: #1D4ED8;
+            --bg-dark: #0F172A;
+            --card-bg: #1E293B;
+            --text-white: #FFFFFF;
+            --text-muted: #94A3B8;
+            --success: #22C55E;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --font-family: 'Tajawal', sans-serif;
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Container Layout for Mobile/Desktop App view */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            max-height: 900px;
+            background: var(--bg-dark);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (min-width: 768px) {
+            .app-container {
+                height: 92vh;
+                border-radius: 24px;
+                border: 1px solid var(--glass-border);
+            }
+        }
+
+        /* Screen Management */
+        .screen {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 90px; /* Space for Bottom Nav */
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        .no-nav-padding {
+            padding-bottom: 20px !important;
+        }
+
+        /* Common Glassmorphism Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* Typography & Utility */
+        h1, h2, h3 { font-weight: 700; }
+        .text-primary { color: var(--primary); }
+        .text-muted { color: var(--text-muted); }
+        .text-center { text-align: center; }
+
+        /* Custom Inputs & Buttons */
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .input-control {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-white);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .input-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn:active { transform: translateY(0); }
+
+        .option-card {
+            background: var(--card-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-card:hover, .option-card.selected {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        /* ==========================================
+           2. Splash Screen
+           ========================================== */
+        #splash-screen {
+            background: var(--bg-dark);
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            z-index: 100;
+        }
+
+        .splash-content {
+            margin-auto: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .logo-circle {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.5);
+            animation: pulse 2s infinite, zoomIn 0.8s ease-out;
+            margin-bottom: 20px;
+        }
+
+        .splash-title {
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            animation: fadeIn 1s ease-out 0.3s backwards;
+        }
+
+        .splash-sub {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+            animation: fadeIn 1s ease-out 0.5s backwards;
+        }
+
+        .splash-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            animation: fadeIn 1s ease-out 0.7s backwards;
+        }
+
+        .splash-footer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding-bottom: 20px;
+            animation: fadeIn 1s ease-out 0.9s backwards;
+        }
+
+        .splash-footer span {
+            display: block;
+            font-weight: bold;
+            color: var(--text-white);
+            margin-top: 2px;
+        }
+
+        /* ==========================================
+           3. Registration & Onboarding
+           ========================================== */
+        .onboarding-header {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* ==========================================
+           4. Main Dashboard Header & Components
+           ========================================== */
+        .dash-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .user-info-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px solid var(--glass-border);
+        }
+
+        /* Countdown & Stats */
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .timer-unit {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 10px 4px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .timer-unit .num {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .timer-unit .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Subject Grid */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .subject-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .subject-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Task Checkbox List */
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .task-item:last-child { border-bottom: none; }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* ==========================================
+           5. AI Chat Interface
+           ========================================== */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 180px);
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .message.bot {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            align-self: flex-start;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.user {
+            background: var(--primary);
+            align-self: flex-end;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        /* ==========================================
+           6. Subject Internal Tabs Page
+           ========================================== */
+        .tabs-header {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            scrollbar-width: none;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            white-space: nowrap;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ==========================================
+           7. Bottom Navigation Bar
+           ========================================== */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            width: 20%;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active i {
+            transform: translateY(-2px);
+        }
+
+        /* Notifications Banner */
+        .notification-toast {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 200;
+            transform: translateY(-120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .notification-toast.show {
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6); }
+            70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div id="toast" class="notification-toast">
+            <i class="fa-solid fa-bell text-primary" style="font-size: 1.2rem;"></i>
+            <div style="flex-grow: 1;">
+                <h4 id="toast-title" style="font-size: 0.85rem;">إشعار</h4>
+                <p id="toast-body" style="font-size: 0.75rem;" class="text-muted">محتوى الإشعار</p>
+            </div>
+        </div>
+
+        <div id="splash-screen" class="screen active no-nav-padding">
+            <div class="splash-content">
+                <div class="logo-circle">N</div>
+                <h1 class="splash-title">NEXORA</h1>
+                <p class="splash-sub">مرحبًا بعودتك 👋</p>
+                <p class="splash-desc">رفيقك اليومي للتفوق والنجاح الدراسي.</p>
+            </div>
+            <div class="splash-footer">
+                Designed & Developed by
+                <span>ROMANY GARGES</span>
+            </div>
+        </div>
+
+        <div id="register-screen" class="screen no-nav-padding">
+            <div class="onboarding-header">
+                <h2 style="font-size: 1.8rem;">إنشاء حساب جديد</h2>
+                <p class="text-muted" style="font-size: 0.9rem; margin-top: 4px;">ابدأ رحلتك الدراسية نحو القمة</p>
+            </div>
+            <div class="glass-card">
+                <form id="register-form" onsubmit="handleRegister(event)">
+                    <div class="input-group">
+                        <label>الاسم بالكامل</label>
+                        <input type="text" id="reg-name" class="input-control" placeholder="أدخل اسمك الثلاثي" required>
+                    </div>
+                    <div class="input-group">
+                        <label>رقم الهاتف</label>
+                        <input type="tel" id="reg-phone" class="input-control" placeholder="01xxxxxxxxx" required>
+                    </div>
+                    <div class="input-group">
+                        <label>كلمة المرور</label>
+                        <input type="password" id="reg-pass" class="input-control" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn" style="margin-top: 10px;">
+                        التالي <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="system-screen" class="screen no-nav-padding">
+            <div class="onboarding-header">
+                <h2>اختر نظام الدراسة</h2>
+                <p class="text-muted">حدد النظام التعليمي المقيد به</p>
+            </div>
+            <div class="option-card" onclick="selectSystem('sec')">
+                <div>
+                    <h3>الثانوية العامة</h3>
+                    <p class="text-muted" style="font-size: 0.8rem;">النظام العام - وزارة التربية والتعليم</p>
+                </div>
+                <i class="fa-solid fa-chevron-left text-muted"></i>
+            </div>
+            <div class="option-card" onclick="selectSystem('bac')">
+                <div>
+                    <h3>البكالوريا المصرية</h3>
+                    <p class="text-muted" style="font-size: 0.8rem;">مسارات النظام الحديث</p>
+                </div>
+                <i class="fa-solid fa-chevron-left text-muted"></i>
+            </div>
+        </div>
+
+        <div id="track-screen" class="screen no-nav-padding">
+            <div class="onboarding-header">
+                <h2 id="track-title">اختر التخصص / المسار</h2>
+                <p class="text-muted">لعرض المواد الدراسية المخصصة لك</p>
+            </div>
+            <div id="track-options-container">
+                </div>
+        </div>
+
+        <div id="home-screen" class="screen">
+            <div class="dash-header">
+                <div class="user-info-box">
+                    <div class="avatar" id="dash-avatar">N</div>
+                    <div>
+                        <span class="text-muted" style="font-size: 0.75rem;" id="dash-date">اليوم والتااريخ</span>
+                        <h3 style="font-size: 1.1rem;" id="dash-welcome">السلام عليكم</h3>
+                    </div>
+                </div>
+                <button onclick="triggerNotification('تذكير المذاكرة', 'حان الوقت لمراجعة جدولك اليومي!')" style="background:none; border:none; color: var(--text-white); font-size: 1.2rem; cursor:pointer;">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+            </div>
+
+            <div class="glass-card" style="background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(30,41,59,0.8));">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h4 style="font-size: 0.95rem;">⏳ باقي على الامتحانات النهائيّة</h4>
+                    <span class="text-primary" style="font-size: 0.8rem; font-weight:bold;">2026</span>
+                </div>
+                <div class="timer-grid">
+                    <div class="timer-unit"><div class="num" id="cd-days">00</div><div class="label">يوم</div></div>
+                    <div class="timer-unit"><div class="num" id="cd-hours">00</div><div class="label">ساعة</div></div>
+                    <div class="timer-unit"><div class="num" id="cd-mins">00</div><div class="label">دقيقة</div></div>
+                    <div class="timer-unit"><div class="num" id="cd-secs">00</div><div class="label">ثانية</div></div>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon" style="background: rgba(34, 197, 94, 0.2); color: var(--success);">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted" style="font-size: 0.75rem;">نسبة الإنجاز</div>
+                        <div style="font-size: 1.1rem; font-weight: bold;">68%</div>
+                    </div>
+                </div>
+                <div class="glass-card stat-card">
+                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.2); color: var(--warning);">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted" style="font-size: 0.75rem;">Streak المذاكرة</div>
+                        <div style="font-size: 1.1rem; font-weight: bold;">12 يوم</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <h4 style="font-size: 0.95rem; margin-bottom: 10px;"><i class="fa-solid fa-list-check text-primary"></i> الخطة اليومية</h4>
+                <div class="task-item">
+                    <input type="checkbox" class="task-checkbox" checked>
+                    <span style="font-size: 0.85rem; text-decoration: line-through; color: var(--text-muted);">حل اختبار الفيزياء التفاعلي</span>
+                </div>
+                <div class="task-item">
+                    <input type="checkbox" class="task-checkbox">
+                    <span style="font-size: 0.85rem;">مراجعة الدرس الأول لغة عربية</span>
+                </div>
+                <div class="task-item">
+                    <input type="checkbox" class="task-checkbox">
+                    <span style="font-size: 0.85rem;">مشاهدة فيديو الرياضيات / المحاضرة 3</span>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+                <h4 style="font-size: 1rem;">موادك الدراسية</h4>
+                <span style="font-size: 0.8rem; color: var(--primary); cursor:pointer;" onclick="switchTab('subjects-screen')">عرض الكل</span>
+            </div>
+            <div class="subjects-grid" id="home-subjects-container">
+                </div>
+        </div>
+
+        <div id="subjects-screen" class="screen">
+            <h2 style="margin-bottom: 16px;">المواد الدراسية</h2>
+            <div class="subjects-grid" id="all-subjects-container">
+                </div>
+        </div>
+
+        <div id="subject-detail-screen" class="screen">
+            <div style="display:flex; align-items:center; gap: 12px; margin-bottom: 16px;">
+                <button onclick="switchTab('subjects-screen')" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <h2 id="sd-title">اسم المادة</h2>
+            </div>
+
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchSubjectTab(this, 'sd-tab-explain')">الشرح</button>
+                <button class="tab-btn" onclick="switchSubjectTab(this, 'sd-tab-summaries')">ملخصات</button>
+                <button class="tab-btn" onclick="switchSubjectTab(this, 'sd-tab-tasks')">واجبات</button>
+                <button class="tab-btn" onclick="switchSubjectTab(this, 'sd-tab-exams')">امتحانات</button>
+                <button class="tab-btn" onclick="switchSubjectTab(this, 'sd-tab-videos')">فيديوهات</button>
+                <button class="tab-btn" onclick="switchSubjectTab(this, 'sd-tab-notes')">ملاحظات</button>
+            </div>
+
+            <div id="sd-tab-explain" class="tab-content active glass-card">
+                <h3>شرح الفصل الأول</h3>
+                <p class="text-muted" style="margin-top: 8px; font-size: 0.9rem; line-height: 1.6;">يتضمن هذا القسم التمهيد الكامل للمادة المفصلة، مع التركيز على المفاهيم النقاط الأساسية المطلوبة لنظام الامتحانات الجديد.</p>
+            </div>
+            <div id="sd-tab-summaries" class="tab-content glass-card">
+                <h3>الملخصات والشيتات</h3>
+                <p class="text-muted" style="margin-top: 8px; font-size: 0.9rem;">📄 ملخص القوانين كاملة (PDF)<br>📄 القواعد الرئيسية والخرائط الذهنية</p>
+            </div>
+            <div id="sd-tab-tasks" class="tab-content glass-card">
+                <h3>الواجبات والتدريبات</h3>
+                <p class="text-muted" style="margin-top: 8px; font-size: 0.9rem;">✏️ الواجب الأسبوعي - 20 سؤال اختياري.<br> status: <span class="text-primary">غير مكتمل</span></p>
+            </div>
+            <div id="sd-tab-exams" class="tab-content glass-card">
+                <h3>الامتحانات الشاملة</h3>
+                <p class="text-muted" style="margin-top: 8px; font-size: 0.9rem;">📝 اختبار شامل على الوحدة الأولى (مدة الاختبار 45 دقيقة).</p>
+            </div>
+            <div id="sd-tab-videos" class="tab-content glass-card">
+                <h3>المحاضرات المرئية</h3>
+                <p class="text-muted" style="margin-top: 8px; font-size: 0.9rem;">🎥 فيديو المحاضرة الأولى (50 دقيقة)<br>🎥 فيديو حل أسئلة التفكير العليا</p>
+            </div>
+            <div id="sd-tab-notes" class="tab-content glass-card">
+                <h3>ملاحظاتي الخاصة</h3>
+                <textarea class="input-control" rows="4" placeholder="اكتب ملاحظاتك أثناء المذاكرة هنا..." style="margin-top:8px;"></textarea>
+            </div>
+        </div>
+
+        <div id="ai-screen" class="screen">
+            <div style="display:flex; align-items:center; gap: 10px; margin-bottom: 12px;">
+                <i class="fa-solid fa-robot text-primary" style="font-size: 1.5rem;"></i>
+                <div>
+                    <h3 style="font-size: 1.1rem;">مساعد NEXORA الذكي</h3>
+                    <p class="text-muted" style="font-size: 0.75rem;">متواجد دائمًا للإجابة على أسئلتك الدراسية</p>
+                </div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot">
+                        أهلاً بك 👋 أنا مساعدك الذكي في NEXORA. كيف يمكنني مساعدتك في ذاكرتك اليوم؟
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" class="input-control" placeholder="اسأل عن أي مسألة أو مفهوم..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+                    <button class="btn" style="width: 50px; flex-shrink: 0;" onclick="sendChatMessage()">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="profile-screen" class="screen">
+            <h2 style="margin-bottom: 16px;">الملف الشخصي</h2>
+            <div class="glass-card text-center">
+                <div class="avatar" style="width: 80px; height: 80px; font-size: 2rem; margin: 0 auto 12px;" id="profile-avatar">N</div>
+                <h3 id="profile-name">اسم الطالب</h3>
+                <p class="text-muted" style="font-size: 0.85rem;" id="profile-phone">01xxxxxxxxx</p>
+            </div>
+
+            <div class="glass-card">
+                <div class="input-group">
+                    <label>نظام الدراسة</label>
+                    <div class="input-control" id="profile-system" style="background:rgba(255,255,255,0.05);">الثانوية العامة</div>
+                </div>
+                <div class="input-group">
+                    <label>المسار / الشعبي</label>
+                    <div class="input-control" id="profile-track" style="background:rgba(255,255,255,0.05);">علمي علوم</div>
+                </div>
+                <button class="btn" style="background: var(--card-bg); border: 1px solid var(--glass-border); margin-bottom: 8px;" onclick="resetSetup()">
+                    <i class="fa-solid fa-pen"></i> تعديل النظام التعليمي
+                </button>
+                <button class="btn" style="background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3);" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
+                </button>
+            </div>
+        </div>
+
+        <div id="settings-screen" class="screen">
+            <h2 style="margin-bottom: 16px;">الإعدادات</h2>
+            <div class="glass-card">
+                <div class="option-card" style="margin-bottom: 8px;">
+                    <span><i class="fa-solid fa-moon text-primary"></i> الوضع الليلي</span>
+                    <input type="checkbox" checked disabled>
+                </div>
+                <div class="option-card" style="margin-bottom: 8px;" onclick="triggerNotification('الإشعارات', 'الإشعارات مفعلة بنجاح!')">
+                    <span><i class="fa-solid fa-bell text-primary"></i> الإشعارات</span>
+                    <i class="fa-solid fa-chevron-left text-muted"></i>
+                </div>
+                <div class="option-card" style="margin-bottom: 8px;" onclick="alert('تغيير الخط متاح في التحديث القادم')">
+                    <span><i class="fa-solid fa-font text-primary"></i> تغيير الخط</span>
+                    <i class="fa-solid fa-chevron-left text-muted"></i>
+                </div>
+                <div class="option-card" style="margin-bottom: 8px;" onclick="alert('اللغة الحالية هي العربية بالكامل')">
+                    <span><i class="fa-solid fa-language text-primary"></i> تغيير اللغة</span>
+                    <span style="font-size:0.8rem;" class="text-muted">العربية</span>
+                </div>
+            </div>
+
+            <div class="glass-card text-center">
+                <h4>حول التطبيق</h4>
+                <p class="text-muted" style="font-size: 0.8rem; margin-top: 6px;">NEXORA v1.0.0 Pro</p>
+                <p class="text-muted" style="font-size: 0.75rem; margin-top: 4px;">تطبيق تعليمي مصمم بأعلى معايير UI/UX</p>
+            </div>
+        </div>
+
+        <nav class="bottom-nav" id="bottom-nav" style="display: none;">
+            <button class="nav-item active" onclick="switchTab('home-screen')">
+                <i class="fa-solid fa-house"></i>
+                <span>الرئيسية</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('subjects-screen')">
+                <i class="fa-solid fa-book-open"></i>
+                <span>المواد</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('ai-screen')">
+                <i class="fa-solid fa-robot"></i>
+                <span>الذكاء الاصطناعي</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('profile-screen')">
+                <i class="fa-solid fa-user"></i>
+                <span>حسابي</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('settings-screen')">
+                <i class="fa-solid fa-gear"></i>
+                <span>الإعدادات</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <script>
+        // Store & State Management
+        let appData = {
+            user: null, // { name, phone, pass }
+            system: null, // 'sec' or 'bac'
+            track: null, // e.g. 'sci_bio', 'eng', etc.
+        };
+
+        const subjectsDatabase = {
+            sec: {
+                sci_bio: [
+                    { id: 'bio', name: 'الأحياء', icon: 'fa-dna', color: '#22C55E' },
+                    { id: 'chem', name: 'الكيمياء', icon: 'fa-flask', color: '#F59E0B' },
+                    { id: 'phy', name: 'الفيزياء', icon: 'fa-atom', color: '#EF4444' },
+                    { id: 'ar', name: 'اللغة العربية', icon: 'fa-language', color: '#2563EB' },
+                    { id: 'en', name: 'اللغة الإنجليزية', icon: 'fa-globe', color: '#8B5CF6' },
+                    { id: 'geo', name: 'الجيولوجيا', icon: 'fa-mountain', color: '#10B981' }
+                ],
+                sci_math: [
+                    { id: 'math', name: 'الرياضيات التطبيقية', icon: 'fa-calculator', color: '#3B82F6' },
+                    { id: 'pmath', name: 'الرياضيات البحتة', icon: 'fa-square-root-variable', color: '#6366F1' },
+                    { id: 'phy', name: 'الفيزياء', icon: 'fa-atom', color: '#EF4444' },
+                    { id: 'chem', name: 'الكيمياء', icon: 'fa-flask', color: '#F59E0B' },
+                    { id: 'ar', name: 'اللغة العربية', icon: 'fa-language', color: '#2563EB' },
+                    { id: 'en', name: 'اللغة الإنجليزية', icon: 'fa-globe', color: '#8B5CF6' }
+                ],
+                lit: [
+                    { id: 'hist', name: 'التاريخ', icon: 'fa-landmark', color: '#D97706' },
+                    { id: 'geog', name: 'الجغرافيا', icon: 'fa-earth-americas', color: '#059669' },
+                    { id: 'phil', name: 'الفلسفة والمنطق', icon: 'fa-brain', color: '#EC4899' },
+                    { id: 'psych', name: 'علم النفس والاجتماع', icon: 'fa-user-group', color: '#8B5CF6' },
+                    { id: 'ar', name: 'اللغة العربية', icon: 'fa-language', color: '#2563EB' },
+                    { id: 'en', name: 'اللغة الإنجليزية', icon: 'fa-globe', color: '#8B5CF6' }
+                ]
+            },
+            bac: {
+                med: [
+                    { id: 'bio', name: 'علم الأحياء الطبية', icon: 'fa-notes-medical', color: '#22C55E' },
+                    { id: 'chem', name: 'الكيمياء العضوية', icon: 'fa-vials', color: '#F59E0B' },
+                    { id: 'phy', name: 'الفيزياء الطبية', icon: 'fa-wave-square', color: '#EF4444' },
+                    { id: 'eng_med', name: 'مصطلحات طبية', icon: 'fa-book-medical', color: '#3B82F6' }
+                ],
+                eng: [
+                    { id: 'cs', name: 'علوم الحاسب', icon: 'fa-code', color: '#0EA5E9' },
+                    { id: 'adv_math', name: 'الرياضيات المتقدمة', icon: 'fa-microchip', color: '#6366F1' },
+                    { id: 'phy_eng', name: 'الفيزياء الهندسيّة', icon: 'fa-bolt', color: '#F59E0B' },
+                    { id: 'logic', name: 'التفكير المنطقي', icon: 'fa-diagram-project', color: '#EC4899' }
+                ],
+                biz: [
+                    { id: 'econ', name: 'الاقتصاد', icon: 'fa-chart-line', color: '#10B981' },
+                    { id: 'acc', name: 'المحاسبة', icon: 'fa-file-invoice-dollar', color: '#F59E0B' },
+                    { id: 'mgmt', name: 'إدارة الأعمال', icon: 'fa-briefcase', color: '#3B82F6' },
+                    { id: 'mkt', name: 'التسويق الرقمي', icon: 'fa-bullhorn', color: '#8B5CF6' }
+                ],
+                arts: [
+                    { id: 'art_hist', name: 'تاريخ الفنون', icon: 'fa-palette', color: '#EC4899' },
+                    { id: 'lit_world', name: 'الأدب العالمي', icon: 'fa-feather', color: '#D97706' },
+                    { id: 'media', name: 'الإعلام والاتصال', icon: 'fa-tv', color: '#06B6D4' },
+                    { id: 'languages', name: 'اللغات الحديثة', icon: 'fa-language', color: '#8B5CF6' }
+                ]
+            }
+        };
+
+        // Initialize Application
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromStorage();
+            setupDateDisplay();
+            initCountdown();
+
+            // Splash Screen Delay
+            setTimeout(() => {
+                if (!appData.user) {
+                    showScreen('register-screen');
+                } else if (!appData.system) {
+                    showScreen('system-screen');
+                } else if (!appData.track) {
+                    renderTracks();
+                    showScreen('track-screen');
+                } else {
+                    renderDashboard();
+                    showScreen('home-screen');
+                    document.getElementById('bottom-nav').style.display = 'flex';
+                }
+            }, 2000);
+        });
+
+        // Navigation Engine
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+
+            // Handle Bottom Nav visibility
+            const isMainApp = ['home-screen', 'subjects-screen', 'ai-screen', 'profile-screen', 'settings-screen'].includes(screenId);
+            document.getElementById('bottom-nav').style.display = isMainApp ? 'flex' : 'none';
+        }
+
+        function switchTab(screenId) {
+            showScreen(screenId);
+            
+            // Update Active Nav Item State
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+
+            const tabIndexMap = {
+                'home-screen': 0,
+                'subjects-screen': 1,
+                'ai-screen': 2,
+                'profile-screen': 3,
+                'settings-screen': 4
+            };
+
+            if (tabIndexMap[screenId] !== undefined) {
+                navItems[tabIndexMap[screenId]].classList.add('active');
+            }
+        }
+
+        // LocalStorage Logic
+        function saveToStorage() {
+            localStorage.setItem('nexora_data', JSON.stringify(appData));
+        }
+
+        function loadFromStorage() {
+            const data = localStorage.getItem('nexora_data');
+            if (data) {
+                appData = JSON.parse(data);
+            }
+        }
+
+        // User Flow Actions
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const phone = document.getElementById('reg-phone').value;
+            const pass = document.getElementById('reg-pass').value;
+
+            appData.user = { name, phone, pass };
+            saveToStorage();
+            showScreen('system-screen');
+        }
+
+        function selectSystem(systemType) {
+            appData.system = systemType;
+            saveToStorage();
+            renderTracks();
+            showScreen('track-screen');
+        }
+
+        function renderTracks() {
+            const container = document.getElementById('track-options-container');
+            container.innerHTML = '';
+
+            let tracks = [];
+            if (appData.system === 'sec') {
+                tracks = [
+                    { id: 'sci_bio', name: 'علمي علوم', desc: 'الطب، الصيدلة، العلوم الحيوية' },
+                    { id: 'sci_math', name: 'علمي رياضة', desc: 'الهندسة، الحاسبات، الذكاء الاصطناعي' },
+                    { id: 'lit', name: 'أدبي', desc: 'الألسن، الإعلام، الاقتصاد' }
+                ];
+            } else {
+                tracks = [
+                    { id: 'med', name: 'الطب وعلوم الحياة', desc: 'مسار التخصصات الطبية والصحية' },
+                    { id: 'eng', name: 'الهندسة وعلوم الحاسب', desc: 'مسار البرمجيات والتكنولوجيا' },
+                    { id: 'biz', name: 'الأعمال', desc: 'مسار الإدارة والمالية والاقتصاد' },
+                    { id: 'arts', name: 'الآداب والفنون', desc: 'مسار العلوم الإنسانية والتصميم' }
+                ];
+            }
+
+            tracks.forEach(track => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.onclick = () => selectTrack(track.id);
+                card.innerHTML = `
+                    <div>
+                        <h3>${track.name}</h3>
+                        <p class="text-muted" style="font-size:0.8rem;">${track.desc}</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-muted"></i>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectTrack(trackId) {
+            appData.track = trackId;
+            saveToStorage();
+            renderDashboard();
+            switchTab('home-screen');
+            triggerNotification('أهلاً بك!', 'تم إعداد حسابك بنجاح.');
+        }
+
+        // Dashboard & Render Logic
+        function renderDashboard() {
+            if (!appData.user) return;
+
+            // Header Setup
+            document.getElementById('dash-avatar').innerText = appData.user.name.charAt(0).toUpperCase();
+            document.getElementById('profile-avatar').innerText = appData.user.name.charAt(0).toUpperCase();
+            document.getElementById('dash-welcome').innerText = `السلام عليكم يا ${appData.user.name.split(' ')[0]}`;
+            
+            // Profile Data Setup
+            document.getElementById('profile-name').innerText = appData.user.name;
+            document.getElementById('profile-phone').innerText = appData.user.phone;
+            document.getElementById('profile-system').innerText = appData.system === 'sec' ? 'الثانوية العامة' : 'البكالوريا المصرية';
+            
+            // Render Selected Subjects
+            const userSubjects = subjectsDatabase[appData.system][appData.track] || [];
+            
+            const homeContainer = document.getElementById('home-subjects-container');
+            const allContainer = document.getElementById('all-subjects-container');
+            
+            homeContainer.innerHTML = '';
+            allContainer.innerHTML = '';
+
+            userSubjects.forEach((sub, index) => {
+                const html = `
+                    <div class="subject-card" onclick="openSubject('${sub.name}')">
+                        <div class="subject-icon" style="background: ${sub.color}20; color: ${sub.color};">
+                            <i class="fa-solid ${sub.icon}"></i>
+                        </div>
+                        <h4 style="font-size: 0.95rem;">${sub.name}</h4>
+                    </div>
+                `;
+
+                if (index < 4) homeContainer.innerHTML += html;
+                allContainer.innerHTML += html;
+            });
+        }
+
+        function openSubject(subjectName) {
+            document.getElementById('sd-title').innerText = subjectName;
+            showScreen('subject-detail-screen');
+        }
+
+        function switchSubjectTab(btn, tabId) {
+            document.querySelectorAll('.tabs-header .tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Interactive AI Chat Simulation
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const messageText = input.value.trim();
+            if (!messageText) return;
+
+            const chatMessages = document.getElementById('chat-messages');
+
+            // User Message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'message user';
+            userMsgDiv.innerText = messageText;
+            chatMessages.appendChild(userMsgDiv);
+
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Simulated AI Response
+            setTimeout(() => {
+                const botMsgDiv = document.createElement('div');
+                botMsgDiv.className = 'message bot';
+                
+                // Smart Responses
+                if(messageText.includes('فيزياء') || messageText.includes('مسألة')) {
+                    botMsgDiv.innerText = "بناءً على سؤالك: قانون أوم ينص على أن $V = I \\times R$. يمكنك مراجعة شيت القوانين في قسم الفيزياء لتفاصيل إضافية!";
+                } else if(messageText.includes('جدول') || messageText.includes('مذاكرة')) {
+                    botMsgDiv.innerText = "أفضل طريقة للمذاكرة الآن هي تقسيم الوقت بأسلوب Pomodoro: 25 دقيقة تركيز يعقبها 5 دقائق استراحة.";
+                } else {
+                    botMsgDiv.innerText = `سؤال ممتاز بخصوص "${messageText}". أنا هنا لدعمك وتسهيل هذا المفهوم في خطتك الدراسية!`;
+                }
+
+                chatMessages.appendChild(botMsgDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 800);
+        }
+
+        // Countdown Timer Engine
+        function initCountdown() {
+            const examDate = new Date('June 10, 2026 09:00:00').getTime();
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = examDate - now;
+
+                if (distance > 0) {
+                    document.getElementById('cd-days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    document.getElementById('cd-hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    document.getElementById('cd-mins').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    document.getElementById('cd-secs').innerText = Math.floor((distance % (1000 * 60)) / 1000);
+                }
+            }, 1000);
+        }
+
+        // Toast Notification System
+        function triggerNotification(title, body) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-body').innerText = body;
+
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Helper Utility Functions
+        function setupDateDisplay() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date();
+            document.getElementById('dash-date').innerText = today.toLocaleDateString('ar-EG', options);
+        }
+
+        function resetSetup() {
+            appData.system = null;
+            appData.track = null;
+            saveToStorage();
+            showScreen('system-screen');
+        }
+
+        function logout() {
+            localStorage.removeItem('nexora_data');
+            appData = { user: null, system: null, track: null };
+            showScreen('register-screen');
+        }
+    </script>
+</body>
+</html>
