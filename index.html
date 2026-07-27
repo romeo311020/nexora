@@ -9,7 +9,7 @@
     
     <style>
         /* ==========================================
-           1. Core Variables & Reset
+           1. Core Variables & Global Styles
            ========================================== */
         :root {
             --primary: #2563EB;
@@ -26,6 +26,10 @@
             --font-family: 'Tajawal', sans-serif;
             --border-radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [dir="ltr"] {
+            --font-family: 'Tajawal', sans-serif;
         }
 
         * {
@@ -46,7 +50,6 @@
             overflow-x: hidden;
         }
 
-        /* Container Layout for Mobile/Desktop App view */
         .app-container {
             width: 100%;
             max-width: 480px;
@@ -68,7 +71,7 @@
             }
         }
 
-        /* Screen Management */
+        /* Screen Navigation Logic */
         .screen {
             position: absolute;
             inset: 0;
@@ -82,7 +85,7 @@
             z-index: 1;
             overflow-y: auto;
             padding: 20px;
-            padding-bottom: 90px; /* Space for Bottom Nav */
+            padding-bottom: 90px;
         }
 
         .screen.active {
@@ -95,7 +98,7 @@
             padding-bottom: 20px !important;
         }
 
-        /* Common Glassmorphism Card */
+        /* Glassmorphism Cards */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -105,10 +108,13 @@
             padding: 20px;
             margin-bottom: 16px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
         }
 
-        /* Typography & Utility */
-        h1, h2, h3 { font-weight: 700; }
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
         .text-primary { color: var(--primary); }
         .text-muted { color: var(--text-muted); }
         .text-center { text-align: center; }
@@ -116,6 +122,11 @@
         /* Custom Inputs & Buttons */
         .input-group {
             margin-bottom: 16px;
+            text-align: right;
+        }
+
+        [dir="ltr"] .input-group {
+            text-align: left;
         }
 
         .input-group label {
@@ -142,7 +153,10 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
         }
 
+        /* Button & Ripple Effect */
         .btn {
+            position: relative;
+            overflow: hidden;
             width: 100%;
             padding: 14px;
             border: none;
@@ -162,11 +176,34 @@
         .btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
         .btn:active { transform: translateY(0); }
 
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to { transform: scale(4); opacity: 0; }
+        }
+
         .option-card {
             background: var(--card-bg);
             border: 2px solid var(--glass-border);
             border-radius: var(--border-radius);
-            padding: 20px;
+            padding: 16px;
             margin-bottom: 12px;
             cursor: pointer;
             transition: var(--transition);
@@ -181,7 +218,7 @@
         }
 
         /* ==========================================
-           2. Splash Screen
+           2. Splash & Auth Screens
            ========================================== */
         #splash-screen {
             background: var(--bg-dark);
@@ -192,7 +229,6 @@
         }
 
         .splash-content {
-            margin-auto: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -236,37 +272,20 @@
             animation: fadeIn 1s ease-out 0.7s backwards;
         }
 
-        .splash-footer {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            padding-bottom: 20px;
-            animation: fadeIn 1s ease-out 0.9s backwards;
-        }
-
-        .splash-footer span {
-            display: block;
-            font-weight: bold;
-            color: var(--text-white);
-            margin-top: 2px;
-        }
-
-        /* ==========================================
-           3. Registration & Onboarding
-           ========================================== */
         .onboarding-header {
             text-align: center;
-            margin-top: 30px;
-            margin-bottom: 30px;
+            margin-top: 20px;
+            margin-bottom: 24px;
         }
 
         /* ==========================================
-           4. Main Dashboard Header & Components
+           3. Dashboard & Component Styles
            ========================================== */
         .dash-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .user-info-box {
@@ -288,30 +307,53 @@
             border: 2px solid var(--glass-border);
         }
 
-        /* Countdown & Stats */
-        .timer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+        /* Motivation Card */
+        .motivation-card {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(30, 41, 59, 0.9));
+            border-left: 4px solid var(--primary);
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Daily Plan / Tasks */
+        .task-input-box {
+            display: flex;
             gap: 8px;
-            text-align: center;
-            margin-top: 12px;
+            margin-bottom: 12px;
         }
 
-        .timer-unit {
-            background: rgba(15, 23, 42, 0.5);
-            padding: 10px 4px;
-            border-radius: 8px;
-            border: 1px solid var(--glass-border);
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--glass-border);
+            transition: var(--transition);
         }
 
-        .timer-unit .num {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--primary);
+        .task-item:last-child { border-bottom: none; }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .timer-unit .label {
-            font-size: 0.7rem;
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .task-item.completed span {
+            text-decoration: line-through;
             color: var(--text-muted);
         }
 
@@ -319,12 +361,14 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+            margin-bottom: 16px;
         }
 
         .stat-card {
             display: flex;
             align-items: center;
             gap: 12px;
+            margin-bottom: 0;
         }
 
         .stat-icon {
@@ -337,7 +381,7 @@
             font-size: 1.2rem;
         }
 
-        /* Subject Grid */
+        /* Subjects Grid */
         .subjects-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -354,13 +398,11 @@
             gap: 10px;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
         }
 
         .subject-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .subject-icon {
@@ -373,31 +415,38 @@
             font-size: 1.2rem;
         }
 
-        /* Task Checkbox List */
-        .task-item {
+        /* Quick Info Widgets */
+        .info-widget {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--glass-border);
+            justify-content: space-between;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
         }
 
-        .task-item:last-child { border-bottom: none; }
+        /* Skeleton Loading Effect */
+        .skeleton {
+            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 8px;
+        }
 
-        .task-checkbox {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--primary);
-            cursor: pointer;
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         /* ==========================================
-           5. AI Chat Interface
+           4. AI Chat Interface
            ========================================== */
         .chat-container {
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 180px);
+            height: calc(100vh - 210px);
         }
 
         .chat-messages {
@@ -407,14 +456,15 @@
             flex-direction: column;
             gap: 12px;
             padding-bottom: 10px;
+            padding-right: 4px;
         }
 
         .message {
-            max-width: 80%;
+            max-width: 85%;
             padding: 12px 16px;
             border-radius: 16px;
-            font-size: 0.95rem;
-            line-height: 1.4;
+            font-size: 0.9rem;
+            line-height: 1.5;
             animation: fadeIn 0.3s ease-out;
         }
 
@@ -438,7 +488,7 @@
         }
 
         /* ==========================================
-           6. Subject Internal Tabs Page
+           5. Tabs Navigation inside Subject
            ========================================== */
         .tabs-header {
             display: flex;
@@ -470,6 +520,27 @@
         .tab-content.active { display: block; }
 
         /* ==========================================
+           6. Universal Footer
+           ========================================== */
+        .app-footer {
+            text-align: center;
+            padding: 16px 0 8px 0;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .app-footer p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .app-footer span {
+            font-weight: bold;
+            color: var(--text-white);
+        }
+
+        /* ==========================================
            7. Bottom Navigation Bar
            ========================================== */
         .bottom-nav {
@@ -494,7 +565,7 @@
             gap: 4px;
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             cursor: pointer;
             transition: var(--transition);
             background: none;
@@ -515,7 +586,7 @@
             transform: translateY(-2px);
         }
 
-        /* Notifications Banner */
+        /* Toast Notifications */
         .notification-toast {
             position: absolute;
             top: 16px;
@@ -538,7 +609,7 @@
             transform: translateY(0);
         }
 
-        /* Animations */
+        /* Keyframe Animations */
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6); }
             70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); }
@@ -546,12 +617,12 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes zoomIn {
-            from { transform: scale(0.5); opacity: 0; }
+            from { transform: scale(0.6); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
     </style>
@@ -572,19 +643,59 @@
             <div class="splash-content">
                 <div class="logo-circle">N</div>
                 <h1 class="splash-title">NEXORA</h1>
-                <p class="splash-sub">مرحبًا بعودتك 👋</p>
-                <p class="splash-desc">رفيقك اليومي للتفوق والنجاح الدراسي.</p>
+                <p class="splash-sub" id="splash-lang-sub">مرحبًا بعودتك 👋</p>
+                <p class="splash-desc" id="splash-lang-desc">رفيقك اليومي للتفوق والنجاح الدراسي.</p>
             </div>
-            <div class="splash-footer">
-                Designed & Developed by
-                <span>ROMANY GARGES</span>
+            <div id="splash-footer-container"></div>
+        </div>
+
+        <div id="auth-choice-screen" class="screen no-nav-padding">
+            <div class="onboarding-header" style="margin-top: 50px;">
+                <div class="logo-circle" style="width: 70px; height: 70px; font-size: 2rem; margin: 0 auto 16px;">N</div>
+                <h2 style="font-size: 1.8rem;">مرحبًا بك في NEXORA</h2>
+                <p class="text-muted" style="font-size: 0.9rem; margin-top: 6px;">اختر طريقة البدء للانضمام للتطبيق</p>
             </div>
+            <div style="margin-top: auto; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px;">
+                <button class="btn" onclick="showScreen('login-screen')">
+                    <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
+                </button>
+                <button class="btn btn-outline" onclick="showScreen('register-screen')">
+                    <i class="fa-solid fa-user-plus"></i> إنشاء حساب جديد
+                </button>
+            </div>
+            <div id="auth-footer-container"></div>
+        </div>
+
+        <div id="login-screen" class="screen no-nav-padding">
+            <div class="onboarding-header">
+                <h2>تسجيل الدخول</h2>
+                <p class="text-muted" style="font-size: 0.9rem;">أدخل بيانات حسابك للمتابعة</p>
+            </div>
+            <div class="glass-card">
+                <form onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <label>رقم الهاتف</label>
+                        <input type="tel" id="login-phone" class="input-control" placeholder="01xxxxxxxxx" required>
+                    </div>
+                    <div class="input-group">
+                        <label>كلمة المرور</label>
+                        <input type="password" id="login-pass" class="input-control" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn" style="margin-top: 10px;">
+                        دخول <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                </form>
+            </div>
+            <p class="text-center text-muted" style="font-size: 0.85rem; cursor: pointer;" onclick="showScreen('register-screen')">
+                ليس لديك حساب؟ <span class="text-primary">أنشئ حساباً الآن</span>
+            </p>
+            <div id="login-footer-container"></div>
         </div>
 
         <div id="register-screen" class="screen no-nav-padding">
             <div class="onboarding-header">
-                <h2 style="font-size: 1.8rem;">إنشاء حساب جديد</h2>
-                <p class="text-muted" style="font-size: 0.9rem; margin-top: 4px;">ابدأ رحلتك الدراسية نحو القمة</p>
+                <h2>إنشاء حساب جديد</h2>
+                <p class="text-muted" style="font-size: 0.9rem;">ابدأ رحلتك الدراسية نحو القمة</p>
             </div>
             <div class="glass-card">
                 <form id="register-form" onsubmit="handleRegister(event)">
@@ -605,6 +716,10 @@
                     </button>
                 </form>
             </div>
+            <p class="text-center text-muted" style="font-size: 0.85rem; cursor: pointer;" onclick="showScreen('login-screen')">
+                لديك حساب بالفعل؟ <span class="text-primary">تسجيل الدخول</span>
+            </p>
+            <div id="reg-footer-container"></div>
         </div>
 
         <div id="system-screen" class="screen no-nav-padding">
@@ -626,6 +741,7 @@
                 </div>
                 <i class="fa-solid fa-chevron-left text-muted"></i>
             </div>
+            <div id="sys-footer-container"></div>
         </div>
 
         <div id="track-screen" class="screen no-nav-padding">
@@ -635,6 +751,7 @@
             </div>
             <div id="track-options-container">
                 </div>
+            <div id="track-footer-container"></div>
         </div>
 
         <div id="home-screen" class="screen">
@@ -642,36 +759,43 @@
                 <div class="user-info-box">
                     <div class="avatar" id="dash-avatar">N</div>
                     <div>
-                        <span class="text-muted" style="font-size: 0.75rem;" id="dash-date">اليوم والتااريخ</span>
+                        <span class="text-muted" style="font-size: 0.75rem;" id="dash-date">اليوم والتاريخ</span>
                         <h3 style="font-size: 1.1rem;" id="dash-welcome">السلام عليكم</h3>
                     </div>
                 </div>
-                <button onclick="triggerNotification('تذكير المذاكرة', 'حان الوقت لمراجعة جدولك اليومي!')" style="background:none; border:none; color: var(--text-white); font-size: 1.2rem; cursor:pointer;">
+                <button onclick="triggerNotification('تذكير المذاكرة', 'حان الوقت لمراجعة خطتك اليومية!')" style="background:none; border:none; color: var(--text-white); font-size: 1.2rem; cursor:pointer;">
                     <i class="fa-regular fa-bell"></i>
                 </button>
             </div>
 
-            <div class="glass-card" style="background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(30,41,59,0.8));">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h4 style="font-size: 0.95rem;">⏳ باقي على الامتحانات النهائيّة</h4>
-                    <span class="text-primary" style="font-size: 0.8rem; font-weight:bold;">2026</span>
+            <div class="motivation-card">
+                <i class="fa-solid fa-quote-right text-primary" style="font-size: 1.2rem;"></i>
+                <div id="motivation-text">"السر في الاستمرار ليس في حجم الخطوات، بل في المواظبة عليها يومياً."</div>
+            </div>
+
+            <div class="glass-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+                    <h4 style="font-size: 0.95rem;"><i class="fa-solid fa-clipboard-list text-primary"></i> 📋 خطة اليوم</h4>
+                    <span style="font-size:0.75rem;" class="text-muted" id="task-counter">0 / 0 مكتمل</span>
                 </div>
-                <div class="timer-grid">
-                    <div class="timer-unit"><div class="num" id="cd-days">00</div><div class="label">يوم</div></div>
-                    <div class="timer-unit"><div class="num" id="cd-hours">00</div><div class="label">ساعة</div></div>
-                    <div class="timer-unit"><div class="num" id="cd-mins">00</div><div class="label">دقيقة</div></div>
-                    <div class="timer-unit"><div class="num" id="cd-secs">00</div><div class="label">ثانية</div></div>
+                <div class="task-input-box">
+                    <input type="text" id="new-task-input" class="input-control" placeholder="أضف مهمة جديدة للوفاء بها..." style="padding: 10px 14px; font-size: 0.88rem;">
+                    <button class="btn" style="width: auto; padding: 0 16px;" onclick="addDailyTask()">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
                 </div>
+                <div id="daily-tasks-list">
+                    </div>
             </div>
 
             <div class="stats-row">
                 <div class="glass-card stat-card">
                     <div class="stat-icon" style="background: rgba(34, 197, 94, 0.2); color: var(--success);">
-                        <i class="fa-solid fa-chart-line"></i>
+                        <i class="fa-solid fa-clock"></i>
                     </div>
                     <div>
-                        <div class="text-muted" style="font-size: 0.75rem;">نسبة الإنجاز</div>
-                        <div style="font-size: 1.1rem; font-weight: bold;">68%</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">ساعات المذاكرة</div>
+                        <div style="font-size: 1.05rem; font-weight: bold;" id="study-hours-text">14.5 ساعة</div>
                     </div>
                 </div>
                 <div class="glass-card stat-card">
@@ -680,39 +804,38 @@
                     </div>
                     <div>
                         <div class="text-muted" style="font-size: 0.75rem;">Streak المذاكرة</div>
-                        <div style="font-size: 1.1rem; font-weight: bold;">12 يوم</div>
+                        <div style="font-size: 1.05rem; font-weight: bold;" id="streak-days-text">8 أيام متتالية</div>
                     </div>
                 </div>
             </div>
 
             <div class="glass-card">
-                <h4 style="font-size: 0.95rem; margin-bottom: 10px;"><i class="fa-solid fa-list-check text-primary"></i> الخطة اليومية</h4>
-                <div class="task-item">
-                    <input type="checkbox" class="task-checkbox" checked>
-                    <span style="font-size: 0.85rem; text-decoration: line-through; color: var(--text-muted);">حل اختبار الفيزياء التفاعلي</span>
+                <h4 style="font-size: 0.9rem; margin-bottom: 10px;"><i class="fa-solid fa-bolt text-warning"></i> النشاط الأخير</h4>
+                <div class="info-widget">
+                    <span class="text-muted">آخر مادة تمت مذاكرتها:</span>
+                    <strong id="last-studied-subject">الفيزياء (الفصل الثاني)</strong>
                 </div>
-                <div class="task-item">
-                    <input type="checkbox" class="task-checkbox">
-                    <span style="font-size: 0.85rem;">مراجعة الدرس الأول لغة عربية</span>
-                </div>
-                <div class="task-item">
-                    <input type="checkbox" class="task-checkbox">
-                    <span style="font-size: 0.85rem;">مشاهدة فيديو الرياضيات / المحاضرة 3</span>
+                <div class="info-widget">
+                    <span class="text-muted">آخر تقييم امتحان:</span>
+                    <strong style="color: var(--success);" id="last-exam-score">92% (ممتاز)</strong>
                 </div>
             </div>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; margin-top: 4px;">
                 <h4 style="font-size: 1rem;">موادك الدراسية</h4>
                 <span style="font-size: 0.8rem; color: var(--primary); cursor:pointer;" onclick="switchTab('subjects-screen')">عرض الكل</span>
             </div>
             <div class="subjects-grid" id="home-subjects-container">
                 </div>
+
+            <div id="home-footer-container"></div>
         </div>
 
         <div id="subjects-screen" class="screen">
             <h2 style="margin-bottom: 16px;">المواد الدراسية</h2>
             <div class="subjects-grid" id="all-subjects-container">
                 </div>
+            <div id="subjects-footer-container"></div>
         </div>
 
         <div id="subject-detail-screen" class="screen">
@@ -734,7 +857,7 @@
 
             <div id="sd-tab-explain" class="tab-content active glass-card">
                 <h3>شرح الفصل الأول</h3>
-                <p class="text-muted" style="margin-top: 8px; font-size: 0.9rem; line-height: 1.6;">يتضمن هذا القسم التمهيد الكامل للمادة المفصلة، مع التركيز على المفاهيم النقاط الأساسية المطلوبة لنظام الامتحانات الجديد.</p>
+                <p class="text-muted" style="margin-top: 8px; font-size: 0.9rem; line-height: 1.6;">يتضمن هذا القسم التمهيد الكامل للمادة المفصلة، مع التركيز على المفاهيم والنقاط الأساسية المطلوبة وفقًا للتحديثات الجديدة.</p>
             </div>
             <div id="sd-tab-summaries" class="tab-content glass-card">
                 <h3>الملخصات والشيتات</h3>
@@ -742,7 +865,7 @@
             </div>
             <div id="sd-tab-tasks" class="tab-content glass-card">
                 <h3>الواجبات والتدريبات</h3>
-                <p class="text-muted" style="margin-top: 8px; font-size: 0.9rem;">✏️ الواجب الأسبوعي - 20 سؤال اختياري.<br> status: <span class="text-primary">غير مكتمل</span></p>
+                <p class="text-muted" style="margin-top: 8px; font-size: 0.9rem;">✏️ الواجب الأسبوعي - 20 سؤال اختياري.<br> الحالية: <span class="text-primary">قيد الحل</span></p>
             </div>
             <div id="sd-tab-exams" class="tab-content glass-card">
                 <h3>الامتحانات الشاملة</h3>
@@ -754,25 +877,28 @@
             </div>
             <div id="sd-tab-notes" class="tab-content glass-card">
                 <h3>ملاحظاتي الخاصة</h3>
-                <textarea class="input-control" rows="4" placeholder="اكتب ملاحظاتك أثناء المذاكرة هنا..." style="margin-top:8px;"></textarea>
+                <textarea id="subject-notes-input" class="input-control" rows="4" placeholder="اكتب ملاحظاتك أثناء المذاكرة هنا..." style="margin-top:8px;" onchange="saveSubjectNotes()"></textarea>
             </div>
+            <div id="sd-footer-container"></div>
         </div>
 
         <div id="ai-screen" class="screen">
-            <div style="display:flex; align-items:center; gap: 10px; margin-bottom: 12px;">
-                <i class="fa-solid fa-robot text-primary" style="font-size: 1.5rem;"></i>
-                <div>
-                    <h3 style="font-size: 1.1rem;">مساعد NEXORA الذكي</h3>
-                    <p class="text-muted" style="font-size: 0.75rem;">متواجد دائمًا للإجابة على أسئلتك الدراسية</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px;">
+                <div style="display:flex; align-items:center; gap: 10px;">
+                    <i class="fa-solid fa-robot text-primary" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <h3 style="font-size: 1.1rem;">مساعد NEXORA الذكي</h3>
+                        <p class="text-muted" style="font-size: 0.75rem;">متواجد للإجابة على جميع استفساراتك</p>
+                    </div>
                 </div>
+                <button onclick="clearChatHistory()" style="background:none; border:none; color: var(--danger); font-size:0.85rem; cursor:pointer;">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
             </div>
 
             <div class="chat-container">
                 <div class="chat-messages" id="chat-messages">
-                    <div class="message bot">
-                        أهلاً بك 👋 أنا مساعدك الذكي في NEXORA. كيف يمكنني مساعدتك في ذاكرتك اليوم؟
                     </div>
-                </div>
                 <div class="chat-input-area">
                     <input type="text" id="chat-input" class="input-control" placeholder="اسأل عن أي مسألة أو مفهوم..." onkeydown="if(event.key==='Enter') sendChatMessage()">
                     <button class="btn" style="width: 50px; flex-shrink: 0;" onclick="sendChatMessage()">
@@ -780,6 +906,7 @@
                     </button>
                 </div>
             </div>
+            <div id="ai-footer-container"></div>
         </div>
 
         <div id="profile-screen" class="screen">
@@ -791,21 +918,34 @@
             </div>
 
             <div class="glass-card">
-                <div class="input-group">
-                    <label>نظام الدراسة</label>
-                    <div class="input-control" id="profile-system" style="background:rgba(255,255,255,0.05);">الثانوية العامة</div>
-                </div>
-                <div class="input-group">
-                    <label>المسار / الشعبي</label>
-                    <div class="input-control" id="profile-track" style="background:rgba(255,255,255,0.05);">علمي علوم</div>
-                </div>
-                <button class="btn" style="background: var(--card-bg); border: 1px solid var(--glass-border); margin-bottom: 8px;" onclick="resetSetup()">
-                    <i class="fa-solid fa-pen"></i> تعديل النظام التعليمي
-                </button>
-                <button class="btn" style="background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3);" onclick="logout()">
-                    <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
+                <form onsubmit="handleProfileUpdate(event)">
+                    <div class="input-group">
+                        <label>الاسم بالكامل</label>
+                        <input type="text" id="edit-profile-name" class="input-control" required>
+                    </div>
+                    <div class="input-group">
+                        <label>رقم الهاتف</label>
+                        <input type="tel" id="edit-profile-phone" class="input-control" required>
+                    </div>
+                    <div class="input-group">
+                        <label>نظام الدراسة الحالي</label>
+                        <div class="input-control" id="profile-system-display" style="background:rgba(255,255,255,0.05);">الثانوية العامة</div>
+                    </div>
+                    <div class="input-group">
+                        <label>المسار / الشعبي</label>
+                        <div class="input-control" id="profile-track-display" style="background:rgba(255,255,255,0.05);">علمي علوم</div>
+                    </div>
+                    
+                    <button type="submit" class="btn" style="margin-bottom: 10px;">
+                        <i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات
+                    </button>
+                </form>
+
+                <button class="btn btn-outline" style="margin-bottom: 10px;" onclick="resetTrackSetup()">
+                    <i class="fa-solid fa-pen"></i> تغيير النظام أو المسار التعليمي
                 </button>
             </div>
+            <div id="profile-footer-container"></div>
         </div>
 
         <div id="settings-screen" class="screen">
@@ -815,58 +955,73 @@
                     <span><i class="fa-solid fa-moon text-primary"></i> الوضع الليلي</span>
                     <input type="checkbox" checked disabled>
                 </div>
-                <div class="option-card" style="margin-bottom: 8px;" onclick="triggerNotification('الإشعارات', 'الإشعارات مفعلة بنجاح!')">
-                    <span><i class="fa-solid fa-bell text-primary"></i> الإشعارات</span>
-                    <i class="fa-solid fa-chevron-left text-muted"></i>
+                <div class="option-card" style="margin-bottom: 8px;" onclick="toggleNotificationsSetting()">
+                    <span><i class="fa-solid fa-bell text-primary"></i> الإشعارات والتنبيهات</span>
+                    <span id="notif-status-badge" style="font-size:0.8rem;" class="text-primary">مُفعلة</span>
                 </div>
-                <div class="option-card" style="margin-bottom: 8px;" onclick="alert('تغيير الخط متاح في التحديث القادم')">
-                    <span><i class="fa-solid fa-font text-primary"></i> تغيير الخط</span>
-                    <i class="fa-solid fa-chevron-left text-muted"></i>
-                </div>
-                <div class="option-card" style="margin-bottom: 8px;" onclick="alert('اللغة الحالية هي العربية بالكامل')">
+                <div class="option-card" style="margin-bottom: 8px;" onclick="toggleLanguage()">
                     <span><i class="fa-solid fa-language text-primary"></i> تغيير اللغة</span>
-                    <span style="font-size:0.8rem;" class="text-muted">العربية</span>
+                    <span id="lang-status-badge" style="font-size:0.8rem;" class="text-muted">العربية</span>
+                </div>
+                <div class="option-card" style="margin-bottom: 8px;" onclick="showAboutApp()">
+                    <span><i class="fa-solid fa-circle-info text-primary"></i> حول التطبيق</span>
+                    <i class="fa-solid fa-chevron-left text-muted"></i>
+                </div>
+                <div class="option-card" style="margin-bottom: 8px; border-color: rgba(239, 68, 68, 0.3);" onclick="confirmResetAllData()">
+                    <span style="color: var(--danger);"><i class="fa-solid fa-rotate-right"></i> إعادة ضبط البيانات</span>
+                    <i class="fa-solid fa-chevron-left text-muted"></i>
+                </div>
+                <div class="option-card" style="margin-bottom: 8px; border-color: rgba(239, 68, 68, 0.3);" onclick="logout()">
+                    <span style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</span>
+                    <i class="fa-solid fa-chevron-left text-muted"></i>
                 </div>
             </div>
 
-            <div class="glass-card text-center">
-                <h4>حول التطبيق</h4>
-                <p class="text-muted" style="font-size: 0.8rem; margin-top: 6px;">NEXORA v1.0.0 Pro</p>
-                <p class="text-muted" style="font-size: 0.75rem; margin-top: 4px;">تطبيق تعليمي مصمم بأعلى معايير UI/UX</p>
-            </div>
+            <div id="settings-footer-container"></div>
         </div>
 
         <nav class="bottom-nav" id="bottom-nav" style="display: none;">
             <button class="nav-item active" onclick="switchTab('home-screen')">
                 <i class="fa-solid fa-house"></i>
-                <span>الرئيسية</span>
+                <span class="nav-label-home">الرئيسية</span>
             </button>
             <button class="nav-item" onclick="switchTab('subjects-screen')">
                 <i class="fa-solid fa-book-open"></i>
-                <span>المواد</span>
+                <span class="nav-label-subjects">المواد</span>
             </button>
             <button class="nav-item" onclick="switchTab('ai-screen')">
                 <i class="fa-solid fa-robot"></i>
-                <span>الذكاء الاصطناعي</span>
+                <span class="nav-label-ai">الذكاء الاصطناعي</span>
             </button>
             <button class="nav-item" onclick="switchTab('profile-screen')">
                 <i class="fa-solid fa-user"></i>
-                <span>حسابي</span>
+                <span class="nav-label-profile">حسابي</span>
             </button>
             <button class="nav-item" onclick="switchTab('settings-screen')">
                 <i class="fa-solid fa-gear"></i>
-                <span>الإعدادات</span>
+                <span class="nav-label-settings">الإعدادات</span>
             </button>
         </nav>
 
     </div>
 
     <script>
-        // Store & State Management
+        /* Global App State */
         let appData = {
             user: null, // { name, phone, pass }
             system: null, // 'sec' or 'bac'
             track: null, // e.g. 'sci_bio', 'eng', etc.
+            tasks: [
+                { id: 1, title: 'حل اختبار الفيزياء التفاعلي', completed: true },
+                { id: 2, title: 'مراجعة الدرس الأول لغة عربية', completed: false },
+                { id: 3, title: 'مشاهدة فيديو الرياضيات / المحاضرة 3', completed: false }
+            ],
+            chatHistory: [],
+            settings: {
+                notifications: true,
+                language: 'ar'
+            },
+            notes: {}
         };
 
         const subjectsDatabase = {
@@ -924,16 +1079,41 @@
             }
         };
 
-        // Initialize Application
+        /* Universal Footer Generation Function */
+        function injectFooters() {
+            const footerHTML = `
+                <div class="app-footer">
+                    <p>━━━━━━━━━━━━━━━━━━</p>
+                    <p>Designed & Developed by</p>
+                    <p><span>ROMANY GARGES</span></p>
+                    <p>Version 1.0</p>
+                </div>
+            `;
+            const containers = [
+                'splash-footer-container', 'auth-footer-container', 'login-footer-container',
+                'reg-footer-container', 'sys-footer-container', 'track-footer-container',
+                'home-footer-container', 'subjects-footer-container', 'sd-footer-container',
+                'ai-footer-container', 'profile-footer-container', 'settings-footer-container'
+            ];
+
+            containers.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = footerHTML;
+            });
+        }
+
+        /* Initialize Application */
         window.addEventListener('DOMContentLoaded', () => {
+            injectFooters();
+            setupRippleEffects();
             loadFromStorage();
             setupDateDisplay();
-            initCountdown();
+            applyLanguageStyle();
 
-            // Splash Screen Delay
+            // Splash Screen Timer & Router Logic
             setTimeout(() => {
                 if (!appData.user) {
-                    showScreen('register-screen');
+                    showScreen('auth-choice-screen');
                 } else if (!appData.system) {
                     showScreen('system-screen');
                 } else if (!appData.track) {
@@ -941,26 +1121,28 @@
                     showScreen('track-screen');
                 } else {
                     renderDashboard();
+                    renderChatMessages();
                     showScreen('home-screen');
                     document.getElementById('bottom-nav').style.display = 'flex';
                 }
             }, 2000);
         });
 
-        // Navigation Engine
+        /* Navigation Engine */
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
 
-            // Handle Bottom Nav visibility
+            // Bottom Nav Visibility Rule
             const isMainApp = ['home-screen', 'subjects-screen', 'ai-screen', 'profile-screen', 'settings-screen'].includes(screenId);
             document.getElementById('bottom-nav').style.display = isMainApp ? 'flex' : 'none';
         }
 
         function switchTab(screenId) {
             showScreen(screenId);
-            
-            // Update Active Nav Item State
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => item.classList.remove('active'));
 
@@ -977,27 +1159,53 @@
             }
         }
 
-        // LocalStorage Logic
+        /* Storage Functions */
         function saveToStorage() {
-            localStorage.setItem('nexora_data', JSON.stringify(appData));
+            localStorage.setItem('nexora_app_data', JSON.stringify(appData));
         }
 
         function loadFromStorage() {
-            const data = localStorage.getItem('nexora_data');
-            if (data) {
-                appData = JSON.parse(data);
+            const saved = localStorage.getItem('nexora_app_data');
+            if (saved) {
+                try {
+                    appData = Object.assign(appData, JSON.parse(saved));
+                } catch(e) { console.error("Error parsing stored data", e); }
+            }
+            if (!appData.tasks) appData.tasks = [];
+            if (!appData.chatHistory) appData.chatHistory = [];
+        }
+
+        /* Authentication Flow */
+        function handleLogin(e) {
+            e.preventDefault();
+            const phone = document.getElementById('login-phone').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+
+            if (appData.user && appData.user.phone === phone && appData.user.pass === pass) {
+                triggerNotification('تم تسجيل الدخول', 'مرحبًا بعودتك مجددًا!');
+                if (!appData.system) showScreen('system-screen');
+                else if (!appData.track) { renderTracks(); showScreen('track-screen'); }
+                else { renderDashboard(); switchTab('home-screen'); }
+            } else if (appData.user && appData.user.phone === phone) {
+                triggerNotification('خطأ', 'كلمة المرور غير صحيحة!');
+            } else {
+                // Auto create or simulate login if first time
+                appData.user = { name: 'طالب NEXORA', phone: phone, pass: pass };
+                saveToStorage();
+                triggerNotification('نجاح', 'تم تسجيل الدخول بنجاح!');
+                showScreen('system-screen');
             }
         }
 
-        // User Flow Actions
         function handleRegister(e) {
             e.preventDefault();
-            const name = document.getElementById('reg-name').value;
-            const phone = document.getElementById('reg-phone').value;
-            const pass = document.getElementById('reg-pass').value;
+            const name = document.getElementById('reg-name').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
 
             appData.user = { name, phone, pass };
             saveToStorage();
+            triggerNotification('تم إنشاء الحساب', 'مرحبًا بك في NEXORA!');
             showScreen('system-screen');
         }
 
@@ -1048,29 +1256,40 @@
             saveToStorage();
             renderDashboard();
             switchTab('home-screen');
-            triggerNotification('أهلاً بك!', 'تم إعداد حسابك بنجاح.');
         }
 
-        // Dashboard & Render Logic
+        /* Dashboard & Content Rendering */
         function renderDashboard() {
             if (!appData.user) return;
 
-            // Header Setup
+            // User Info Display
             document.getElementById('dash-avatar').innerText = appData.user.name.charAt(0).toUpperCase();
-            document.getElementById('profile-avatar').innerText = appData.user.name.charAt(0).toUpperCase();
             document.getElementById('dash-welcome').innerText = `السلام عليكم يا ${appData.user.name.split(' ')[0]}`;
-            
-            // Profile Data Setup
+
+            // Profile Info Display
+            document.getElementById('profile-avatar').innerText = appData.user.name.charAt(0).toUpperCase();
             document.getElementById('profile-name').innerText = appData.user.name;
             document.getElementById('profile-phone').innerText = appData.user.phone;
-            document.getElementById('profile-system').innerText = appData.system === 'sec' ? 'الثانوية العامة' : 'البكالوريا المصرية';
-            
-            // Render Selected Subjects
-            const userSubjects = subjectsDatabase[appData.system][appData.track] || [];
-            
+            document.getElementById('edit-profile-name').value = appData.user.name;
+            document.getElementById('edit-profile-phone').value = appData.user.phone;
+
+            const systemNames = { 'sec': 'الثانوية العامة', 'bac': 'البكالوريا المصرية' };
+            const trackNames = {
+                'sci_bio': 'علمي علوم', 'sci_math': 'علمي رياضة', 'lit': 'أدبي',
+                'med': 'الطب وعلوم الحياة', 'eng': 'الهندسة وعلوم الحاسب', 'biz': 'الأعمال', 'arts': 'الآداب والفنون'
+            };
+
+            document.getElementById('profile-system-display').innerText = systemNames[appData.system] || 'غير محدد';
+            document.getElementById('profile-track-display').innerText = trackNames[appData.track] || 'غير محدد';
+
+            // Tasks Rendering
+            renderDailyTasks();
+
+            // Render Subjects
+            const userSubjects = (subjectsDatabase[appData.system] && subjectsDatabase[appData.system][appData.track]) || [];
             const homeContainer = document.getElementById('home-subjects-container');
             const allContainer = document.getElementById('all-subjects-container');
-            
+
             homeContainer.innerHTML = '';
             allContainer.innerHTML = '';
 
@@ -1089,8 +1308,188 @@
             });
         }
 
+        /* Tasks Management Engine */
+        function renderDailyTasks() {
+            const list = document.getElementById('daily-tasks-list');
+            list.innerHTML = '';
+
+            let completedCount = 0;
+            appData.tasks.forEach((task) => {
+                if (task.completed) completedCount++;
+
+                const item = document.createElement('div');
+                item.className = `task-item ${task.completed ? 'completed' : ''}`;
+                item.innerHTML = `
+                    <div class="task-left">
+                        <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
+                        <span style="font-size: 0.88rem;">${task.title}</span>
+                    </div>
+                    <i class="fa-solid fa-xmark text-muted" style="cursor:pointer; font-size: 0.85rem;" onclick="deleteTask(${task.id})"></i>
+                `;
+                list.appendChild(item);
+            });
+
+            document.getElementById('task-counter').innerText = `${completedCount} / ${appData.tasks.length} مكتمل`;
+        }
+
+        function addDailyTask() {
+            const input = document.getElementById('new-task-input');
+            const title = input.value.trim();
+            if (!title) return;
+
+            appData.tasks.push({ id: Date.now(), title: title, completed: false });
+            input.value = '';
+            saveToStorage();
+            renderDailyTasks();
+        }
+
+        function toggleTask(taskId) {
+            const task = appData.tasks.find(t => t.id === taskId);
+            if (task) {
+                task.completed = !task.completed;
+                saveToStorage();
+                renderDailyTasks();
+            }
+        }
+
+        function deleteTask(taskId) {
+            appData.tasks = appData.tasks.filter(t => t.id !== taskId);
+            saveToStorage();
+            renderDailyTasks();
+        }
+
+        /* AI Chat Logic */
+        function renderChatMessages() {
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML = '';
+
+            // Default Welcome Message if Empty
+            if (!appData.chatHistory || appData.chatHistory.length === 0) {
+                appData.chatHistory = [{
+                    sender: 'bot',
+                    text: 'مرحباً 👋\nأنا مساعد NEXORA الدراسي.\nكيف أستطيع مساعدتك اليوم؟'
+                }];
+                saveToStorage();
+            }
+
+            appData.chatHistory.forEach(msg => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${msg.sender}`;
+                msgDiv.innerText = msg.text;
+                chatMessages.appendChild(msgDiv);
+            });
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appData.chatHistory.push({ sender: 'user', text: text });
+            input.value = '';
+            renderChatMessages();
+
+            // Automated Dynamic Response
+            setTimeout(() => {
+                appData.chatHistory.push({
+                    sender: 'bot',
+                    text: 'سيتم ربط الذكاء الاصطناعي قريباً.'
+                });
+                saveToStorage();
+                renderChatMessages();
+            }, 600);
+        }
+
+        function clearChatHistory() {
+            appData.chatHistory = [];
+            saveToStorage();
+            renderChatMessages();
+            triggerNotification('المحادثة', 'تم مسح سجل المحادثة بنجاح.');
+        }
+
+        /* Profile & Settings Management */
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            const name = document.getElementById('edit-profile-name').value.trim();
+            const phone = document.getElementById('edit-profile-phone').value.trim();
+
+            if (appData.user) {
+                appData.user.name = name;
+                appData.user.phone = phone;
+                saveToStorage();
+                renderDashboard();
+                triggerNotification('الملف الشخصي', 'تم حفظ البيانات بنجاح!');
+            }
+        }
+
+        function resetTrackSetup() {
+            appData.system = null;
+            appData.track = null;
+            saveToStorage();
+            showScreen('system-screen');
+        }
+
+        function toggleNotificationsSetting() {
+            appData.settings.notifications = !appData.settings.notifications;
+            saveToStorage();
+            const badge = document.getElementById('notif-status-badge');
+            badge.innerText = appData.settings.notifications ? 'مُفعلة' : 'معطلة';
+            badge.className = appData.settings.notifications ? 'text-primary' : 'text-muted';
+            triggerNotification('الإشعارات', appData.settings.notifications ? 'تم تفعيل الإشعارات' : 'تم تعطيل الإشعارات');
+        }
+
+        function toggleLanguage() {
+            appData.settings.language = appData.settings.language === 'ar' ? 'en' : 'ar';
+            saveToStorage();
+            applyLanguageStyle();
+            triggerNotification('اللغة', appData.settings.language === 'ar' ? 'تم تغيير اللغة للغة العربية' : 'Language switched to English');
+        }
+
+        function applyLanguageStyle() {
+            const isAr = appData.settings.language === 'ar';
+            document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+            document.documentElement.lang = isAr ? 'ar' : 'en';
+
+            document.getElementById('lang-status-badge').innerText = isAr ? 'العربية' : 'English';
+            
+            // Adjust Bottom Nav Labels
+            document.querySelector('.nav-label-home').innerText = isAr ? 'الرئيسية' : 'Home';
+            document.querySelector('.nav-label-subjects').innerText = isAr ? 'المواد' : 'Subjects';
+            document.querySelector('.nav-label-ai').innerText = isAr ? 'الذكاء الاصطناعي' : 'AI Chat';
+            document.querySelector('.nav-label-profile').innerText = isAr ? 'حسابي' : 'Profile';
+            document.querySelector('.nav-label-settings').innerText = isAr ? 'الإعدادات' : 'Settings';
+        }
+
+        function showAboutApp() {
+            alert("تطبيق NEXORA - المصمم خصيصاً للتفوق الدراسي.\nالإصدار: 1.0 Pro\nتطوير والتصميم: ROMANY GARGES");
+        }
+
+        function confirmResetAllData() {
+            if (confirm("هل أنت تأكد من أنك تريد إعادة ضبط كافة البيانات والمحو؟")) {
+                localStorage.removeItem('nexora_app_data');
+                appData = { user: null, system: null, track: null, tasks: [], chatHistory: [], settings: { notifications: true, language: 'ar' } };
+                showScreen('auth-choice-screen');
+                triggerNotification('تم الإعادة', 'تم مسح كافة البيانات وإعادة التطبيق للحالة الأولى.');
+            }
+        }
+
+        function logout() {
+            appData.user = null;
+            saveToStorage();
+            showScreen('auth-choice-screen');
+            triggerNotification('تسجيل الخروج', 'تم تسجيل الخروج بنجاح.');
+        }
+
+        /* Subject Details Interactivity */
         function openSubject(subjectName) {
             document.getElementById('sd-title').innerText = subjectName;
+            
+            // Load Notes if saved
+            const noteInput = document.getElementById('subject-notes-input');
+            noteInput.value = (appData.notes && appData.notes[subjectName]) || '';
+            
             showScreen('subject-detail-screen');
         }
 
@@ -1101,61 +1500,18 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Interactive AI Chat Simulation
-        function sendChatMessage() {
-            const input = document.getElementById('chat-input');
-            const messageText = input.value.trim();
-            if (!messageText) return;
-
-            const chatMessages = document.getElementById('chat-messages');
-
-            // User Message
-            const userMsgDiv = document.createElement('div');
-            userMsgDiv.className = 'message user';
-            userMsgDiv.innerText = messageText;
-            chatMessages.appendChild(userMsgDiv);
-
-            input.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Simulated AI Response
-            setTimeout(() => {
-                const botMsgDiv = document.createElement('div');
-                botMsgDiv.className = 'message bot';
-                
-                // Smart Responses
-                if(messageText.includes('فيزياء') || messageText.includes('مسألة')) {
-                    botMsgDiv.innerText = "بناءً على سؤالك: قانون أوم ينص على أن $V = I \\times R$. يمكنك مراجعة شيت القوانين في قسم الفيزياء لتفاصيل إضافية!";
-                } else if(messageText.includes('جدول') || messageText.includes('مذاكرة')) {
-                    botMsgDiv.innerText = "أفضل طريقة للمذاكرة الآن هي تقسيم الوقت بأسلوب Pomodoro: 25 دقيقة تركيز يعقبها 5 دقائق استراحة.";
-                } else {
-                    botMsgDiv.innerText = `سؤال ممتاز بخصوص "${messageText}". أنا هنا لدعمك وتسهيل هذا المفهوم في خطتك الدراسية!`;
-                }
-
-                chatMessages.appendChild(botMsgDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 800);
+        function saveSubjectNotes() {
+            const subjectName = document.getElementById('sd-title').innerText;
+            const text = document.getElementById('subject-notes-input').value;
+            if (!appData.notes) appData.notes = {};
+            appData.notes[subjectName] = text;
+            saveToStorage();
         }
 
-        // Countdown Timer Engine
-        function initCountdown() {
-            const examDate = new Date('June 10, 2026 09:00:00').getTime();
-
-            setInterval(() => {
-                const now = new Date().getTime();
-                const distance = examDate - now;
-
-                if (distance > 0) {
-                    document.getElementById('cd-days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    document.getElementById('cd-hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    document.getElementById('cd-mins').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    document.getElementById('cd-secs').innerText = Math.floor((distance % (1000 * 60)) / 1000);
-                }
-            }, 1000);
-        }
-
-        // Toast Notification System
+        /* Toast Notifications Engine */
         function triggerNotification(title, body) {
+            if (!appData.settings.notifications) return;
+
             const toast = document.getElementById('toast');
             document.getElementById('toast-title').innerText = title;
             document.getElementById('toast-body').innerText = body;
@@ -1166,24 +1522,26 @@
             }, 3000);
         }
 
-        // Helper Utility Functions
+        /* UI Helpers */
         function setupDateDisplay() {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const today = new Date();
             document.getElementById('dash-date').innerText = today.toLocaleDateString('ar-EG', options);
         }
 
-        function resetSetup() {
-            appData.system = null;
-            appData.track = null;
-            saveToStorage();
-            showScreen('system-screen');
-        }
-
-        function logout() {
-            localStorage.removeItem('nexora_data');
-            appData = { user: null, system: null, track: null };
-            showScreen('register-screen');
+        function setupRippleEffects() {
+            document.addEventListener('click', function (e) {
+                const target = e.target.closest('.btn');
+                if (target) {
+                    const rect = target.getBoundingClientRect();
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple-effect';
+                    ripple.style.left = `${e.clientX - rect.left}px`;
+                    ripple.style.top = `${e.clientY - rect.top}px`;
+                    target.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                }
+            });
         }
     </script>
 </body>
