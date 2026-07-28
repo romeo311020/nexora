@@ -12,10 +12,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* ==================== الألوان والتنسيقات الأساسية ==================== */
+    /* ==================== المتغيرات والتنسيقات الأساسية ==================== */
     :root {
       --bg-dark: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-bg: rgba(30, 41, 59, 0.65);
       --card-border: rgba(255, 255, 255, 0.08);
       --primary-blue: #2563eb;
       --accent-green: #22c55e;
@@ -35,33 +35,55 @@
     }
 
     body {
-      background-color: var(--bg-dark);
+      background-color: #070b14;
       color: var(--text-white);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.15), transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.1), transparent 50%);
     }
 
-    /* حاوي التطبيق لمحاكاة شاشة الموبايل أو العرض الكامل */
+    /* ==================== الحاوية الرئيسية للتطبيق ==================== */
     .app-container {
       width: 100%;
       max-width: 430px;
       height: 100vh;
       max-height: 932px;
-      background: rgba(15, 23, 42, 0.85);
+      background: radial-gradient(circle at 50% 10%, #1e293b 0%, #0f172a 60%, #070b19 100%);
       border: 1px solid var(--card-border);
       border-radius: 36px;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .app-container::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: -100px;
+      width: 300px;
+      height: 300px;
+      background: rgba(37, 99, 235, 0.25);
+      filter: blur(90px);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .app-container::after {
+      content: '';
+      position: absolute;
+      bottom: -50px;
+      right: -50px;
+      width: 250px;
+      height: 250px;
+      background: rgba(168, 85, 247, 0.2);
+      filter: blur(80px);
+      border-radius: 50%;
+      pointer-events: none;
     }
 
     @media (max-width: 480px) {
@@ -71,7 +93,7 @@
       }
     }
 
-    /* ==================== الشاشات والإخفاء/الإظهار ==================== */
+    /* ==================== الشاشات والانتقالات ==================== */
     .screen {
       display: none;
       flex-direction: column;
@@ -79,8 +101,9 @@
       width: 100%;
       overflow-y: auto;
       padding: 20px;
-      padding-bottom: 90px; /* مساحة للـ Bottom Nav */
-      animation: fadeIn 0.3s ease-in-out;
+      padding-bottom: 20px;
+      z-index: 2;
+      animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .screen.active {
@@ -88,69 +111,89 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* ==================== 1. شاشة البداية وتسجيل الدخول ==================== */
+    .screen-content {
+      flex: 1;
+    }
+
+    /* ==================== حقوق المطور الثابتة ==================== */
+    .global-footer {
+      margin-top: 30px;
+      margin-bottom: 80px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .footer-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-tag i {
+      color: #3b82f6;
+      font-size: 12px;
+    }
+
+    .footer-dev-name {
+      color: var(--primary-blue);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+    }
+
+    .footer-info {
+      font-size: 10px;
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    /* ==================== 1. شاشة الدخول والبوابة ==================== */
     #auth-screen {
       justify-content: space-between;
       align-items: center;
       text-align: center;
-      padding-bottom: 30px;
-      background: radial-gradient(circle at 50% 30%, rgba(37, 99, 235, 0.25), transparent 70%);
     }
 
     .logo-box {
-      margin-top: 60px;
+      margin-top: 50px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     .logo-icon {
-      width: 100px;
-      height: 100px;
+      width: 95px;
+      height: 95px;
       background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      border-radius: 28px;
+      border-radius: 26px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 56px;
+      font-size: 52px;
       font-weight: 800;
       color: white;
       box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
       margin-bottom: 20px;
     }
 
-    .logo-title {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: 3px;
-      margin-bottom: 8px;
-    }
+    .logo-title { font-size: 32px; font-weight: 800; letter-spacing: 3px; }
+    .logo-subtitle { font-size: 20px; font-weight: 600; margin-top: 4px; }
+    .logo-desc { color: var(--text-muted); font-size: 14px; margin-top: 2px; }
 
-    .logo-subtitle {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .logo-desc {
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-
-    .auth-buttons {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
+    .auth-buttons { width: 100%; display: flex; flex-direction: column; gap: 12px; }
 
     .btn-primary {
-      background: var(--primary-blue);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: white;
       border: none;
       padding: 16px;
@@ -163,10 +206,10 @@
       align-items: center;
       gap: 10px;
       box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
-      transition: 0.2s;
+      transition: all 0.2s;
     }
 
-    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:active { transform: scale(0.97); }
 
     .btn-secondary {
       background: rgba(255, 255, 255, 0.05);
@@ -182,191 +225,35 @@
       align-items: center;
       gap: 10px;
       backdrop-filter: blur(10px);
+      transition: all 0.2s;
     }
 
-    .developer-tag {
-      font-size: 11px;
-      color: var(--text-muted);
+    .btn-secondary:active { transform: scale(0.97); }
+
+    /* ==================== العناصر المشتركة للبطاقات ==================== */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 18px;
+      backdrop-filter: blur(15px);
+      margin-bottom: 14px;
+      transition: all 0.25s ease;
     }
 
-    .developer-name {
-      color: var(--primary-blue);
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-top: 2px;
+    .glass-card:hover {
+      border-color: rgba(37, 99, 235, 0.4);
+      transform: translateY(-2px);
     }
 
-    /* ==================== 2. الصفحة الرئيسية ==================== */
     .header-user {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
-      margin-top: 10px;
     }
 
-    .user-info h2 {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .user-info p {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .user-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 2px solid var(--primary-blue);
-      object-fit: cover;
-    }
-
-    /* البطاقة التحفيزية */
-    .quote-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 18px;
-      position: relative;
-      backdrop-filter: blur(10px);
-      margin-bottom: 16px;
-    }
-
-    .quote-card p {
-      font-size: 15px;
-      font-weight: 600;
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    /* الشبكة للإحصائيات */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 14px;
-      backdrop-filter: blur(10px);
-    }
-
-    .stat-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .stat-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-    }
-
-    .stat-value {
-      font-size: 22px;
-      font-weight: 800;
-    }
-
-    /* الخطة اليومية */
-    .daily-plan {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 16px;
-      backdrop-filter: blur(10px);
-    }
-
-    .plan-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .plan-content {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .progress-circle {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: conic-gradient(var(--primary-blue) 60%, rgba(255,255,255,0.1) 0);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .progress-circle::before {
-      content: '';
-      position: absolute;
-      width: 54px;
-      height: 54px;
-      background: #141e33;
-      border-radius: 50%;
-    }
-
-    .progress-text {
-      position: relative;
-      font-weight: 800;
-      font-size: 14px;
-    }
-
-    .task-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex: 1;
-    }
-
-    .task-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .task-item.done {
-      color: var(--text-white);
-    }
-
-    .task-item i {
-      font-size: 14px;
-    }
-
-    /* ==================== 3. شاشة المواد ==================== */
-    .section-title {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 16px;
-      margin-top: 10px;
-    }
-
-    .subjects-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
 
     .subject-card {
       background: var(--card-bg);
@@ -376,15 +263,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(15px);
+      margin-bottom: 12px;
       cursor: pointer;
+      transition: 0.2s;
     }
 
-    .subject-info {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+    .subject-card:active { transform: scale(0.98); }
 
     .subject-icon {
       width: 46px;
@@ -397,42 +282,171 @@
       color: white;
     }
 
-    .subject-details h3 {
-      font-size: 16px;
-      font-weight: 700;
+    /* ==================== 2. تصميم صفحة المطور الاحترافية ==================== */
+    .dev-header-card {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(168, 85, 247, 0.15));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      padding: 24px 18px;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      margin-bottom: 20px;
+      position: relative;
     }
 
-    .subject-details p {
+    .dev-avatar-wrapper {
+      position: relative;
+      width: 105px;
+      height: 105px;
+      margin: 0 auto 16px;
+    }
+
+    .dev-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary-blue);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+    }
+
+    .dev-badge {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: var(--primary-blue);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      border: 2px solid var(--bg-dark);
+    }
+
+    .dev-name-ar { font-size: 22px; font-weight: 800; color: #ffffff; }
+    .dev-name-en { font-size: 13px; font-weight: 700; color: var(--primary-blue); letter-spacing: 2px; margin-bottom: 10px; }
+
+    .dev-roles {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .role-chip {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
       font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
+      font-weight: 600;
+      color: #e2e8f0;
     }
 
-    .progress-bar-container {
-      width: 80px;
+    .dev-bio {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      background: rgba(15, 23, 42, 0.5);
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* شبكة روابط التواصل */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .social-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 12px 8px;
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: white;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
     }
 
-    .progress-bar-container span {
-      font-size: 11px;
+    .social-card:hover {
+      background: rgba(37, 99, 235, 0.15);
+      border-color: var(--primary-blue);
+      transform: translateY(-3px);
+    }
+
+    .social-card i { font-size: 22px; }
+    .social-card span { font-size: 11px; font-weight: 600; }
+
+    /* شبكة المهارات */
+    .skills-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .skill-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 12px;
       font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(10px);
     }
 
-    .progress-bar {
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      overflow: hidden;
+    .skill-card i { color: var(--primary-blue); }
+
+    /* قائمة المشاريع */
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(10px);
     }
 
-    .progress-fill {
-      height: 100%;
-      border-radius: 10px;
+    .project-info h4 { font-size: 15px; font-weight: 700; }
+    .project-info p { font-size: 11px; color: var(--text-muted); }
+
+    /* إحصائيات المطور */
+    .dev-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
     }
+
+    .dev-stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .dev-stat-num { font-size: 22px; font-weight: 800; color: var(--primary-blue); }
+    .dev-stat-label { font-size: 11px; color: var(--text-muted); }
 
     /* ==================== شريط التنقل السفلي ==================== */
     .bottom-nav {
@@ -441,13 +455,12 @@
       left: 0;
       right: 0;
       height: 75px;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.88);
       border-top: 1px solid var(--card-border);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(25px);
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 0 10px;
       z-index: 100;
     }
 
@@ -458,18 +471,24 @@
       gap: 4px;
       color: var(--text-muted);
       font-size: 10px;
-      text-decoration: none;
       cursor: pointer;
       transition: 0.2s;
     }
 
-    .nav-item i {
-      font-size: 18px;
+    .nav-item.active { color: var(--primary-blue); }
+    .nav-item i { font-size: 18px; }
+
+    /* عناوين الأقسام */
+    .section-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .nav-item.active {
-      color: var(--primary-blue);
-    }
+    .section-title i { color: var(--primary-blue); }
   </style>
 </head>
 <body>
@@ -477,263 +496,277 @@
   <div class="app-container">
 
     <div id="auth-screen" class="screen active">
-      <div class="logo-box">
-        <div class="logo-icon">N</div>
-        <div class="logo-title">NEXORA</div>
-        <div class="logo-subtitle">مرحبًا بعودتك 👋</div>
-        <div class="logo-desc">رفيقك اليومي للتفوق.</div>
+      <div class="screen-content">
+        <div class="logo-box">
+          <div class="logo-icon">N</div>
+          <div class="logo-title">NEXORA</div>
+          <div class="logo-subtitle">مرحبًا بعودتك 👋</div>
+          <div class="logo-desc">رفيقك اليومي للتفوق.</div>
+        </div>
+
+        <div class="auth-buttons" style="margin-top: 40px;">
+          <button class="btn-primary" onclick="navigateTo('home-screen')">
+            تسجيل الدخول <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <button class="btn-secondary" onclick="navigateTo('developer-screen')">
+            عن المطور ROMANY GARGES <i class="fa-solid fa-code"></i>
+          </button>
+        </div>
       </div>
 
-      <div class="auth-buttons">
-        <button class="btn-primary" onclick="navigateTo('home-screen')">
-          تسجيل الدخول <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <button class="btn-secondary" onclick="alert('صفحة إنشاء حساب جديد قادمة')">
-          إنشاء حساب جديد <i class="fa-solid fa-user-plus"></i>
-        </button>
-      </div>
-
-      <div>
-        <div class="developer-tag">Designed & Developed by</div>
-        <div class="developer-name">ROMANY GARGES</div>
-        <div class="developer-tag" style="margin-top: 4px;">Version 1.0.0</div>
+      <div class="global-footer">
+        <div class="footer-tag"><i class="fa-solid fa-code"></i> 💙 Designed & Developed by</div>
+        <div class="footer-dev-name">ROMANY GARGES</div>
+        <div class="footer-info">Version 1.0.0 • © 2026 All Rights Reserved</div>
       </div>
     </div>
 
     <div id="home-screen" class="screen">
-      <div class="header-user">
-        <div class="user-info">
-          <h2>السلام عليكم يا روماني 👋</h2>
-          <p>الأحد، 27 يوليو 2026</p>
-        </div>
-        <img src="https://i.pravatar.cc/100?img=12" alt="صورة الطالب" class="user-avatar">
-      </div>
-
-      <div class="quote-card">
-        <p>“ لا تنتظر الفرصة،<br>بل اصنعها لنفسك. ”</p>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-header">
-            <div class="stat-icon" style="background: rgba(37,99,235,0.2); color: var(--primary-blue);">
-              <i class="fa-regular fa-clock"></i>
-            </div>
-            ساعات المذاكرة
+      <div class="screen-content">
+        <div class="header-user">
+          <div>
+            <h2 style="font-size: 18px;">السلام عليكم يا روماني 👋</h2>
+            <p style="font-size: 12px; color: var(--text-muted);">الأحد، 27 يوليو 2026</p>
           </div>
-          <div class="stat-value">5.6 <span style="font-size: 12px; font-weight: 400;">ساعة</span></div>
+          <img src="https://i.pravatar.cc/100?img=12" alt="Avatar" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--primary-blue);" onclick="navigateTo('developer-screen')">
         </div>
 
-        <div class="stat-card">
-          <div class="stat-header">
-            <div class="stat-icon" style="background: rgba(34,197,94,0.2); color: var(--accent-green);">
-              <i class="fa-regular fa-circle-check"></i>
-            </div>
-            المهام المنجزة
-          </div>
-          <div class="stat-value">12 <span style="font-size: 11px; color: var(--text-muted);">من 18 مهمة</span></div>
+        <div class="glass-card">
+          <p style="text-align: center; font-weight: 600; font-size: 14px;">“ لا تنتظر الفرصة، بل اصنعها لنفسك. ”</p>
         </div>
 
-        <div class="stat-card">
-          <div class="stat-header">
-            <div class="stat-icon" style="background: rgba(168,85,247,0.2); color: var(--accent-purple);">
-              <i class="fa-solid fa-book-open"></i>
-            </div>
-            آخر مادة
+        <div class="stats-grid">
+          <div class="glass-card" style="margin: 0;">
+            <div style="font-size: 11px; color: var(--text-muted);"><i class="fa-regular fa-clock" style="color: var(--primary-blue);"></i> ساعات المذاكرة</div>
+            <div style="font-size: 22px; font-weight: 800; margin-top: 4px;">5.6 <span style="font-size: 11px;">ساعة</span></div>
           </div>
-          <div style="font-size: 16px; font-weight: 700;">الرياضيات</div>
-          <div style="font-size: 10px; color: var(--text-muted);">منذ ساعتين</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <div class="stat-icon" style="background: rgba(245,158,11,0.2); color: var(--accent-yellow);">
-              <i class="fa-solid fa-trophy"></i>
-            </div>
-            آخر امتحان
+          <div class="glass-card" style="margin: 0;">
+            <div style="font-size: 11px; color: var(--text-muted);"><i class="fa-regular fa-circle-check" style="color: var(--accent-green);"></i> المهام المنجزة</div>
+            <div style="font-size: 22px; font-weight: 800; margin-top: 4px;">12 <span style="font-size: 10px; color: var(--text-muted);">من 18</span></div>
           </div>
-          <div style="font-size: 16px; font-weight: 700;">فيزياء</div>
-          <div style="font-size: 14px; font-weight: 800; color: var(--accent-green);">85%</div>
         </div>
       </div>
 
-      <div class="daily-plan">
-        <div class="plan-header">
-          <i class="fa-regular fa-calendar-check" style="color: var(--primary-blue);"></i>
-          الخطة اليومية
-        </div>
-        <div class="plan-content">
-          <div class="progress-circle">
-            <div class="progress-text">60%</div>
-          </div>
-          <div class="task-list">
-            <div class="task-item done">
-              <i class="fa-solid fa-circle-check" style="color: var(--accent-green);"></i>
-              <span>مراجعة الرياضيات</span>
-            </div>
-            <div class="task-item">
-              <i class="fa-regular fa-circle"></i>
-              <span>حل أسئلة على الفيزياء</span>
-            </div>
-            <div class="task-item">
-              <i class="fa-regular fa-circle"></i>
-              <span>قراءة في الكيمياء</span>
-            </div>
-          </div>
-        </div>
+      <div class="global-footer">
+        <div class="footer-tag"><i class="fa-solid fa-code"></i> 💙 Designed & Developed by</div>
+        <div class="footer-dev-name">ROMANY GARGES</div>
+        <div class="footer-info">Version 1.0.0 • © 2026 All Rights Reserved</div>
       </div>
     </div>
 
     <div id="subjects-screen" class="screen">
-      <div class="section-title">المواد الدراسية</div>
-      
-      <div class="subjects-list">
+      <div class="screen-content">
+        <h2 style="margin-bottom: 16px;">المواد الدراسية</h2>
+        
         <div class="subject-card">
-          <div class="subject-info">
-            <div class="subject-icon" style="background: var(--primary-blue);">
-              <i class="fa-solid fa-square-root-variable"></i>
-            </div>
-            <div class="subject-details">
-              <h3>الرياضيات</h3>
-              <p>الجبر - التفاضل - التكامل</p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="subject-icon" style="background: var(--primary-blue);"><i class="fa-solid fa-square-root-variable"></i></div>
+            <div>
+              <h3 style="font-size: 15px;">الرياضيات</h3>
+              <p style="font-size: 11px; color: var(--text-muted);">الجبر - التفاضل - التكامل</p>
             </div>
           </div>
-          <div class="progress-bar-container">
-            <span>76%</span>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 76%; background: var(--primary-blue);"></div>
-            </div>
-          </div>
+          <span style="font-size: 12px; font-weight: 700; color: var(--primary-blue);">76%</span>
         </div>
 
         <div class="subject-card">
-          <div class="subject-info">
-            <div class="subject-icon" style="background: var(--accent-green);">
-              <i class="fa-solid fa-atom"></i>
-            </div>
-            <div class="subject-details">
-              <h3>الفيزياء</h3>
-              <p>الميكانيكا - الكهرباء - الموجات</p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="subject-icon" style="background: var(--accent-green);"><i class="fa-solid fa-atom"></i></div>
+            <div>
+              <h3 style="font-size: 15px;">الفيزياء</h3>
+              <p style="font-size: 11px; color: var(--text-muted);">الميكانيكا - الكهرباء</p>
             </div>
           </div>
-          <div class="progress-bar-container">
-            <span>65%</span>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 65%; background: var(--accent-green);"></div>
-            </div>
-          </div>
+          <span style="font-size: 12px; font-weight: 700; color: var(--accent-green);">65%</span>
         </div>
+      </div>
 
-        <div class="subject-card">
-          <div class="subject-info">
-            <div class="subject-icon" style="background: var(--accent-yellow);">
-              <i class="fa-solid fa-flask"></i>
-            </div>
-            <div class="subject-details">
-              <h3>الكيمياء</h3>
-              <p>الكيمياء العضوية - التحليلية</p>
-            </div>
-          </div>
-          <div class="progress-bar-container">
-            <span>40%</span>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 40%; background: var(--accent-yellow);"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="subject-card">
-          <div class="subject-info">
-            <div class="subject-icon" style="background: var(--accent-purple);">
-              <i class="fa-solid fa-dna"></i>
-            </div>
-            <div class="subject-details">
-              <h3>الأحياء</h3>
-              <p>الخلية - الوراثة - المناعة</p>
-            </div>
-          </div>
-          <div class="progress-bar-container">
-            <span>55%</span>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 55%; background: var(--accent-purple);"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="subject-card">
-          <div class="subject-info">
-            <div class="subject-icon" style="background: var(--accent-pink);">
-              <i class="fa-solid fa-font"></i>
-            </div>
-            <div class="subject-details">
-              <h3>اللغة الإنجليزية</h3>
-              <p>قواعد - مفردات - قراءة</p>
-            </div>
-          </div>
-          <div class="progress-bar-container">
-            <span>70%</span>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 70%; background: var(--accent-pink);"></div>
-            </div>
-          </div>
-        </div>
+      <div class="global-footer">
+        <div class="footer-tag"><i class="fa-solid fa-code"></i> 💙 Designed & Developed by</div>
+        <div class="footer-dev-name">ROMANY GARGES</div>
+        <div class="footer-info">Version 1.0.0 • © 2026 All Rights Reserved</div>
       </div>
     </div>
 
     <div id="ai-screen" class="screen">
-      <div class="section-title">الذكاء الاصطناعي</div>
-      <p style="color: var(--text-muted); text-align: center; margin-top: 50px;">سيتم تفعيل الذكاء الاصطناعي قريباً.</p>
+      <div class="screen-content">
+        <h2 style="margin-bottom: 20px;">الذكاء الاصطناعي</h2>
+        <div class="glass-card" style="text-align: center; padding: 40px 20px;">
+          <i class="fa-solid fa-robot" style="font-size: 48px; color: var(--primary-blue); margin-bottom: 16px;"></i>
+          <h3 style="font-size: 16px; margin-bottom: 8px;">مساعد NEXORA الذكي</h3>
+          <p style="font-size: 12px; color: var(--text-muted);">سيتم تفعيل الذكاء الاصطناعي قريباً لمساعدتك في شرح المواد والتلاخيص.</p>
+        </div>
+      </div>
+
+      <div class="global-footer">
+        <div class="footer-tag"><i class="fa-solid fa-code"></i> 💙 Designed & Developed by</div>
+        <div class="footer-dev-name">ROMANY GARGES</div>
+        <div class="footer-info">Version 1.0.0 • © 2026 All Rights Reserved</div>
+      </div>
     </div>
 
-    <div id="profile-screen" class="screen">
-      <div class="section-title">الملف الشخصي</div>
-      <p style="color: var(--text-muted); text-align: center; margin-top: 50px;">بيانات روماني جرجس</p>
+    <div id="developer-screen" class="screen">
+      <div class="screen-content">
+        
+        <div class="dev-header-card">
+          <div class="dev-avatar-wrapper">
+            <img src="https://i.pravatar.cc/150?img=68" alt="ROMANY GARGES" class="dev-avatar">
+            <div class="dev-badge"><i class="fa-solid fa-check"></i></div>
+          </div>
+          <div class="dev-name-ar">روماني جرجس</div>
+          <div class="dev-name-en">ROMANY GARGES</div>
+          
+          <div class="dev-roles">
+            <span class="role-chip">مطور تطبيقات ومواقع</span>
+            <span class="role-chip">UI/UX Designer</span>
+            <span class="role-chip">Full Stack Developer</span>
+          </div>
+
+          <div class="dev-bio">
+            "مرحبًا، أنا روماني جرجس، مطور ومصمم تطبيق NEXORA. هدفي هو تطوير أدوات تعليمية احترافية تساعد الطلاب على تنظيم مذاكرتهم وتحقيق أفضل النتائج."
+          </div>
+        </div>
+
+        <div class="dev-stats-grid">
+          <div class="dev-stat-box">
+            <div class="dev-stat-num">12+</div>
+            <div class="dev-stat-label">عدد المشاريع</div>
+          </div>
+          <div class="dev-stat-box">
+            <div class="dev-stat-num">5K+</div>
+            <div class="dev-stat-label">المستخدمين</div>
+          </div>
+          <div class="dev-stat-box">
+            <div class="dev-stat-num">+4</div>
+            <div class="dev-stat-label">سنوات الخبرة</div>
+          </div>
+          <div class="dev-stat-box">
+            <div class="dev-stat-num">2026</div>
+            <div class="dev-stat-label">آخر تحديث</div>
+          </div>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-paper-plane"></i> وسائل التواصل</div>
+        <div class="social-grid">
+          <a id="link-github" target="_blank" class="social-card"><i class="fa-brands fa-github" style="color: #fff;"></i><span>GitHub</span></a>
+          <a id="link-portfolio" target="_blank" class="social-card"><i class="fa-solid fa-globe" style="color: #60a5fa;"></i><span>Portfolio</span></a>
+          <a id="link-email" target="_blank" class="social-card"><i class="fa-solid fa-envelope" style="color: #ef4444;"></i><span>Email</span></a>
+          <a id="link-whatsapp" target="_blank" class="social-card"><i class="fa-brands fa-whatsapp" style="color: #22c55e;"></i><span>WhatsApp</span></a>
+          <a id="link-facebook" target="_blank" class="social-card"><i class="fa-brands fa-facebook" style="color: #3b82f6;"></i><span>Facebook</span></a>
+          <a id="link-instagram" target="_blank" class="social-card"><i class="fa-brands fa-instagram" style="color: #ec4899;"></i><span>Instagram</span></a>
+          <a id="link-linkedin" target="_blank" class="social-card"><i class="fa-brands fa-linkedin" style="color: #0284c7;"></i><span>LinkedIn</span></a>
+          <a id="link-telegram" target="_blank" class="social-card"><i class="fa-brands fa-telegram" style="color: #38bdf8;"></i><span>Telegram</span></a>
+          <a id="link-website" target="_blank" class="social-card"><i class="fa-solid fa-laptop-code" style="color: #a855f7;"></i><span>Website</span></a>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-wand-magic-sparkles"></i> المهارات التقنية</div>
+        <div class="skills-flex">
+          <div class="skill-card"><i class="fa-brands fa-flutter"></i> Flutter</div>
+          <div class="skill-card"><i class="fa-brands fa-react"></i> React</div>
+          <div class="skill-card"><i class="fa-brands fa-html5"></i> HTML5</div>
+          <div class="skill-card"><i class="fa-brands fa-css3-alt"></i> CSS3</div>
+          <div class="skill-card"><i class="fa-brands fa-js"></i> JavaScript</div>
+          <div class="skill-card"><i class="fa-solid fa-code"></i> TypeScript</div>
+          <div class="skill-card"><i class="fa-solid fa-fire"></i> Firebase</div>
+          <div class="skill-card"><i class="fa-solid fa-database"></i> Supabase</div>
+          <div class="skill-card"><i class="fa-brands fa-node-js"></i> Node.js</div>
+          <div class="skill-card"><i class="fa-solid fa-pen-nib"></i> UI/UX Design</div>
+          <div class="skill-card"><i class="fa-solid fa-palette"></i> Graphic Design</div>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-diagram-project"></i> المشاريع البارزة</div>
+        <div class="project-card">
+          <div class="project-info">
+            <h4>NEXORA</h4>
+            <p>تطبيق منصة تعليمية احترافية لطلاب الثانوية</p>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--primary-blue);"></i>
+        </div>
+        <div class="project-card">
+          <div class="project-info">
+            <h4>ROMEO LIVE TV</h4>
+            <p>تطبيق منصة بث مباشر وقنوات تفاعلية</p>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--primary-blue);"></i>
+        </div>
+
+      </div>
+
+      <div class="global-footer">
+        <div class="footer-tag"><i class="fa-solid fa-code"></i> 💙 Designed & Developed by</div>
+        <div class="footer-dev-name">ROMANY GARGES</div>
+        <div class="footer-info">Version 1.0.0 • © 2026 All Rights Reserved</div>
+      </div>
     </div>
 
     <div id="settings-screen" class="screen">
-      <div class="section-title">الإعدادات</div>
-      <p style="color: var(--text-muted); text-align: center; margin-top: 50px;">إعدادات التطبيق والوضع الليلي</p>
+      <div class="screen-content">
+        <h2 style="margin-bottom: 20px;">الإعدادات</h2>
+        
+        <div class="subject-card" onclick="navigateTo('developer-screen')">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="subject-icon" style="background: rgba(37,99,235,0.2); color: var(--primary-blue);">
+              <i class="fa-solid fa-code"></i>
+            </div>
+            <div>
+              <h3 style="font-size: 15px;">عن المطور</h3>
+              <p style="font-size: 11px; color: var(--text-muted);">Romany Garges - Developer Profile</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-left" style="font-size: 12px; color: var(--text-muted);"></i>
+        </div>
+      </div>
+
+      <div class="global-footer">
+        <div class="footer-tag"><i class="fa-solid fa-code"></i> 💙 Designed & Developed by</div>
+        <div class="footer-dev-name">ROMANY GARGES</div>
+        <div class="footer-info">Version 1.0.0 • © 2026 All Rights Reserved</div>
+      </div>
     </div>
 
     <nav class="bottom-nav" id="bottom-nav" style="display: none;">
-      <a class="nav-item active" onclick="navigateTo('home-screen')">
-        <i class="fa-solid fa-house"></i>
-        <span>الرئيسية</span>
-      </a>
-      <a class="nav-item" onclick="navigateTo('subjects-screen')">
-        <i class="fa-solid fa-book"></i>
-        <span>المواد</span>
-      </a>
-      <a class="nav-item" onclick="navigateTo('ai-screen')">
-        <i class="fa-solid fa-robot"></i>
-        <span>الذكاء الاصطناعي</span>
-      </a>
-      <a class="nav-item" onclick="navigateTo('profile-screen')">
-        <i class="fa-solid fa-user"></i>
-        <span>الحساب</span>
-      </a>
-      <a class="nav-item" onclick="navigateTo('settings-screen')">
-        <i class="fa-solid fa-gear"></i>
-        <span>الإعدادات</span>
-      </a>
+      <div class="nav-item active" onclick="navigateTo('home-screen')"><i class="fa-solid fa-house"></i><span>الرئيسية</span></div>
+      <div class="nav-item" onclick="navigateTo('subjects-screen')"><i class="fa-solid fa-book"></i><span>المواد</span></div>
+      <div class="nav-item" onclick="navigateTo('ai-screen')"><i class="fa-solid fa-robot"></i><span>الذكاء الاصطناعي</span></div>
+      <div class="nav-item" onclick="navigateTo('developer-screen')"><i class="fa-solid fa-code"></i><span>المطور</span></div>
+      <div class="nav-item" onclick="navigateTo('settings-screen')"><i class="fa-solid fa-gear"></i><span>الإعدادات</span></div>
     </nav>
 
   </div>
 
   <script>
+    // 🔗 متغيرات روابط المطور (يمكنك تعديلها في أي وقت بسهولة هنا)
+    const DEV_SOCIAL_LINKS = {
+      github: "https://github.com/",
+      portfolio: "https://romanygarges.com",
+      email: "mailto:romany@example.com",
+      whatsapp: "https://wa.me/201000000000",
+      facebook: "https://facebook.com/",
+      instagram: "https://instagram.com/",
+      linkedin: "https://linkedin.com/in/",
+      telegram: "https://t.me/",
+      website: "https://romanygarges.com"
+    };
+
+    // ربط الروابط فور تحميل الصفحة
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById('link-github').href = DEV_SOCIAL_LINKS.github;
+      document.getElementById('link-portfolio').href = DEV_SOCIAL_LINKS.portfolio;
+      document.getElementById('link-email').href = DEV_SOCIAL_LINKS.email;
+      document.getElementById('link-whatsapp').href = DEV_SOCIAL_LINKS.whatsapp;
+      document.getElementById('link-facebook').href = DEV_SOCIAL_LINKS.facebook;
+      document.getElementById('link-instagram').href = DEV_SOCIAL_LINKS.instagram;
+      document.getElementById('link-linkedin').href = DEV_SOCIAL_LINKS.linkedin;
+      document.getElementById('link-telegram').href = DEV_SOCIAL_LINKS.telegram;
+      document.getElementById('link-website').href = DEV_SOCIAL_LINKS.website;
+    });
+
+    // دالة التنقل بين الشاشات
     function navigateTo(screenId) {
-      // إخفاء جميع الشاشات
-      document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-      });
-
-      // إظهار الشاشة المطلوبة
+      document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
       const targetScreen = document.getElementById(screenId);
-      if (targetScreen) {
-        targetScreen.classList.add('active');
-      }
+      if (targetScreen) targetScreen.classList.add('active');
 
-      // إظهار أو إخفاء شريط التنقل السفلي
       const bottomNav = document.getElementById('bottom-nav');
       if (screenId === 'auth-screen') {
         bottomNav.style.display = 'none';
@@ -741,14 +774,14 @@
         bottomNav.style.display = 'flex';
       }
 
-      // تحديث زر الـ Active في شريط التنقل
+      // تحديث حالة الأيقونات النشطة في شريط التنقل
       const navItems = document.querySelectorAll('.nav-item');
       navItems.forEach(item => item.classList.remove('active'));
 
       if (screenId === 'home-screen') navItems[0].classList.add('active');
       if (screenId === 'subjects-screen') navItems[1].classList.add('active');
       if (screenId === 'ai-screen') navItems[2].classList.add('active');
-      if (screenId === 'profile-screen') navItems[3].classList.add('active');
+      if (screenId === 'developer-screen') navItems[3].classList.add('active');
       if (screenId === 'settings-screen') navItems[4].classList.add('active');
     }
   </script>
