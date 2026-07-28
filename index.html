@@ -11,6 +11,8 @@
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     /* ==================== المتغيرات والتنسيقات الأساسية ==================== */
     :root {
@@ -119,6 +121,42 @@
       flex: 1;
     }
 
+    /* ==================== حقول الإدخال والنماذج ==================== */
+    .form-group {
+      margin-bottom: 14px;
+      text-align: right;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-blue);
+      background: rgba(37, 99, 235, 0.1);
+    }
+
+    select.form-control option {
+      background: #0f172a;
+      color: #fff;
+    }
+
     /* ==================== حقوق المطور الثابتة ==================== */
     .global-footer {
       margin-top: 30px;
@@ -165,7 +203,7 @@
     }
 
     .logo-box {
-      margin-top: 50px;
+      margin-top: 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -207,6 +245,7 @@
       gap: 10px;
       box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
       transition: all 0.2s;
+      width: 100%;
     }
 
     .btn-primary:active { transform: scale(0.97); }
@@ -226,6 +265,7 @@
       gap: 10px;
       backdrop-filter: blur(10px);
       transition: all 0.2s;
+      width: 100%;
     }
 
     .btn-secondary:active { transform: scale(0.97); }
@@ -239,11 +279,6 @@
       backdrop-filter: blur(15px);
       margin-bottom: 14px;
       transition: all 0.25s ease;
-    }
-
-    .glass-card:hover {
-      border-color: rgba(37, 99, 235, 0.4);
-      transform: translateY(-2px);
     }
 
     .header-user {
@@ -269,8 +304,6 @@
       transition: 0.2s;
     }
 
-    .subject-card:active { transform: scale(0.98); }
-
     .subject-icon {
       width: 46px;
       height: 46px;
@@ -282,7 +315,7 @@
       color: white;
     }
 
-    /* ==================== 2. تصميم صفحة المطور الاحترافية ==================== */
+    /* ==================== تصميم صفحة المطور ==================== */
     .dev-header-card {
       background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(168, 85, 247, 0.15));
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -291,160 +324,32 @@
       text-align: center;
       backdrop-filter: blur(20px);
       margin-bottom: 20px;
-      position: relative;
     }
 
-    .dev-avatar-wrapper {
-      position: relative;
-      width: 105px;
-      height: 105px;
-      margin: 0 auto 16px;
-    }
-
-    .dev-avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--primary-blue);
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
-    }
-
-    .dev-badge {
-      position: absolute;
-      bottom: 2px;
-      right: 2px;
-      background: var(--primary-blue);
-      color: white;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      border: 2px solid var(--bg-dark);
-    }
-
+    .dev-avatar-wrapper { position: relative; width: 105px; height: 105px; margin: 0 auto 16px; }
+    .dev-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-blue); }
+    .dev-badge { position: absolute; bottom: 2px; right: 2px; background: var(--primary-blue); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid var(--bg-dark); }
     .dev-name-ar { font-size: 22px; font-weight: 800; color: #ffffff; }
     .dev-name-en { font-size: 13px; font-weight: 700; color: var(--primary-blue); letter-spacing: 2px; margin-bottom: 10px; }
+    .dev-roles { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 14px; }
+    .role-chip { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; color: #e2e8f0; }
+    .dev-bio { font-size: 13px; color: var(--text-muted); line-height: 1.6; background: rgba(15, 23, 42, 0.5); padding: 12px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
 
-    .dev-roles {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-
-    .role-chip {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #e2e8f0;
-    }
-
-    .dev-bio {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      background: rgba(15, 23, 42, 0.5);
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    /* شبكة روابط التواصل */
-    .social-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .social-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 12px 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      color: white;
-      backdrop-filter: blur(10px);
-      transition: all 0.2s;
-    }
-
-    .social-card:hover {
-      background: rgba(37, 99, 235, 0.15);
-      border-color: var(--primary-blue);
-      transform: translateY(-3px);
-    }
-
+    .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+    .social-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: white; }
     .social-card i { font-size: 22px; }
     .social-card span { font-size: 11px; font-weight: 600; }
 
-    /* شبكة المهارات */
-    .skills-flex {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .skill-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 8px 14px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(10px);
-    }
-
+    .skills-flex { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .skill-card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 8px 14px; border-radius: 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
     .skill-card i { color: var(--primary-blue); }
 
-    /* قائمة المشاريع */
-    .project-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(10px);
-    }
-
+    .project-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
     .project-info h4 { font-size: 15px; font-weight: 700; }
     .project-info p { font-size: 11px; color: var(--text-muted); }
 
-    /* إحصائيات المطور */
-    .dev-stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .dev-stat-box {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 14px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-    }
-
+    .dev-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .dev-stat-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; text-align: center; }
     .dev-stat-num { font-size: 22px; font-weight: 800; color: var(--primary-blue); }
     .dev-stat-label { font-size: 11px; color: var(--text-muted); }
 
@@ -478,16 +383,7 @@
     .nav-item.active { color: var(--primary-blue); }
     .nav-item i { font-size: 18px; }
 
-    /* عناوين الأقسام */
-    .section-title {
-      font-size: 16px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .section-title { font-size: 16px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .section-title i { color: var(--primary-blue); }
   </style>
 </head>
@@ -500,18 +396,103 @@
         <div class="logo-box">
           <div class="logo-icon">N</div>
           <div class="logo-title">NEXORA</div>
-          <div class="logo-subtitle">مرحبًا بعودتك 👋</div>
+          <div class="logo-subtitle">مرحبًا بك 👋</div>
           <div class="logo-desc">رفيقك اليومي للتفوق.</div>
         </div>
 
         <div class="auth-buttons" style="margin-top: 40px;">
-          <button class="btn-primary" onclick="navigateTo('home-screen')">
+          <button class="btn-primary" onclick="navigateTo('login-screen')">
             تسجيل الدخول <i class="fa-solid fa-arrow-left"></i>
           </button>
-          <button class="btn-secondary" onclick="navigateTo('developer-screen')">
+          <button class="btn-secondary" onclick="navigateTo('register-screen')">
+            إنشاء حساب جديد <i class="fa-solid fa-user-plus"></i>
+          </button>
+          <button class="btn-secondary" style="border: none; background: transparent; font-size: 13px;" onclick="navigateTo('developer-screen')">
             عن المطور ROMANY GARGES <i class="fa-solid fa-code"></i>
           </button>
         </div>
+      </div>
+
+      <div class="global-footer">
+        <div class="footer-tag"><i class="fa-solid fa-code"></i> 💙 Designed & Developed by</div>
+        <div class="footer-dev-name">ROMANY GARGES</div>
+        <div class="footer-info">Version 1.0.0 • © 2026 All Rights Reserved</div>
+      </div>
+    </div>
+
+    <div id="login-screen" class="screen">
+      <div class="screen-content">
+        <h2 style="margin-bottom: 20px;">تسجيل الدخول</h2>
+        
+        <div class="form-group">
+          <label>رقم الهاتف أو البريد</label>
+          <input type="text" id="login-id" class="form-control" placeholder="01xxxxxxxxx">
+        </div>
+
+        <div class="form-group">
+          <label>كلمة المرور</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••">
+        </div>
+
+        <button class="btn-primary" style="margin-top: 15px;" onclick="handleLogin()">
+          دخول <i class="fa-solid fa-right-to-bracket"></i>
+        </button>
+        <button class="btn-secondary" style="margin-top: 10px;" onclick="navigateTo('auth-screen')">
+          إلغاء
+        </button>
+      </div>
+
+      <div class="global-footer">
+        <div class="footer-tag"><i class="fa-solid fa-code"></i> 💙 Designed & Developed by</div>
+        <div class="footer-dev-name">ROMANY GARGES</div>
+        <div class="footer-info">Version 1.0.0 • © 2026 All Rights Reserved</div>
+      </div>
+    </div>
+
+    <div id="register-screen" class="screen">
+      <div class="screen-content">
+        <h2 style="margin-bottom: 20px;">إنشاء حساب جديد</h2>
+        
+        <div class="form-group">
+          <label>الاسم بالكامل</label>
+          <input type="text" id="reg-fullname" class="form-control" placeholder="اسمك الثلاثي">
+        </div>
+
+        <div class="form-group">
+          <label>رقم الهاتف</label>
+          <input type="tel" id="reg-phone" class="form-control" placeholder="01xxxxxxxxx">
+        </div>
+
+        <div class="form-group">
+          <label>كلمة المرور</label>
+          <input type="password" id="reg-password" class="form-control" placeholder="••••••••">
+        </div>
+
+        <div class="form-group">
+          <label>تأكيد كلمة المرور</label>
+          <input type="password" id="reg-confirm-password" class="form-control" placeholder="••••••••">
+        </div>
+
+        <div class="form-group">
+          <label>نظام الدراسة</label>
+          <select id="reg-system" class="form-control" onchange="updateTracksOption()">
+            <option value="thanaweya">الثانوية العامة</option>
+            <option value="baccalaureate">البكالوريا المصرية</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>الشعبة / المسار</label>
+          <select id="reg-track" class="form-control">
+            </select>
+        </div>
+
+        <button class="btn-primary" style="margin-top: 15px;" onclick="handleRegister()">
+          حفظ وإنشاء الحساب <i class="fa-solid fa-user-check"></i>
+        </button>
+        <button class="btn-secondary" style="margin-top: 10px;" onclick="navigateTo('auth-screen')">
+          إلغاء
+        </button>
       </div>
 
       <div class="global-footer">
@@ -525,7 +506,7 @@
       <div class="screen-content">
         <div class="header-user">
           <div>
-            <h2 style="font-size: 18px;">السلام عليكم يا روماني 👋</h2>
+            <h2 id="user-display-name" style="font-size: 18px;">السلام عليكم يا طالب 👋</h2>
             <p style="font-size: 12px; color: var(--text-muted);">الأحد، 27 يوليو 2026</p>
           </div>
           <img src="https://i.pravatar.cc/100?img=12" alt="Avatar" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--primary-blue);" onclick="navigateTo('developer-screen')">
@@ -715,6 +696,18 @@
           </div>
           <i class="fa-solid fa-chevron-left" style="font-size: 12px; color: var(--text-muted);"></i>
         </div>
+
+        <div class="subject-card" onclick="handleLogout()" style="border-color: rgba(239,68,68,0.3);">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="subject-icon" style="background: rgba(239,68,68,0.15); color: #ef4444;">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
+            <div>
+              <h3 style="font-size: 15px; color: #ef4444;">تسجيل الخروج</h3>
+              <p style="font-size: 11px; color: var(--text-muted);">مغادرة الحساب الحرفي</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="global-footer">
@@ -735,7 +728,13 @@
   </div>
 
   <script>
-    // 🔗 متغيرات روابط المطور (يمكنك تعديلها في أي وقت بسهولة هنا)
+    // 1. الاتصال بقاعدة البيانات Supabase
+    const SUPABASE_URL = "https://aansgdjwpmbvpitlouam.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_eJnvrnn09P1LQI-T3wPQbA_pSKIlPP-";
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 2. روابط التواصل الاجتماعي للمطور
     const DEV_SOCIAL_LINKS = {
       github: "https://github.com/",
       portfolio: "https://romanygarges.com",
@@ -748,7 +747,6 @@
       website: "https://romanygarges.com"
     };
 
-    // ربط الروابط فور تحميل الصفحة
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('link-github').href = DEV_SOCIAL_LINKS.github;
       document.getElementById('link-portfolio').href = DEV_SOCIAL_LINKS.portfolio;
@@ -759,30 +757,162 @@
       document.getElementById('link-linkedin').href = DEV_SOCIAL_LINKS.linkedin;
       document.getElementById('link-telegram').href = DEV_SOCIAL_LINKS.telegram;
       document.getElementById('link-website').href = DEV_SOCIAL_LINKS.website;
+
+      updateTracksOption();
     });
 
-    // دالة التنقل بين الشاشات
+    // 3. التنقل بين الشاشات
     function navigateTo(screenId) {
       document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
       const targetScreen = document.getElementById(screenId);
       if (targetScreen) targetScreen.classList.add('active');
 
       const bottomNav = document.getElementById('bottom-nav');
-      if (screenId === 'auth-screen') {
+      if (screenId === 'auth-screen' || screenId === 'login-screen' || screenId === 'register-screen') {
         bottomNav.style.display = 'none';
       } else {
         bottomNav.style.display = 'flex';
       }
 
-      // تحديث حالة الأيقونات النشطة في شريط التنقل
       const navItems = document.querySelectorAll('.nav-item');
       navItems.forEach(item => item.classList.remove('active'));
 
-      if (screenId === 'home-screen') navItems[0].classList.add('active');
-      if (screenId === 'subjects-screen') navItems[1].classList.add('active');
-      if (screenId === 'ai-screen') navItems[2].classList.add('active');
-      if (screenId === 'developer-screen') navItems[3].classList.add('active');
-      if (screenId === 'settings-screen') navItems[4].classList.add('active');
+      if (screenId === 'home-screen') navItems[0]?.classList.add('active');
+      if (screenId === 'subjects-screen') navItems[1]?.classList.add('active');
+      if (screenId === 'ai-screen') navItems[2]?.classList.add('active');
+      if (screenId === 'developer-screen') navItems[3]?.classList.add('active');
+      if (screenId === 'settings-screen') navItems[4]?.classList.add('active');
+    }
+
+    // 4. تحديث شعبة نظام الدراسة تلقائياً
+    function updateTracksOption() {
+      const systemSelect = document.getElementById("reg-system")?.value;
+      const trackSelect = document.getElementById("reg-track");
+      if (!trackSelect) return;
+
+      const tracksData = {
+        thanaweya: [
+          { value: "scientific_science", label: "علمي علوم" },
+          { value: "scientific_math", label: "علمي رياضة" },
+          { value: "literary", label: "أدبي" }
+        ],
+        baccalaureate: [
+          { value: "medicine", label: "الطب وعلوم الحياة" },
+          { value: "engineering", label: "الهندسة وعلوم الحاسب" },
+          { value: "business", label: "الأعمال" },
+          { value: "arts", label: "الآداب والفنون" }
+        ]
+      };
+
+      trackSelect.innerHTML = "";
+      if (tracksData[systemSelect]) {
+        tracksData[systemSelect].forEach(track => {
+          const option = document.createElement("option");
+          option.value = track.value;
+          option.textContent = track.label;
+          trackSelect.appendChild(option);
+        });
+      }
+    }
+
+    // 5. دالة إنشاء حساب جديد
+    async function handleRegister() {
+      const fullName = document.getElementById("reg-fullname").value.trim();
+      const phone = document.getElementById("reg-phone").value.trim();
+      const password = document.getElementById("reg-password").value;
+      const confirmPassword = document.getElementById("reg-confirm-password").value;
+      const system = document.getElementById("reg-system").value;
+      const track = document.getElementById("reg-track").value;
+
+      if (!fullName || !phone || !password) {
+        alert("يرجى ملء كافة الحقول.");
+        return;
+      }
+      if (password !== confirmPassword) {
+        alert("كلمتا المرور غير متطابقتين.");
+        return;
+      }
+
+      const emailFormat = `${phone}@nexora.app`;
+
+      try {
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+          email: emailFormat,
+          password: password,
+        });
+
+        if (authError) throw authError;
+
+        if (authData.user) {
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .insert([{
+              id: authData.user.id,
+              full_name: fullName,
+              phone_number: phone,
+              education_system: system,
+              track: track,
+              is_active: true
+            }]);
+
+          if (profileError) throw profileError;
+
+          alert("تم إنشاء الحساب بنجاح! مرحباً بك في NEXORA");
+          document.getElementById('user-display-name').textContent = `السلام عليكم يا ${fullName} 👋`;
+          navigateTo('home-screen');
+        }
+      } catch (err) {
+        alert("خطأ أثناء التسجيل: " + err.message);
+      }
+    }
+
+    // 6. دالة تسجيل الدخول
+    async function handleLogin() {
+      const inputId = document.getElementById("login-id").value.trim();
+      const password = document.getElementById("login-password").value;
+
+      if (!inputId || !password) {
+        alert("يرجى إدخال البيانات كاملة.");
+        return;
+      }
+
+      const emailFormat = inputId.includes("@") ? inputId : `${inputId}@nexora.app`;
+
+      try {
+        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+          email: emailFormat,
+          password: password,
+        });
+
+        if (authError) throw authError;
+
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('full_name, is_active')
+          .eq('id', authData.user.id)
+          .single();
+
+        if (profileError) throw profileError;
+
+        if (profile.is_active === false) {
+          alert("⚠️ هذا الحساب معطل حالياً. يرجى التواصل مع الإدارة للتفعيل.");
+          await supabase.auth.signOut();
+          return;
+        }
+
+        alert(`مرحباً بك مجدداً يا ${profile.full_name}`);
+        document.getElementById('user-display-name').textContent = `السلام عليكم يا ${profile.full_name} 👋`;
+        navigateTo('home-screen');
+      } catch (err) {
+        alert("خطأ في بيانات الدخول: " + err.message);
+      }
+    }
+
+    // 7. تسجيل الخروج
+    async function handleLogout() {
+      await supabase.auth.signOut();
+      alert("تم تسجيل الخروج بنجاح.");
+      navigateTo('auth-screen');
     }
   </script>
 </body>
