@@ -1,0 +1,38 @@
+<div class="header">
+          <div>
+            <h2 id="planner-greeting">مرحبًا 👋</h2>
+            <p style="color: var(--muted); margin-top:4px;">جاهز تحقق هدفك النهارده؟</p>
+          </div>
+          <div id="planner-date" style="color: var(--accent-2); font-weight:700; font-size:0.9rem; text-align:left;"></div>
+        </div>
+
+        <div class="glass-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+            <h4>🎯 هدف اليوم</h4>
+            <div id="goal-options" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
+          </div>
+          <div class="progress-track"><div id="goal-progress-bar" class="progress-fill" style="width:0%;"></div></div>
+          <p id="goal-progress-text" style="color: var(--muted); margin-top:10px; font-size:0.88rem;"></p>
+        </div>
+
+        <div class="glass-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4>📋 ملخص اليوم</h4>
+            <button type="button" id="enable-reminders-btn" class="icon-btn">🔔 تفعيل التذكيرات</button>
+          </div>
+          <div id="today-summary" class="grid-2" style="gap:10px;"></div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin:22px 0 12px; flex-wrap:wrap; gap:10px;">
+          <h4>📅 جدول اليوم</h4>
+          <button type="button" class="btn-primary" id="open-add-task-btn" style="width:auto; padding:10px 20px;">➕ مهمة جديدة</button>
+        </div>
+        <div id="today-tasks-list"></div>
+
+        <h4 style="margin:26px 0 12px;">📊 إحصائياتي</h4>
+        <div id="planner-stats" class="grid-2"></div>
+
+        <div class="glass-card" id="streak-card" style="margin-top:18px;"></div>
+
+        <h4 style="margin:26px 0 12px;">🗓️ كل مهامي (الأسبوع)</h4>
+        <div id="planner-list"></div>

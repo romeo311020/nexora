@@ -1,0 +1,89 @@
+<div class="auth-shell">
+  <div class="auth-brand-panel">
+    <div class="auth-brand-icon">🎓</div>
+    <h1>EDUVO</h1>
+    <p>منصتك التعليمية الذكية للثانوية العامة — مواد، مدرسون، كتب، ومساعد ذكي في مكان واحد.</p>
+
+    <div class="auth-feature-list">
+      <div class="auth-feature-item">
+        <div class="afi-icon">📚</div>
+        <span>مواد دراسية ومدرسون معتمدون</span>
+      </div>
+      <div class="auth-feature-item">
+        <div class="afi-icon">🤖</div>
+        <span>مساعد ذكي يجاوبك على أي سؤال</span>
+      </div>
+      <div class="auth-feature-item">
+        <div class="afi-icon">🗓️</div>
+        <span>خطة مذاكرة تنظّم وقتك بنفسك</span>
+      </div>
+      <div class="auth-feature-item">
+        <div class="afi-icon">🎬</div>
+        <span>كورسات ومحاضرات مجانية</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-panel">
+    <div style="display:flex; gap:8px; background: rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:14px; padding:6px; margin-bottom:22px;">
+      <button type="button" class="btn-secondary auth-tab active" data-auth-tab="login" style="width:50%; padding:11px 10px;">تسجيل الدخول</button>
+      <button type="button" class="btn-secondary auth-tab" data-auth-tab="signup" style="width:50%; padding:11px 10px;">إنشاء حساب</button>
+    </div>
+
+    <form id="login-form" class="auth-form active">
+      <div class="input-group">
+        <label>رقم الموبايل</label>
+        <input id="login-phone" type="tel" inputmode="numeric" class="input-control" placeholder="05xxxxxxxx" />
+      </div>
+      <div class="input-group">
+        <label>كلمة المرور</label>
+        <input id="login-password" type="password" class="input-control" placeholder="••••••••" />
+      </div>
+      <button type="button" id="login-btn" class="btn-primary">دخول</button>
+
+      <div class="social-divider"><span>أو تابع باستخدام</span></div>
+      <div class="social-buttons" style="grid-template-columns: 1fr;">
+        <button type="button" class="btn-social" id="google-login-btn">
+          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.28A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.56.38-2.28V6.63H1.29A11.96 11.96 0 0 0 0 12c0 1.93.46 3.76 1.29 5.37l3.98-3.09z"/><path fill="#EA4335" d="M12 4.75c1.76 0 3.34.6 4.58 1.79l3.43-3.43C17.94 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.63l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75z"/></svg>
+          <span>الدخول بحساب جوجل</span>
+        </button>
+      </div>
+    </form>
+
+    <form id="signup-form" class="auth-form">
+      <div class="input-group">
+        <label>اسم الطالب الثلاثي</label>
+        <input id="signup-name" type="text" class="input-control" placeholder="أحمد محمد علي" />
+      </div>
+      <div class="input-group">
+        <label>رقم الموبايل</label>
+        <input id="signup-phone" type="tel" inputmode="numeric" class="input-control" placeholder="05xxxxxxxx" />
+      </div>
+      <div class="input-group">
+        <label>الصف الدراسي</label>
+        <select id="signup-grade" class="input-control">
+          <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+          <option value="الصف الثاني الثانوي - باكالوريا">الصف الثاني الثانوي - باكالوريا</option>
+          <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>كلمة السر</label>
+        <input id="signup-password" type="password" class="input-control" placeholder="••••••••" />
+      </div>
+      <div class="input-group">
+        <label>تأكيد كلمة السر</label>
+        <input id="signup-confirm" type="password" class="input-control" placeholder="••••••••" />
+      </div>
+      <button type="button" id="signup-btn" class="btn-primary">إنشاء الحساب</button>
+
+      <div class="social-divider"><span>أو تابع باستخدام</span></div>
+      <div class="social-buttons" style="grid-template-columns: 1fr;">
+        <button type="button" class="btn-social" id="google-signup-btn">
+          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.28A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.56.38-2.28V6.63H1.29A11.96 11.96 0 0 0 0 12c0 1.93.46 3.76 1.29 5.37l3.98-3.09z"/><path fill="#EA4335" d="M12 4.75c1.76 0 3.34.6 4.58 1.79l3.43-3.43C17.94 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.63l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75z"/></svg>
+          <span>التسجيل بحساب جوجل</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

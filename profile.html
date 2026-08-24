@@ -1,0 +1,70 @@
+<div class="header">
+          <h2>حسابي 👤</h2>
+        </div>
+
+        <div class="glass-card" style="text-align:center;">
+          <div id="profile-avatar" style="width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg, var(--accent), var(--accent-2)); margin:0 auto 12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.85rem; color:var(--on-accent);">ع</div>
+          <h3 id="profile-name">اسم الطالب</h3>
+          <p id="profile-phone" style="color: var(--muted); margin-top: 6px;">0500000000</p>
+          <p id="profile-grade" style="color: var(--accent-2); font-weight:700; margin-top: 6px;">الصف الثالث الثانوي</p>
+          <button type="button" id="edit-profile-toggle" class="btn-secondary" style="margin-top: 16px; width: auto; padding: 10px 22px;">تعديل البيانات</button>
+
+          <div id="edit-profile-form" style="display:none; text-align:right; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border);">
+            <div class="input-group">
+              <label>الاسم الثلاثي</label>
+              <input id="edit-profile-name" type="text" class="input-control" />
+            </div>
+            <div class="input-group">
+              <label>الصف الدراسي</label>
+              <select id="edit-profile-grade" class="input-control">
+                <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                <option value="الصف الثاني الثانوي - باكالوريا">الصف الثاني الثانوي - باكالوريا</option>
+                <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+              </select>
+            </div>
+            <button type="button" id="save-profile-btn" class="btn-primary">حفظ التغييرات</button>
+          </div>
+        </div>
+
+        <div class="glass-card" data-target="screen-books" style="cursor: pointer;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span>📚 الكتب</span>
+            <span>←</span>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h3 style="margin-bottom: 14px;">الإعدادات</h3>
+          <div style="display:grid; gap: 12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+              <label style="font-weight:700; color: var(--muted);">المظهر</label>
+              <select id="theme-select" class="input-control" style="width: 190px; max-width: 100%;">
+                <option value="dark">الوضع الداكن</option>
+                <option value="light">الوضع الفاتح</option>
+              </select>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+              <label style="font-weight:700; color: var(--muted);">اللغة</label>
+              <select id="language-select" class="input-control" style="width: 190px; max-width: 100%;">
+                <option value="ar">العربية</option>
+              </select>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+              <label style="font-weight:700; color: var(--muted);">نوع الجهاز</label>
+              <select id="layout-select" class="input-control" style="width: 190px; max-width: 100%;">
+                <option value="mobile">عرض الموبايل</option>
+                <option value="tablet">عرض التابلت</option>
+                <option value="desktop">عرض الكمبيوتر/اللابتوب</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card" onclick="window.open('developer.html', '_blank');" style="cursor:pointer;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span>حول EDUVO (صفحة المطور)</span>
+            <span>←</span>
+          </div>
+        </div>
+
+        <button type="button" id="logout-btn" class="btn-secondary" style="color:#ef4444; border-color: rgba(239,68,68,0.24); margin-top: 8px;">تسجيل الخروج</button>
