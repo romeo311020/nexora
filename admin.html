@@ -1,0 +1,2070 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EDUVO ADMIN | لوحة التحكم والإدارة</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. DESIGN SYSTEM & DARK PREMIUM THEME (EDUVO IDENTITY)
+           ========================================================================== */
+        :root {
+            --bg-main: #060b19;
+            --bg-card: rgba(15, 23, 42, 0.75);
+            --bg-card-solid: #0f172a;
+            --bg-sidebar: #090e1d;
+            --bg-input: #111827;
+            
+            --accent-blue: #1c72d8;
+            --accent-cyan: #00d2ff;
+            --accent-gold: #ffb703;
+            
+            --status-active: #10b981;
+            --status-pending: #f59e0b;
+            --status-suspended: #ef4444;
+            --status-rejected: #6b7280;
+
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 210, 255, 0.25);
+            
+            --sidebar-width: 260px;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            
+            --shadow-glow: 0 0 25px rgba(0, 210, 255, 0.12);
+            --shadow-gold: 0 0 20px rgba(255, 183, 3, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            direction: rtl;
+        }
+
+        /* App Wrapper */
+        #admin-app {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ==========================================================================
+           2. LOGIN SCREEN (AUTHENTICATION OVERLAY)
+           ========================================================================== */
+        #admin-login-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #101a36 0%, #060b19 100%);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: var(--shadow-glow);
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .brand-logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+        }
+
+        /* ==========================================================================
+           3. SIDEBAR & NAVIGATION (DESKTOP & MOBILE DRAWER)
+           ========================================================================== */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100%;
+            background: var(--bg-sidebar);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            z-index: 90;
+            transition: var(--transition);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            padding: 0 8px;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(0, 210, 255, 0.08);
+            color: var(--accent-cyan);
+            border-right: 3px solid var(--accent-cyan);
+        }
+
+        .nav-item.active .svg-icon {
+            stroke: var(--accent-cyan);
+            filter: drop-shadow(0 0 5px rgba(0,210,255,0.5));
+        }
+
+        /* Mobile Header & Overlay */
+        .mobile-header {
+            display: none;
+            height: 60px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 80;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 85;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-header { display: flex; }
+            .sidebar {
+                position: fixed;
+                right: -100%;
+                top: 0;
+                bottom: 0;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            }
+            .sidebar.open { right: 0; }
+            .sidebar-overlay.active { display: block; }
+        }
+
+        /* ==========================================================================
+           4. MAIN DASHBOARD CONTENT AREA
+           ========================================================================== */
+        .main-content {
+            flex: 1;
+            height: 100%;
+            overflow-y: auto;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 280px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 16px 10px 40px;
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0,210,255,0.2);
+        }
+
+        /* Grid Utilities */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-glow);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-cyan);
+        }
+
+        .stat-card.gold::before { background: var(--accent-gold); }
+        .stat-card.green::before { background: var(--status-active); }
+        .stat-card.red::before { background: var(--status-suspended); }
+
+        .stat-val {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 8px 0 4px 0;
+        }
+
+        /* Data Tables */
+        .table-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        tr:hover { background: rgba(255, 255, 255, 0.015); }
+
+        /* Status Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .badge-active { background: rgba(16, 185, 129, 0.1); color: var(--status-active); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-pending { background: rgba(245, 158, 11, 0.1); color: var(--status-pending); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-suspended { background: rgba(239, 68, 68, 0.1); color: var(--status-suspended); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        /* Form Inputs & Buttons */
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .btn-success { background: var(--status-active); color: #000; }
+        .btn-danger { background: var(--status-suspended); color: #fff; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); color: #fff; }
+        .btn-secondary { background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border-color); }
+
+        .btn:hover { opacity: 0.9; transform: scale(1.02); }
+
+        .github-settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .github-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .github-field label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .github-field input,
+        .github-field textarea {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            color: #fff;
+            outline: none;
+            resize: vertical;
+        }
+
+        .github-field input:focus,
+        .github-field textarea:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+        }
+
+        .github-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .github-status {
+            margin-top: 16px;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            border: 1px solid transparent;
+            background: rgba(148, 163, 184, 0.08);
+            color: var(--text-main);
+        }
+
+        .github-status.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.35);
+            color: var(--status-active);
+        }
+
+        .github-status.warning {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.35);
+            color: var(--accent-gold);
+        }
+
+        .github-status.error {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.35);
+            color: var(--status-suspended);
+        }
+
+        /* Views Switching System */
+        .view-panel {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .view-panel.active { display: flex; }
+
+        /* SVG Icon helper */
+        .svg-icon {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="admin-login-overlay">
+        <div class="login-card">
+            <div class="brand-logo">E</div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;">EDUVO ADMIN</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">لوحة التحكم وإدارة التطبيق</p>
+            
+            <div id="login-error-msg" style="display: none; color: var(--status-suspended); background: rgba(239, 68, 68, 0.1); border: 1px solid var(--status-suspended); padding: 10px; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 16px;"></div>
+
+            <form onsubmit="handleGitHubLogin(event)">
+                <div style="text-align: right; margin-bottom: 16px;">
+                    <label style="font-size: 0.85rem; color: var(--text-muted);">GitHub Token</label>
+                    <input type="password" id="github-token-login" required placeholder="ghp_xxxxxxxxxxxxx" style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; color: #fff; margin-top: 6px; outline: none;">
+                </div>
+                <div style="text-align: right; margin-bottom: 16px;">
+                    <label style="font-size: 0.85rem; color: var(--text-muted);">اسم المستخدم / المالك</label>
+                    <input type="text" id="github-owner-login" required placeholder="romeo311020" style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; color: #fff; margin-top: 6px; outline: none;">
+                </div>
+                <div style="text-align: right; margin-bottom: 24px;">
+                    <label style="font-size: 0.85rem; color: var(--text-muted);">اسم المستودع</label>
+                    <input type="text" id="github-repo-login" required placeholder="EDUVO" style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; color: #fff; margin-top: 6px; outline: none;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;">دخول لوحة الإدارة</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-app">
+
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <aside class="sidebar" id="app-sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo" style="width: 40px; height: 40px; font-size: 1.2rem; margin:0;">E</div>
+                <div>
+                    <h3 style="font-size: 1.1rem; font-weight: 800; line-height: 1;">EDUVO</h3>
+                    <span style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 700;">ADMIN PANEL</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <div class="nav-item active" onclick="switchView('view-dashboard', this)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>الرئيسية</span>
+                </div>
+                <div class="nav-item" onclick="switchView('view-subjects', this)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>إدارة المواد</span>
+                </div>
+                <div class="nav-item" onclick="switchView('view-teachers', this)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>إدارة المعلمين</span>
+                </div>
+                <div class="nav-item" onclick="switchView('view-books', this)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>إدارة الكتب</span>
+                </div>
+                <div class="nav-item" onclick="switchView('view-courses', this)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                    <span>الكورسات المجانية</span>
+                </div>
+                <div class="nav-item" onclick="switchView('view-students', this)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>إدارة الطلاب</span>
+                    <span id="pending-badge-count" style="margin-right: auto; background: var(--accent-gold); color: #000; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; font-weight: bold;">0</span>
+                </div>
+                <div class="nav-item" onclick="switchView('view-settings', this)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><path d="M12 1v6m0 6v4"/><path d="M4.22 4.22l4.24 4.24m2.12 2.12l4.24 4.24M1 12h6m6 0h4m-4.22 7.78l-4.24-4.24m-2.12-2.12l-4.24-4.24"/></svg>
+                    <span>الإعدادات</span>
+                </div>
+            </nav>
+
+            <div style="border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: 16px;">
+                <div class="nav-item" style="color: var(--status-suspended);" onclick="handleAdminLogout()">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>تسجيل الخروج</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <div class="mobile-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="brand-logo" style="width: 32px; height: 32px; font-size: 1rem; margin:0;">E</div>
+                    <span style="font-weight: 800; font-size: 1.1rem;">EDUVO ADMIN</span>
+                </div>
+                <button class="btn btn-secondary" onclick="toggleSidebar()">☰</button>
+            </div>
+
+            <div class="top-bar">
+                <div>
+                    <h1 style="font-size: 1.5rem; font-weight: 800;">مرحبًا بك في EDUVO ADMIN 👋</h1>
+                    <p style="color: var(--text-muted); font-size: 0.85rem;">نظام إدارة الطلاب والمحتوى التعليمي</p>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="global-search" placeholder="بحث بالاسم أو البريد الإلكتروني..." oninput="filterGlobalData(this.value)">
+                </div>
+            </div>
+
+            <section id="view-dashboard" class="view-panel active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">إجمالي الطلاب</span>
+                        <div class="stat-val" id="stat-total-students">0</div>
+                        <span style="color: var(--accent-cyan); font-size: 0.75rem;">👥 المسجلين بالنظام</span>
+                    </div>
+                    <div class="stat-card green">
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">حسابات نشطة</span>
+                        <div class="stat-val" style="color: var(--status-active);" id="stat-active-students">0</div>
+                        <span style="color: var(--status-active); font-size: 0.75rem;">🟢 يمكنهم المذاكرة</span>
+                    </div>
+                    <div class="stat-card gold">
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">طلبات التفعيل</span>
+                        <div class="stat-val" style="color: var(--accent-gold);" id="stat-pending-students">0</div>
+                        <span style="color: var(--accent-gold); font-size: 0.75rem;">🟡 ينتظرون المراجعة</span>
+                    </div>
+                    <div class="stat-card red">
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">حسابات موقوفة</span>
+                        <div class="stat-val" style="color: var(--status-suspended);" id="stat-suspended-students">0</div>
+                        <span style="color: var(--status-suspended); font-size: 0.75rem;">🔴 محظورة من الدخول</span>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1.1rem; margin-top: 10px;">أحدث التسجيلات</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الطالب</th>
+                                <th>الصف / الشعبة</th>
+                                <th>تاريخ التسجيل</th>
+                                <th>الحالة</th>
+                                <th>الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-students-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-subjects" class="view-panel">
+                <h2>إدارة المواد الدراسية 📚</h2>
+                
+                <div class="stat-card">
+                    <h3 style="margin-bottom: 16px;">إضافة مادة جديدة</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                        <div class="github-field">
+                            <label>اسم المادة</label>
+                            <input type="text" id="subject-name" placeholder="مثال: الرياضيات">
+                        </div>
+                        <div class="github-field">
+                            <label>الأيقونة</label>
+                            <input type="text" id="subject-icon" placeholder="📐" maxlength="2">
+                        </div>
+                        <div class="github-field">
+                            <label>اللون (Hex)</label>
+                            <input type="text" id="subject-color" placeholder="#1c72d8" value="#1c72d8">
+                        </div>
+                    </div>
+                    <div class="github-field" style="margin-top: 12px;">
+                        <label>الوصف</label>
+                        <textarea id="subject-description" rows="4" placeholder="وصف المادة والمحتوى المتضمن..."></textarea>
+                    </div>
+                    <div class="github-actions" style="margin-top: 16px;">
+                        <button type="button" class="btn btn-primary" onclick="addNewSubject()">➕ إضافة المادة</button>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 12px;">المواد الحالية</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المادة</th>
+                                <th>الوصف</th>
+                                <th>عدد المعلمين</th>
+                                <th>العمليات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjects-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-teachers" class="view-panel">
+                <h2>إدارة المعلمين والمعلمات 👨‍🏫</h2>
+                
+                <div class="stat-card">
+                    <h3 style="margin-bottom: 16px;">إضافة معلم/معلمة جديد</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                        <div class="github-field">
+                            <label>الاسم</label>
+                            <input type="text" id="teacher-name" placeholder="أحمد محمد علي">
+                        </div>
+                        <div class="github-field">
+                            <label>التخصص</label>
+                            <input type="text" id="teacher-specialty" placeholder="الجبر والهندسة">
+                        </div>
+                        <div class="github-field">
+                            <label>المادة</label>
+                            <select id="teacher-subject">
+                                <option value="">-- اختر المادة --</option>
+                            </select>
+                        </div>
+                        <div class="github-field">
+                            <label>التقييم (0-5)</label>
+                            <input type="number" id="teacher-rating" placeholder="4.9" min="0" max="5" step="0.1" value="4.9">
+                        </div>
+                        <div class="github-field">
+                            <label>عدد الطلاب</label>
+                            <input type="number" id="teacher-students" placeholder="1000" min="0" value="1000">
+                        </div>
+                        <div class="github-field">
+                            <label>رابط الموقع</label>
+                            <input type="url" id="teacher-website" placeholder="https://teacher.com">
+                        </div>
+                        <div class="github-field">
+                            <label>رابط صورة المدرس</label>
+                            <input type="url" id="teacher-photo" placeholder="https://example.com/photo.jpg">
+                        </div>
+                    </div>
+                    <div class="github-field" style="margin-top: 12px;">
+                        <label>أسلوب التدريس</label>
+                        <textarea id="teacher-style" rows="3" placeholder="وصف أسلوب التدريس والمميزات..."></textarea>
+                    </div>
+                    <div class="github-actions" style="margin-top: 16px;">
+                        <button type="button" class="btn btn-primary" onclick="addNewTeacher()">➕ إضافة المعلم</button>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 12px;">قائمة المعلمين</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>المادة</th>
+                                <th>التخصص</th>
+                                <th>التقييم</th>
+                                <th>الطلاب</th>
+                                <th>العمليات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teachers-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-books" class="view-panel">
+                <h2>إدارة الكتب 📘</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
+                    ارفع ملف الكتاب (PDF) على استضافة خارجية (مثل Google Drive أو GitHub) ثم ضع رابط الملف هنا مباشرة.
+                </p>
+
+                <div class="stat-card">
+                    <h3 style="margin-bottom: 16px;">إضافة كتاب جديد</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                        <div class="github-field">
+                            <label>عنوان الكتاب</label>
+                            <input type="text" id="book-title" placeholder="مثال: كتاب الرياضيات - الجبر والهندسة">
+                        </div>
+                        <div class="github-field">
+                            <label>المادة</label>
+                            <select id="book-subject">
+                                <option value="">-- اختر المادة (اختياري) --</option>
+                            </select>
+                        </div>
+                        <div class="github-field">
+                            <label>رابط ملف PDF</label>
+                            <input type="url" id="book-url" placeholder="https://example.com/book.pdf">
+                        </div>
+                    </div>
+                    <div class="github-field" style="margin-top: 12px;">
+                        <label>وصف مختصر عن الكتاب</label>
+                        <textarea id="book-description" rows="3" placeholder="وصف قصير يظهر للطالب عن محتوى الكتاب..."></textarea>
+                    </div>
+                    <div class="github-actions" style="margin-top: 16px;">
+                        <button type="button" class="btn btn-primary" onclick="addNewBook()">➕ إضافة الكتاب</button>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 12px;">الكتب الحالية</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>العنوان</th>
+                                <th>المادة</th>
+                                <th>رابط PDF</th>
+                                <th>العمليات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="books-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-courses" class="view-panel">
+                <h2>إدارة الكورسات المجانية 🎓</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
+                    أضف رابط Embed للمحاضرة (مثل رابط تضمين من يوتيوب أو أي منصة فيديو تدعم الـ Embed).
+                </p>
+
+                <div class="stat-card">
+                    <h3 id="course-form-title" style="margin-bottom: 16px;">➕ إضافة محاضرة جديدة</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                        <div class="github-field">
+                            <label>اسم المدرس *</label>
+                            <input type="text" id="course-teacher-name" placeholder="مستر مينا دياب">
+                        </div>
+                        <div class="github-field">
+                            <label>رابط صورة المدرس</label>
+                            <input type="url" id="course-teacher-image" placeholder="https://example.com/photo.jpg">
+                        </div>
+                        <div class="github-field">
+                            <label>اسم المحاضرة *</label>
+                            <input type="text" id="course-lecture-title" placeholder="مراجعة الوحدة الأولى">
+                        </div>
+                        <div class="github-field">
+                            <label>المادة *</label>
+                            <select id="course-subject">
+                                <option value="">-- اختر المادة --</option>
+                            </select>
+                        </div>
+                        <div class="github-field">
+                            <label>مدة المحاضرة</label>
+                            <input type="text" id="course-duration" placeholder="45 دقيقة">
+                        </div>
+                        <div class="github-field">
+                            <label>التصنيف</label>
+                            <input type="text" id="course-category" placeholder="مراجعات / شرح / حل أسئلة">
+                        </div>
+                        <div class="github-field">
+                            <label>Embed URL *</label>
+                            <input type="url" id="course-embed-url" placeholder="https://www.youtube.com/embed/xxxxxxxx">
+                        </div>
+                        <div class="github-field">
+                            <label>رابط الصورة المصغرة (Thumbnail)</label>
+                            <input type="url" id="course-thumbnail" placeholder="https://example.com/thumb.jpg">
+                        </div>
+                    </div>
+                    <div class="github-field" style="margin-top: 12px;">
+                        <label>وصف مختصر للمحاضرة</label>
+                        <textarea id="course-description" rows="3" placeholder="وصف قصير يظهر للطالب..."></textarea>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; margin-top: 12px;">
+                        <input type="checkbox" id="course-published" checked style="width:18px; height:18px;">
+                        <label for="course-published" style="margin:0;">نشر المحاضرة (تظهر للطلاب فورًا)</label>
+                    </div>
+                    <div class="github-actions" style="margin-top: 16px;">
+                        <button type="button" class="btn btn-primary" id="course-save-btn" onclick="saveCourseFromForm()">➕ إضافة المحاضرة</button>
+                        <button type="button" class="btn btn-secondary" id="course-cancel-edit-btn" onclick="cancelEditCourse()" style="display:none;">إلغاء التعديل</button>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 12px;">المحاضرات الحالية</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المحاضرة</th>
+                                <th>المدرس</th>
+                                <th>المادة</th>
+                                <th>الحالة</th>
+                                <th>العمليات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courses-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-students" class="view-panel">
+                <h2>قائمة الطلاب 👨‍🎓</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الطالب</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>الصف</th>
+                                <th>الشعبة</th>
+                                <th>الحالة</th>
+                                <th>تغيير الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-students-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-settings" class="view-panel">
+                <h2>الإعدادات العامة ⚙️</h2>
+                
+                <div class="stat-card">
+                    <h3 style="margin-bottom: 16px;">إعدادات التطبيق</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                        <div class="github-field">
+                            <label>اسم التطبيق</label>
+                            <input type="text" id="app-name" value="EDUVO">
+                        </div>
+                        <div class="github-field">
+                            <label>الإصدار</label>
+                            <input type="text" id="app-version" value="1.0.0">
+                        </div>
+                        <div class="github-field">
+                            <label>البريد الإلكتروني للدعم</label>
+                            <input type="email" id="app-support-email" placeholder="support@eduvo.com">
+                        </div>
+                        <div class="github-field">
+                            <label>رقم الدعم</label>
+                            <input type="tel" id="app-support-phone" placeholder="+20 100 000 0000">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card" style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 16px;">الإعلان العام</h3>
+                    <div class="github-field">
+                        <label>نص الإعلان (سيظهر على الصفحة الرئيسية)</label>
+                        <textarea id="app-announcement" rows="4" placeholder="مرحباً بك في EDUVO..."></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="saveAppSettings()" style="margin-top: 12px;">💾 حفظ الإعدادات</button>
+                </div>
+
+                <div class="stat-card" style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 16px;">🔐 تسجيل الدخول والمساعد الذكي</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                        <div class="github-field">
+                            <label>Google Client ID</label>
+                            <input type="text" id="app-google-client-id" placeholder="xxxxxxxx.apps.googleusercontent.com">
+                        </div>
+                        <div class="github-field">
+                            <label>رابط المساعد الذكي (AI Endpoint) - اختياري</label>
+                            <input type="text" id="app-ai-endpoint" placeholder="https://your-worker.workers.dev">
+                        </div>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 10px;">
+                        ⚠️ ضع هنا الـ Client ID فقط وليس الـ Client Secret أبداً — السكريت سري ولا يوضع في أي كود ظاهر للمستخدمين.
+                    </p>
+                    <button type="button" class="btn btn-primary" onclick="saveAppSettings()" style="margin-top: 12px;">💾 حفظ الإعدادات</button>
+                </div>
+
+                <div class="stat-card" style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 16px;">🔗 ربط مع GitHub</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+                        احفظ جميع التغييرات الخاصة بك تلقائياً في مستودع GitHub الخاص بك
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                        <div class="github-field">
+                            <label>GitHub Token</label>
+                            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxx">
+                        </div>
+                        <div class="github-field">
+                            <label>اسم المستخدم / المالك</label>
+                            <input type="text" id="github-owner" placeholder="romeo311020">
+                        </div>
+                        <div class="github-field">
+                            <label>اسم المستودع</label>
+                            <input type="text" id="github-repo" placeholder="EDUVO">
+                        </div>
+                        <div class="github-field">
+                            <label>الفرع</label>
+                            <input type="text" id="github-branch" value="main" placeholder="main">
+                        </div>
+                        <div class="github-field" style="grid-column: 1 / -1;">
+                            <label>مسار الملف داخل المستودع</label>
+                            <input type="text" id="github-file-path" value="data.json" placeholder="data.json">
+                        </div>
+                    </div>
+
+                    <div class="github-actions" style="margin-top: 16px;">
+                        <button type="button" class="btn btn-primary" onclick="saveGithubSettings()">🔒 حفظ إعدادات GitHub</button>
+                        <button type="button" class="btn btn-secondary" onclick="testGitHubConnection()">🧪 اختبار الاتصال</button>
+                        <button type="button" class="btn btn-secondary" onclick="loadGitHubFileContent()">📥 تحميل البيانات</button>
+                        <button type="button" class="btn btn-success" onclick="publishGitHubData()">📤 نشر التحديثات</button>
+                    </div>
+
+                    <div class="github-field" style="margin-top: 18px;">
+                        <label>محتوى البيانات (JSON)</label>
+                        <textarea id="github-file-content" rows="12" placeholder="سيظهر هنا محتوى البيانات بعد التحميل..."></textarea>
+                    </div>
+
+                    <div id="github-status" class="github-status" style="margin-top: 16px;">جاهز للتوصيل بـ GitHub. أدخل البيانات ثم اختبر الاتصال.</div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const GITHUB_STORAGE_KEY = 'eduvo_github_settings';
+
+        let state = {
+            currentAdmin: { name: 'GitHub Admin' },
+            data: {
+                app: {
+                    name: 'EDUVO',
+                    version: '1.0.0',
+                    announcement: 'مرحباً بكم في EDUVO',
+                    supportEmail: 'support@eduvo.com',
+                    supportPhone: '+20 100 000 0000'
+                },
+                googleClientId: '',
+                aiEndpoint: '',
+                subjects: [],
+                teachers: [],
+                books: [],
+                freeCourses: [],
+                profiles: []
+            },
+            githubConfig: {
+                token: '',
+                owner: '',
+                repo: '',
+                branch: 'main',
+                filePath: 'data.json'
+            }
+        };
+
+        function normalizeData(data) {
+            const safe = data && typeof data === 'object' ? data : {};
+            safe.app = safe.app || { 
+                name: 'EDUVO', 
+                version: '1.0.0', 
+                announcement: 'مرحباً بكم في EDUVO',
+                supportEmail: 'support@eduvo.com',
+                supportPhone: '+20 100 000 0000'
+            };
+            safe.googleClientId = typeof safe.googleClientId === 'string' ? safe.googleClientId : '';
+            safe.aiEndpoint = typeof safe.aiEndpoint === 'string' ? safe.aiEndpoint : '';
+            safe.subjects = Array.isArray(safe.subjects) ? safe.subjects : [];
+            safe.teachers = Array.isArray(safe.teachers) ? safe.teachers : [];
+            safe.books = Array.isArray(safe.books) ? safe.books : [];
+            safe.freeCourses = Array.isArray(safe.freeCourses) ? safe.freeCourses : [];
+            safe.profiles = Array.isArray(safe.profiles) ? safe.profiles : [];
+            return safe;
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                background: ${type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+                color: white;
+                border-radius: 8px;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                font-weight: 600;
+                max-width: 400px;
+                word-wrap: break-word;
+            `;
+            alertDiv.innerText = message;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+
+        function showLoginError(msg, errDiv) {
+            errDiv.innerText = msg;
+            errDiv.style.display = 'block';
+            console.error('Login Error:', msg);
+        }
+
+        function setGithubStatus(message, type = 'info') {
+            const statusEl = document.getElementById('github-status');
+            if (!statusEl) return;
+            statusEl.className = 'github-status';
+            if (type !== 'info') statusEl.classList.add(type);
+            statusEl.textContent = message;
+        }
+
+        function getGithubSettings() {
+            const token = document.getElementById('github-token')?.value.trim() || document.getElementById('github-token-login')?.value.trim() || state.githubConfig.token || '';
+            const owner = document.getElementById('github-owner')?.value.trim() || document.getElementById('github-owner-login')?.value.trim() || state.githubConfig.owner || '';
+            const repo = document.getElementById('github-repo')?.value.trim() || document.getElementById('github-repo-login')?.value.trim() || state.githubConfig.repo || '';
+            const branch = document.getElementById('github-branch')?.value.trim() || state.githubConfig.branch || 'main';
+            const filePath = document.getElementById('github-file-path')?.value.trim() || state.githubConfig.filePath || 'data.json';
+            return { token, owner, repo, branch, filePath };
+        }
+
+        function saveGithubSettings() {
+            const settings = getGithubSettings();
+            if (!settings.owner || !settings.repo) {
+                setGithubStatus('أدخل اسم المستخدم/المالك والمستودع أولاً.', 'error');
+                return null;
+            }
+
+            state.githubConfig = {
+                ...state.githubConfig,
+                owner: settings.owner,
+                repo: settings.repo,
+                branch: settings.branch || 'main',
+                filePath: settings.filePath || 'data.json',
+                token: settings.token || state.githubConfig.token || ''
+            };
+
+            const persisted = {
+                owner: state.githubConfig.owner,
+                repo: state.githubConfig.repo,
+                branch: state.githubConfig.branch,
+                filePath: state.githubConfig.filePath
+            };
+
+            localStorage.setItem(GITHUB_STORAGE_KEY, JSON.stringify(persisted));
+            setGithubStatus('تم حفظ إعدادات المستودع بنجاح ✅', 'success');
+            return state.githubConfig;
+        }
+
+        function loadGithubSettings() {
+            try {
+                const saved = localStorage.getItem(GITHUB_STORAGE_KEY);
+                if (!saved) return;
+
+                const settings = JSON.parse(saved);
+                state.githubConfig = {
+                    ...state.githubConfig,
+                    owner: settings.owner || '',
+                    repo: settings.repo || '',
+                    branch: settings.branch || 'main',
+                    filePath: settings.filePath || 'data.json',
+                    token: ''
+                };
+
+                const ownerInput = document.getElementById('github-owner');
+                const repoInput = document.getElementById('github-repo');
+                const branchInput = document.getElementById('github-branch');
+                const filePathInput = document.getElementById('github-file-path');
+
+                if (ownerInput) ownerInput.value = settings.owner || '';
+                if (repoInput) repoInput.value = settings.repo || '';
+                if (branchInput) branchInput.value = settings.branch || 'main';
+                if (filePathInput) filePathInput.value = settings.filePath || 'data.json';
+
+                const loginOwner = document.getElementById('github-owner-login');
+                const loginRepo = document.getElementById('github-repo-login');
+                if (loginOwner) loginOwner.value = settings.owner || '';
+                if (loginRepo) loginRepo.value = settings.repo || '';
+            } catch (err) {
+                console.error('GitHub settings load error:', err);
+            }
+        }
+
+        function githubHeaders(token) {
+            if (!token) {
+                throw new Error('لم يتم إدخال GitHub Token.');
+            }
+
+            return {
+                'Accept': 'application/vnd.github+json',
+                'Authorization': `token ${token}`,
+                'X-GitHub-Api-Version': '2022-11-28'
+            };
+        }
+
+        function decodeGitHubFileContent(rawContent) {
+            if (!rawContent) return '';
+            try {
+                const normalized = rawContent.replace(/\n/g, '');
+                return decodeURIComponent(escape(atob(normalized)));
+            } catch (err) {
+                try {
+                    return atob(rawContent.replace(/\n/g, ''));
+                } catch (innerErr) {
+                    return rawContent;
+                }
+            }
+        }
+
+        function parseGitHubError(response, payload, fallback = 'GitHub request failed') {
+            const message = payload && payload.message ? payload.message : fallback;
+
+            if (response && response.status === 401) return 'Bad credentials: التوكن غير صالح أو منتهي.';
+            if (response && response.status === 403) {
+                if (/rate limit|rate_limit/i.test(message)) return 'GitHub API rate limit exceeded: تم تجاوز الحد اليومي.';
+                return 'Token لا يمتلك الصلاحيات المطلوبة على هذا المستودع.';
+            }
+            if (response && response.status === 404) return 'Repository not found أو الملف المطلوب غير موجود.';
+            if (response && response.status >= 500) return 'Network error: خادم GitHub غير متاح حالياً.';
+            return message || fallback;
+        }
+
+        async function githubRequest(url, token, options = {}) {
+            const headers = {
+                ...githubHeaders(token),
+                ...(options.headers || {})
+            };
+
+            const response = await fetch(url, {
+                ...options,
+                headers
+            });
+
+            if (!response.ok) {
+                let payload = {};
+                try {
+                    payload = await response.json();
+                } catch (err) {
+                    payload = {};
+                }
+
+                const friendly = parseGitHubError(response, payload, 'GitHub request failed');
+                throw Object.assign(new Error(friendly), {
+                    status: response.status,
+                    payload
+                });
+            }
+
+            return response;
+        }
+
+        async function loadRepoDataFromGitHub(token, owner, repo, branch, filePath) {
+            if (!token || !owner || !repo) return null;
+
+            const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(filePath)}?ref=${encodeURIComponent(branch)}`;
+
+            try {
+                const response = await fetch(url, { headers: githubHeaders(token) });
+                if (response.status === 404) {
+                    return null;
+                }
+
+                if (!response.ok) {
+                    const payload = await response.json().catch(() => ({}));
+                    throw new Error(parseGitHubError(response, payload, 'تعذر تحميل البيانات'));
+                }
+
+                const fileInfo = await response.json();
+                const content = fileInfo && fileInfo.content ? decodeGitHubFileContent(fileInfo.content) : '';
+                if (!content) return null;
+
+                try {
+                    return normalizeData(JSON.parse(content));
+                } catch (err) {
+                    console.warn('JSON parse error, using default data.', err);
+                    return null;
+                }
+            } catch (err) {
+                console.warn('loadRepoDataFromGitHub failed:', err);
+                return null;
+            }
+        }
+
+        async function handleGitHubLogin(e) {
+            e.preventDefault();
+            const errDiv = document.getElementById('login-error-msg');
+            if (errDiv) errDiv.style.display = 'none';
+
+            const token = document.getElementById('github-token-login')?.value.trim() || '';
+            const owner = document.getElementById('github-owner-login')?.value.trim() || '';
+            const repo = document.getElementById('github-repo-login')?.value.trim() || '';
+
+            if (!token || !owner || !repo) {
+                showLoginError('أدخل GitHub Token واسم المستخدم والمستودع', errDiv);
+                return;
+            }
+
+            try {
+                const repoUrl = `https://api.github.com/repos/${owner}/${repo}`;
+                const repoResponse = await githubRequest(repoUrl, token, { method: 'GET' });
+                const repoInfo = await repoResponse.json();
+                const defaultBranch = repoInfo && repoInfo.default_branch ? repoInfo.default_branch : 'main';
+
+                state.githubConfig = {
+                    token,
+                    owner,
+                    repo,
+                    branch: defaultBranch,
+                    filePath: 'data.json'
+                };
+
+                const persisted = {
+                    owner,
+                    repo,
+                    branch: defaultBranch,
+                    filePath: 'data.json'
+                };
+                localStorage.setItem(GITHUB_STORAGE_KEY, JSON.stringify(persisted));
+
+                document.getElementById('github-owner').value = owner;
+                document.getElementById('github-repo').value = repo;
+                document.getElementById('github-branch').value = defaultBranch;
+                document.getElementById('github-file-path').value = 'data.json';
+
+                const repoData = await loadRepoDataFromGitHub(token, owner, repo, defaultBranch, 'data.json');
+                if (repoData) {
+                    state.data = normalizeData(repoData);
+                    setGithubStatus('تم تحميل بيانات المستودع بنجاح ✅', 'success');
+                } else {
+                    state.data = normalizeData(state.data);
+                    setGithubStatus('Repository موصول بنجاح، لكن البيانات غير موجودة؛ تم استخدام البيانات الافتراضية ✅', 'warning');
+                }
+
+                const overlay = document.getElementById('admin-login-overlay');
+                if (overlay) {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 300);
+                }
+
+                renderDashboard();
+                loadSettingsIntoForm();
+                populateSubjectSelect();
+                syncEditorFromState();
+                showAlert('✅ تم الدخول بنجاح إلى لوحة الإدارة', 'success');
+            } catch (err) {
+                console.error('GitHub login error:', err);
+                const message = err && err.message ? err.message : 'فشل تسجيل الدخول باستخدام GitHub';
+                showLoginError(`❌ ${message}`, errDiv);
+            }
+        }
+
+        async function testGitHubConnection() {
+            const settings = saveGithubSettings();
+            if (!settings) return;
+
+            try {
+                const response = await fetch(`https://api.github.com/repos/${settings.owner}/${settings.repo}`, {
+                    headers: githubHeaders(settings.token)
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.message || 'فشل الاتصال بالمستودع');
+                }
+
+                const repoData = await response.json();
+                setGithubStatus(`تم الاتصال بنجاح بالمستودع: ${repoData.full_name} ✅`, 'success');
+            } catch (err) {
+                console.error(err);
+                setGithubStatus(`❌ ${err.message || 'تعذر الاتصال بمستودع GitHub'}`, 'error');
+            }
+        }
+
+        async function loadGitHubFileContent() {
+            const settings = saveGithubSettings();
+            if (!settings) return null;
+
+            try {
+                const url = `https://api.github.com/repos/${settings.owner}/${settings.repo}/contents/${encodeURIComponent(settings.filePath)}?ref=${encodeURIComponent(settings.branch)}`;
+                const response = await fetch(url, { headers: githubHeaders(settings.token) });
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.message || 'تعذر تحميل الملف');
+                }
+
+                const fileInfo = await response.json();
+                const content = decodeGitHubFileContent(fileInfo.content || '');
+                const editor = document.getElementById('github-file-content');
+                if (editor) editor.value = content;
+
+                try {
+                    state.data = normalizeData(JSON.parse(content));
+                    saveDataLocally();
+                    populateSubjectSelect();
+                    renderDashboard();
+                    loadSettingsIntoForm();
+                } catch (parseErr) {
+                    console.warn('تعذر تحليل محتوى الملف كـ JSON صالح', parseErr);
+                }
+
+                setGithubStatus(`تم تحميل البيانات من GitHub بنجاح ✅`, 'success');
+                return content;
+            } catch (err) {
+                console.error(err);
+                setGithubStatus(`❌ ${err.message || 'تعذر تحميل البيانات'}`, 'error');
+                return null;
+            }
+        }
+
+        async function publishGitHubData() {
+            const editor = document.getElementById('github-file-content');
+            if (!editor) return;
+
+            const rawText = editor.value.trim();
+            if (!rawText) {
+                setGithubStatus('لا يوجد محتوى ليتم حفظه.', 'warning');
+                return;
+            }
+
+            try {
+                JSON.parse(rawText);
+            } catch (err) {
+                setGithubStatus('تنسيق JSON غير صحيح. تأكد من أن الملف بصيغة JSON صحيحة.', 'error');
+                return;
+            }
+
+            state.data = normalizeData(JSON.parse(rawText));
+            const settings = saveGithubSettings();
+            if (!settings) return;
+
+            const prepared = normalizeData(state.data);
+            const encodedContent = btoa(unescape(encodeURIComponent(JSON.stringify(prepared, null, 2))));
+
+            try {
+                const metaUrl = `https://api.github.com/repos/${settings.owner}/${settings.repo}/contents/${encodeURIComponent(settings.filePath)}?ref=${encodeURIComponent(settings.branch)}`;
+                const metaResponse = await fetch(metaUrl, { headers: githubHeaders(settings.token) });
+
+                let sha = null;
+                if (metaResponse.ok) {
+                    const metaData = await metaResponse.json();
+                    sha = metaData.sha || null;
+                }
+
+                const updateResponse = await fetch(metaUrl, {
+                    method: 'PUT',
+                    headers: {
+                        ...githubHeaders(settings.token),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `EDUVO admin update: ${new Date().toLocaleString('ar-EG')}`,
+                        content: encodedContent,
+                        branch: settings.branch,
+                        sha: sha || undefined
+                    })
+                });
+
+                if (!updateResponse.ok) {
+                    const errData = await updateResponse.json().catch(() => ({}));
+                    throw new Error(errData.message || 'فشل حفظ البيانات في GitHub');
+                }
+
+                setGithubStatus(`تم نشر التحديثات في GitHub بنجاح ✅`, 'success');
+                showAlert('✅ تم حفظ جميع التغييرات', 'success');
+                renderDashboard();
+            } catch (err) {
+                console.error('Save error:', err);
+                setGithubStatus(`❌ ${err.message || 'فشل حفظ التحديثات'}`, 'error');
+            }
+        }
+
+        // ===== المواد الدراسية =====
+        function populateSubjectSelect() {
+            const teacherSelect = document.getElementById('teacher-subject');
+            const bookSelect = document.getElementById('book-subject');
+            const courseSelect = document.getElementById('course-subject');
+
+            if (teacherSelect) teacherSelect.innerHTML = '<option value="">-- اختر المادة --</option>';
+            if (bookSelect) bookSelect.innerHTML = '<option value="">-- اختر المادة (اختياري) --</option>';
+            if (courseSelect) courseSelect.innerHTML = '<option value="">-- اختر المادة --</option>';
+
+            (state.data.subjects || []).forEach(subject => {
+                if (teacherSelect) {
+                    const option = document.createElement('option');
+                    option.value = subject.id || subject.name;
+                    option.textContent = subject.name;
+                    teacherSelect.appendChild(option);
+                }
+                if (bookSelect) {
+                    const option2 = document.createElement('option');
+                    option2.value = subject.id || subject.name;
+                    option2.textContent = subject.name;
+                    bookSelect.appendChild(option2);
+                }
+                if (courseSelect) {
+                    const option3 = document.createElement('option');
+                    option3.value = subject.name;
+                    option3.textContent = subject.name;
+                    courseSelect.appendChild(option3);
+                }
+            });
+        }
+
+        function addNewSubject() {
+            const name = document.getElementById('subject-name')?.value.trim();
+            const icon = document.getElementById('subject-icon')?.value.trim();
+            const color = document.getElementById('subject-color')?.value.trim();
+            const description = document.getElementById('subject-description')?.value.trim();
+
+            if (!name || !icon) {
+                showAlert('❌ أدخل اسم المادة والأيقونة', 'error');
+                return;
+            }
+
+            const newSubject = {
+                id: name.toLowerCase().replace(/\s+/g, '-'),
+                name,
+                icon,
+                color: color || '#1c72d8',
+                description: description || '',
+                teachers: []
+            };
+
+            if (!state.data.subjects) state.data.subjects = [];
+            state.data.subjects.push(newSubject);
+
+            document.getElementById('subject-name').value = '';
+            document.getElementById('subject-icon').value = '';
+            document.getElementById('subject-color').value = '#1c72d8';
+            document.getElementById('subject-description').value = '';
+
+            saveDataLocally();
+            syncEditorFromState();
+            renderSubjects();
+            populateSubjectSelect();
+            showAlert('✅ تمت إضافة المادة بنجاح', 'success');
+        }
+
+        function deleteSubject(subjectId) {
+            if (!confirm('هل تريد حقاً حذف هذه المادة؟')) return;
+            const index = (state.data.subjects || []).findIndex(s => s.id === subjectId);
+            if (index > -1) {
+                state.data.subjects.splice(index, 1);
+                saveDataLocally();
+                syncEditorFromState();
+                renderSubjects();
+                populateSubjectSelect();
+                showAlert('✅ تم حذف المادة بنجاح', 'success');
+            }
+        }
+
+        function renderSubjects() {
+            const tbody = document.getElementById('subjects-tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = (state.data.subjects || []).map(subject => `
+                <tr>
+                    <td><strong>${subject.icon} ${subject.name}</strong></td>
+                    <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">${subject.description || '—'}</td>
+                    <td>${(subject.teachers || []).length}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteSubject('${subject.id}')" title="حذف المادة">🗑️ حذف</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== المعلمين =====
+        function addNewTeacher() {
+            const name = document.getElementById('teacher-name')?.value.trim();
+            const specialty = document.getElementById('teacher-specialty')?.value.trim();
+            const subjectId = document.getElementById('teacher-subject')?.value.trim();
+            const rating = parseFloat(document.getElementById('teacher-rating')?.value || 4.9);
+            const students = parseInt(document.getElementById('teacher-students')?.value || 1000);
+            const website = document.getElementById('teacher-website')?.value.trim();
+            const photo = document.getElementById('teacher-photo')?.value.trim();
+            const style = document.getElementById('teacher-style')?.value.trim();
+
+            if (!name || !specialty || !subjectId) {
+                showAlert('❌ أدخل البيانات المطلوبة (الاسم والتخصص والمادة)', 'error');
+                return;
+            }
+
+            const newTeacher = {
+                id: Math.random().toString(36).substr(2, 9),
+                name,
+                specialty,
+                subjectId,
+                rating: Math.min(5, Math.max(0, rating)),
+                students,
+                website: website || '',
+                photo: photo || '',
+                style: style || '',
+                nextLesson: 'الدرس القادم قريباً'
+            };
+
+            if (!state.data.teachers) state.data.teachers = [];
+            state.data.teachers.push(newTeacher);
+
+            document.getElementById('teacher-name').value = '';
+            document.getElementById('teacher-specialty').value = '';
+            document.getElementById('teacher-subject').value = '';
+            document.getElementById('teacher-rating').value = '4.9';
+            document.getElementById('teacher-students').value = '1000';
+            document.getElementById('teacher-website').value = '';
+            document.getElementById('teacher-photo').value = '';
+            document.getElementById('teacher-style').value = '';
+
+            saveDataLocally();
+            syncEditorFromState();
+            renderTeachers();
+            showAlert('✅ تمت إضافة المعلم بنجاح', 'success');
+        }
+
+        function deleteTeacher(teacherId) {
+            if (!confirm('هل تريد حقاً حذف هذا المعلم؟')) return;
+            const index = (state.data.teachers || []).findIndex(t => t.id === teacherId);
+            if (index > -1) {
+                state.data.teachers.splice(index, 1);
+                saveDataLocally();
+                syncEditorFromState();
+                renderTeachers();
+                showAlert('✅ تم حذف المعلم بنجاح', 'success');
+            }
+        }
+
+        function renderTeachers() {
+            const tbody = document.getElementById('teachers-tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = (state.data.teachers || []).map(teacher => {
+                const subject = (state.data.subjects || []).find(s => s.id === teacher.subjectId);
+                return `
+                    <tr>
+                        <td><strong>${teacher.name}</strong></td>
+                        <td>${subject ? subject.name : '—'}</td>
+                        <td>${teacher.specialty}</td>
+                        <td>⭐ ${teacher.rating.toFixed(1)}</td>
+                        <td>${teacher.students}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteTeacher('${teacher.id}')" title="حذف">🗑️ حذف</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ===== الكتب =====
+        function addNewBook() {
+            const title = document.getElementById('book-title')?.value.trim();
+            const subjectId = document.getElementById('book-subject')?.value.trim();
+            const url = document.getElementById('book-url')?.value.trim();
+            const description = document.getElementById('book-description')?.value.trim();
+
+            if (!title) {
+                showAlert('❌ أدخل عنوان الكتاب', 'error');
+                return;
+            }
+
+            const subject = (state.data.subjects || []).find(s => s.id === subjectId);
+
+            const newBook = {
+                id: Math.random().toString(36).substr(2, 9),
+                title,
+                subjectId: subjectId || '',
+                subjectName: subject ? subject.name : '',
+                url: url || '',
+                description: description || ''
+            };
+
+            if (!state.data.books) state.data.books = [];
+            state.data.books.push(newBook);
+
+            document.getElementById('book-title').value = '';
+            document.getElementById('book-subject').value = '';
+            document.getElementById('book-url').value = '';
+            document.getElementById('book-description').value = '';
+
+            saveDataLocally();
+            syncEditorFromState();
+            renderBooks();
+            showAlert('✅ تمت إضافة الكتاب بنجاح', 'success');
+        }
+
+        function deleteBook(bookId) {
+            if (!confirm('هل تريد حقاً حذف هذا الكتاب؟')) return;
+            const index = (state.data.books || []).findIndex(b => b.id === bookId);
+            if (index > -1) {
+                state.data.books.splice(index, 1);
+                saveDataLocally();
+                syncEditorFromState();
+                renderBooks();
+                showAlert('✅ تم حذف الكتاب بنجاح', 'success');
+            }
+        }
+
+        function renderBooks() {
+            const tbody = document.getElementById('books-tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = (state.data.books || []).map(book => `
+                <tr>
+                    <td><strong>${book.title}</strong></td>
+                    <td>${book.subjectName || '—'}</td>
+                    <td>${book.url ? `<a href="${book.url}" target="_blank" rel="noopener" style="color: var(--accent-cyan);">فتح الرابط ↗</a>` : '<span style="color: var(--status-suspended);">لا يوجد رابط</span>'}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteBook('${book.id}')" title="حذف الكتاب">🗑️ حذف</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== الكورسات المجانية =====
+        let editingCourseId = null;
+
+        function readCourseForm() {
+            return {
+                teacherName: document.getElementById('course-teacher-name')?.value.trim() || '',
+                teacherImage: document.getElementById('course-teacher-image')?.value.trim() || '',
+                lectureTitle: document.getElementById('course-lecture-title')?.value.trim() || '',
+                subject: document.getElementById('course-subject')?.value.trim() || '',
+                duration: document.getElementById('course-duration')?.value.trim() || '',
+                category: document.getElementById('course-category')?.value.trim() || '',
+                embedUrl: document.getElementById('course-embed-url')?.value.trim() || '',
+                thumbnail: document.getElementById('course-thumbnail')?.value.trim() || '',
+                description: document.getElementById('course-description')?.value.trim() || '',
+                published: document.getElementById('course-published')?.checked !== false
+            };
+        }
+
+        function isValidUrl(value) {
+            if (!value) return false;
+            try {
+                const parsed = new URL(value);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            } catch {
+                return false;
+            }
+        }
+
+        function clearCourseForm() {
+            document.getElementById('course-teacher-name').value = '';
+            document.getElementById('course-teacher-image').value = '';
+            document.getElementById('course-lecture-title').value = '';
+            document.getElementById('course-subject').value = '';
+            document.getElementById('course-duration').value = '';
+            document.getElementById('course-category').value = '';
+            document.getElementById('course-embed-url').value = '';
+            document.getElementById('course-thumbnail').value = '';
+            document.getElementById('course-description').value = '';
+            document.getElementById('course-published').checked = true;
+        }
+
+        function saveCourseFromForm() {
+            const data = readCourseForm();
+
+            // ===== Validation =====
+            if (!data.lectureTitle) {
+                showAlert('❌ اسم المحاضرة مطلوب', 'error');
+                return;
+            }
+            if (!data.teacherName) {
+                showAlert('❌ اسم المدرس مطلوب', 'error');
+                return;
+            }
+            if (!data.subject) {
+                showAlert('❌ اختر المادة', 'error');
+                return;
+            }
+            if (!data.embedUrl || !isValidUrl(data.embedUrl)) {
+                showAlert('❌ رابط Embed غير صحيح أو مفقود', 'error');
+                return;
+            }
+            if (data.teacherImage && !isValidUrl(data.teacherImage)) {
+                showAlert('❌ رابط صورة المدرس غير صحيح', 'error');
+                return;
+            }
+            if (data.thumbnail && !isValidUrl(data.thumbnail)) {
+                showAlert('❌ رابط الصورة المصغرة غير صحيح', 'error');
+                return;
+            }
+
+            if (!state.data.freeCourses) state.data.freeCourses = [];
+
+            if (editingCourseId) {
+                const index = state.data.freeCourses.findIndex(c => c.id === editingCourseId);
+                if (index > -1) {
+                    state.data.freeCourses[index] = { ...state.data.freeCourses[index], ...data };
+                }
+                showAlert('✅ تم تحديث المحاضرة بنجاح', 'success');
+            } else {
+                state.data.freeCourses.push({
+                    id: 'lecture-' + Math.random().toString(36).substr(2, 9),
+                    ...data,
+                    createdAt: new Date().toISOString()
+                });
+                showAlert('✅ تمت إضافة المحاضرة بنجاح', 'success');
+            }
+
+            cancelEditCourse();
+            saveDataLocally();
+            syncEditorFromState();
+            renderCourses();
+        }
+
+        function editCourse(courseId) {
+            const course = (state.data.freeCourses || []).find(c => c.id === courseId);
+            if (!course) return;
+
+            editingCourseId = courseId;
+            populateSubjectSelect();
+
+            document.getElementById('course-teacher-name').value = course.teacherName || '';
+            document.getElementById('course-teacher-image').value = course.teacherImage || '';
+            document.getElementById('course-lecture-title').value = course.lectureTitle || '';
+            document.getElementById('course-subject').value = course.subject || '';
+            document.getElementById('course-duration').value = course.duration || '';
+            document.getElementById('course-category').value = course.category || '';
+            document.getElementById('course-embed-url').value = course.embedUrl || '';
+            document.getElementById('course-thumbnail').value = course.thumbnail || '';
+            document.getElementById('course-description').value = course.description || '';
+            document.getElementById('course-published').checked = course.published !== false;
+
+            document.getElementById('course-form-title').textContent = '✏️ تعديل المحاضرة';
+            document.getElementById('course-save-btn').textContent = '💾 حفظ التعديلات';
+            document.getElementById('course-cancel-edit-btn').style.display = 'inline-block';
+
+            document.getElementById('view-courses').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelEditCourse() {
+            editingCourseId = null;
+            clearCourseForm();
+            document.getElementById('course-form-title').textContent = '➕ إضافة محاضرة جديدة';
+            document.getElementById('course-save-btn').textContent = '➕ إضافة المحاضرة';
+            document.getElementById('course-cancel-edit-btn').style.display = 'none';
+        }
+
+        function deleteCourse(courseId) {
+            if (!confirm('هل تريد حقاً حذف هذه المحاضرة؟')) return;
+            const index = (state.data.freeCourses || []).findIndex(c => c.id === courseId);
+            if (index > -1) {
+                state.data.freeCourses.splice(index, 1);
+                saveDataLocally();
+                syncEditorFromState();
+                renderCourses();
+                showAlert('✅ تم حذف المحاضرة بنجاح', 'success');
+            }
+        }
+
+        function toggleCoursePublished(courseId) {
+            const course = (state.data.freeCourses || []).find(c => c.id === courseId);
+            if (!course) return;
+            course.published = !course.published;
+            saveDataLocally();
+            syncEditorFromState();
+            renderCourses();
+            showAlert(course.published ? '✅ تم نشر المحاضرة' : '⛔ تم إخفاء المحاضرة', 'success');
+        }
+
+        function renderCourses() {
+            const tbody = document.getElementById('courses-tbody');
+            if (!tbody) return;
+
+            const courses = state.data.freeCourses || [];
+
+            if (!courses.length) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding: 20px;">لا توجد محاضرات مضافة بعد</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = courses.map(course => `
+                <tr>
+                    <td><strong>${course.lectureTitle}</strong></td>
+                    <td>${course.teacherName}</td>
+                    <td>${course.subject || '—'}</td>
+                    <td>${course.published !== false ? '<span style="color:#10b981;">✅ منشور</span>' : '<span style="color: var(--status-suspended);">⛔ مخفي</span>'}</td>
+                    <td style="white-space:nowrap;">
+                        <button class="btn btn-secondary" onclick="editCourse('${course.id}')" title="تعديل">✏️</button>
+                        <button class="btn btn-secondary" onclick="toggleCoursePublished('${course.id}')" title="إظهار/إخفاء">👁️</button>
+                        <button class="btn btn-danger" onclick="deleteCourse('${course.id}')" title="حذف">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== الطلاب =====
+        function renderStudents() {
+            const tbody = document.getElementById('all-students-tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = (state.data.profiles || []).map(p => `
+                <tr>
+                    <td><strong>${p.name || 'طالب'}</strong></td>
+                    <td>${p.email || '—'}</td>
+                    <td>${p.grade || '—'}</td>
+                    <td>${p.section || '—'}</td>
+                    <td>${getStatusBadge(p.status)}</td>
+                    <td style="display: flex; gap: 6px;">
+                        <select onchange="updateStudentStatus('${p.id || p.email}', this.value)" style="background:var(--bg-input); color:#fff; border:1px solid var(--border-color); padding:4px 8px; border-radius:4px; font-size:0.8rem;">
+                            <option value="active" ${p.status === 'active' ? 'selected' : ''}>نشط</option>
+                            <option value="pending" ${p.status === 'pending' ? 'selected' : ''}>معلق</option>
+                            <option value="suspended" ${p.status === 'suspended' ? 'selected' : ''}>موقوف</option>
+                        </select>
+                        <button class="btn btn-danger" onclick="deleteStudent('${p.id || p.email}')" title="حذف" style="padding: 4px 8px;">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteStudent(studentKey) {
+            if (!confirm('هل تريد حقاً حذف هذا الطالب؟')) return;
+            const index = (state.data.profiles || []).findIndex(p => String(p.id || p.email) === String(studentKey));
+            if (index > -1) {
+                state.data.profiles.splice(index, 1);
+                saveDataLocally();
+                syncEditorFromState();
+                renderDashboard();
+                showAlert('✅ تم حذف الطالب بنجاح', 'success');
+            }
+        }
+
+        async function updateStudentStatus(studentKey, newStatus) {
+            const profiles = state.data.profiles || [];
+            const index = profiles.findIndex(p => String(p.id || p.email) === String(studentKey));
+            if (index === -1) {
+                showAlert('❌ لم يتم العثور على الطالب المطلوب', 'error');
+                return;
+            }
+
+            profiles[index].status = newStatus;
+            state.data.profiles = profiles;
+            saveDataLocally();
+            syncEditorFromState();
+            renderDashboard();
+
+            const statusText = {
+                active: '✅ تم تفعيل الطالب',
+                suspended: '⛔ تم إيقاف الطالب',
+                pending: '⏳ تم تعليق الطالب',
+                rejected: '❌ تم رفض الطالب'
+            };
+            showAlert(statusText[newStatus] || 'تم تحديث الحالة', 'success');
+        }
+
+        function getStatusBadge(status) {
+            switch (status) {
+                case 'active': return `<span class="badge badge-active">🟢 نشط</span>`;
+                case 'pending': return `<span class="badge badge-pending">🟡 معلق</span>`;
+                case 'suspended': return `<span class="badge badge-suspended">🔴 موقوف</span>`;
+                default: return `<span class="badge">${status || 'غير محدد'}</span>`;
+            }
+        }
+
+        // ===== الإعدادات =====
+        function saveAppSettings() {
+            const name = document.getElementById('app-name')?.value.trim() || 'EDUVO';
+            const version = document.getElementById('app-version')?.value.trim() || '1.0.0';
+            const supportEmail = document.getElementById('app-support-email')?.value.trim() || '';
+            const supportPhone = document.getElementById('app-support-phone')?.value.trim() || '';
+            const announcement = document.getElementById('app-announcement')?.value.trim() || '';
+            const googleClientId = document.getElementById('app-google-client-id')?.value.trim() || '';
+            const aiEndpoint = document.getElementById('app-ai-endpoint')?.value.trim() || '';
+
+            state.data.app = {
+                ...state.data.app,
+                name,
+                version,
+                supportEmail,
+                supportPhone,
+                announcement
+            };
+            state.data.googleClientId = googleClientId;
+            state.data.aiEndpoint = aiEndpoint;
+
+            saveDataLocally();
+            syncEditorFromState();
+            showAlert('✅ تم حفظ إعدادات التطبيق بنجاح', 'success');
+        }
+
+        function syncEditorFromState() {
+            const editor = document.getElementById('github-file-content');
+            if (editor) {
+                editor.value = JSON.stringify(normalizeData(state.data), null, 2);
+            }
+        }
+
+        function saveDataLocally() {
+            const normalized = normalizeData(state.data);
+            localStorage.setItem('eduvo_admin_data', JSON.stringify(normalized));
+        }
+
+        function loadDataLocally() {
+            try {
+                const saved = localStorage.getItem('eduvo_admin_data');
+                if (saved) {
+                    state.data = normalizeData(JSON.parse(saved));
+                }
+            } catch (err) {
+                console.error('Load local data error:', err);
+            }
+        }
+
+        function renderDashboard() {
+            const profiles = state.data.profiles || [];
+            const total = profiles.length;
+            const active = profiles.filter(p => p.status === 'active').length;
+            const pending = profiles.filter(p => p.status === 'pending').length;
+            const suspended = profiles.filter(p => p.status === 'suspended').length;
+
+            document.getElementById('stat-total-students').innerText = total;
+            document.getElementById('stat-active-students').innerText = active;
+            document.getElementById('stat-pending-students').innerText = pending;
+            document.getElementById('stat-suspended-students').innerText = suspended;
+            document.getElementById('pending-badge-count').innerText = pending;
+
+            renderRecentTable();
+            renderStudents();
+            renderSubjects();
+            renderTeachers();
+            renderBooks();
+            renderCourses();
+        }
+
+        function renderRecentTable() {
+            const tbody = document.getElementById('recent-students-tbody');
+            if (!tbody) return;
+            const recent = (state.data.profiles || []).slice(0, 5);
+
+            tbody.innerHTML = recent.map(p => `
+                <tr>
+                    <td><strong>${p.name || 'طالب جديد'}</strong><br><small style="color:var(--text-muted);">${p.email || '—'}</small></td>
+                    <td>${p.grade || 'غير محدد'}</td>
+                    <td>${p.created_at ? new Date(p.created_at).toLocaleDateString('ar-EG') : '—'}</td>
+                    <td>${getStatusBadge(p.status)}</td>
+                    <td><button class="btn btn-secondary" onclick="switchView('view-students')">إدارة</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function handleAdminLogout() {
+            localStorage.removeItem(GITHUB_STORAGE_KEY);
+            window.location.reload();
+        }
+
+        function switchView(viewId, el) {
+            document.querySelectorAll('.view-panel').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+
+            if (el) {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                el.classList.add('active');
+            }
+
+            const sidebar = document.getElementById('app-sidebar');
+            if (sidebar) sidebar.classList.remove('open');
+            const overlay = document.querySelector('.sidebar-overlay');
+            if (overlay) overlay.classList.remove('active');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('app-sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            if (sidebar) sidebar.classList.toggle('open');
+            if (overlay) overlay.classList.toggle('active');
+        }
+
+        function filterGlobalData(query) {
+            const q = query.toLowerCase();
+            const list = (state.data.profiles || []).filter(p =>
+                (p.name && p.name.toLowerCase().includes(q)) ||
+                (p.email && p.email.toLowerCase().includes(q))
+            );
+
+            const tbody = document.getElementById('all-students-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = list.map(p => `
+                <tr>
+                    <td><strong>${p.name || 'طالب'}</strong></td>
+                    <td>${p.email || '—'}</td>
+                    <td>${p.grade || '—'}</td>
+                    <td>${p.section || '—'}</td>
+                    <td>${getStatusBadge(p.status)}</td>
+                    <td style="display: flex; gap: 6px;">
+                        <select onchange="updateStudentStatus('${p.id || p.email}', this.value)" style="background:var(--bg-input); color:#fff; border:1px solid var(--border-color); padding:4px 8px; border-radius:4px; font-size:0.8rem;">
+                            <option value="active" ${p.status === 'active' ? 'selected' : ''}>نشط</option>
+                            <option value="pending" ${p.status === 'pending' ? 'selected' : ''}>معلق</option>
+                            <option value="suspended" ${p.status === 'suspended' ? 'selected' : ''}>موقوف</option>
+                        </select>
+                        <button class="btn btn-danger" onclick="deleteStudent('${p.id || p.email}')" title="حذف" style="padding: 4px 8px;">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function loadSettingsIntoForm() {
+            const appName = document.getElementById('app-name');
+            const appVersion = document.getElementById('app-version');
+            const appAnnouncement = document.getElementById('app-announcement');
+            const appSupportEmail = document.getElementById('app-support-email');
+            const appSupportPhone = document.getElementById('app-support-phone');
+            const appGoogleClientId = document.getElementById('app-google-client-id');
+            const appAiEndpoint = document.getElementById('app-ai-endpoint');
+
+            if (appName) appName.value = state.data.app?.name || 'EDUVO';
+            if (appVersion) appVersion.value = state.data.app?.version || '1.0.0';
+            if (appAnnouncement) appAnnouncement.value = state.data.app?.announcement || '';
+            if (appSupportEmail) appSupportEmail.value = state.data.app?.supportEmail || '';
+            if (appSupportPhone) appSupportPhone.value = state.data.app?.supportPhone || '';
+            if (appGoogleClientId) appGoogleClientId.value = state.data.googleClientId || '';
+            if (appAiEndpoint) appAiEndpoint.value = state.data.aiEndpoint || '';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadGithubSettings();
+            loadDataLocally();
+            
+            const saved = localStorage.getItem(GITHUB_STORAGE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.owner && parsed.repo) {
+                        document.getElementById('github-owner').value = parsed.owner || '';
+                        document.getElementById('github-repo').value = parsed.repo || '';
+                        document.getElementById('github-branch').value = parsed.branch || 'main';
+                        document.getElementById('github-file-path').value = parsed.filePath || 'data.json';
+                    }
+                } catch (err) {
+                    console.error('GitHub saved settings parse error:', err);
+                }
+            }
+
+            loadSettingsIntoForm();
+            populateSubjectSelect();
+            renderDashboard();
+            syncEditorFromState();
+        });
+    </script>
+</body>
+</html>

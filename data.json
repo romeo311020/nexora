@@ -1,0 +1,463 @@
+{
+  "app": {
+    "name": "EDUVO",
+    "version": "1.0.0",
+    "announcement": "مرحباً بكم في EDUVO",
+    "supportEmail": "support@eduvo.com",
+    "supportPhone": "+20 100 000 0000"
+  },
+  "googleClientId": "158260704766-3j0udrn6iap31k6ojs7tu522ijn4v88s.apps.googleusercontent.com",
+  "aiEndpoint": "",
+  "subjects": [
+    {
+      "id": "math",
+      "name": "الرياضيات",
+      "icon": "📐",
+      "description": "أساسيات الجبر، المعادلات، والهندسة مع شرح مبسط ومراجعة سريعة."
+    },
+    {
+      "id": "physics",
+      "name": "الفيزياء",
+      "icon": "⚛️",
+      "description": "شرح مبسط للحركة، القوة، والدوائر الكهربائية مع أسئلة متنوعة."
+    },
+    {
+      "id": "chem",
+      "name": "الكيمياء",
+      "icon": "🧪",
+      "description": "تعلم الروابط، التفاعلات، والذرات مع شرح عملي ومذكرات مختصرة."
+    },
+    {
+      "id": "arabic",
+      "name": "العربية",
+      "icon": "📖",
+      "description": "نحو، إعراب، تحليل نصوص، وكتابة مواضيع بأسلوب منظم."
+    },
+    {
+      "id": "biology",
+      "name": "الأحياء",
+      "icon": "🧬",
+      "description": "مفاهيم الخلايا، النظام العصبي، جزيئات الحياة، مع خرائط ذهنية."
+    },
+    {
+      "id": "برمجة-و-ذكاء-اصطناعي",
+      "name": "برمجة و ذكاء اصطناعي",
+      "icon": "0",
+      "color": "#1c72d8",
+      "description": "مادة البرمجه و الذكاء الاصطناعي ل الصف الاول و الثاني الباكروليا"
+    },
+    {
+      "id": "انجليزي",
+      "name": "انجليزي",
+      "icon": "📚",
+      "color": "#1c72d8",
+      "description": "اللغة الإنجليزية 🇬🇧\nمادة تساعدك على تطوير مهارات القراءة والكتابة والاستماع والتحدث، مع دراسة القواعد والكلمات والتدرب على فهم النصوص وحل الأسئلة بطريقة أفضل."
+    },
+    {
+      "id": "تاريخ",
+      "name": "تاريخ",
+      "icon": "🏛",
+      "color": "#1c72d8",
+      "description": "مادة تساعدك على فهم أهم الأحداث والحضارات والشخصيات التاريخية، وربط الأحداث ببعضها بطريقة سهلة ومنظمة، مع التدريب على تحليل الأسئلة والاستعداد للامتحانات."
+    }
+  ],
+  "teachers": [
+    {
+      "id": "q39nmdso1",
+      "name": "محمد صلاح",
+      "specialty": "لغة عربية",
+      "subjectId": "arabic",
+      "rating": 4.9,
+      "students": 2000,
+      "website": "https://bassthalk.com/",
+      "photo": "https://i.postimg.cc/5yY7SHKk/9w-XEad-JBSJJzv6bvw-DL2Lh-HJBVi-PQHe-Rv-NHVa-YA9.jpg",
+      "style": "من افضل المدرسين ف اللغة العربية",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "h94fu0t9a",
+      "name": "المهندس كمال المراكبي",
+      "specialty": "هندسة حاسبات و معلومات",
+      "subjectId": "برمجة-و-ذكاء-اصطناعي",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://kamalelmarakby.com/",
+      "photo": "https://i.postimg.cc/k5RvZrvm/Screenshot-2026-08-20-025945.png",
+      "style": "مهندس متخصص في تدريس البرمجة والذكاء الاصطناعي لطلاب الصف الأول والثاني الثانوي — عربي ولغات وأزهر، أونلاين ومن السنتر.\n\nطريقته قايمة على الفهم قبل الحفظ: بتكتب كود من أول حصة، وتتدرب بتمارين ومشاريع حقيقية، ومعاها متابعة واختبارات مستمرة لحد ما تبني مشروعك الكامل.",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "i3qf56z96",
+      "name": "انجلشاوي محمود رضوان",
+      "specialty": "انجليزي",
+      "subjectId": "انجليزي",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://www.mrenglishawy.com/",
+      "photo": "https://i.postimg.cc/prmj9zcH/images.jpg",
+      "style": "**مستر إنجلشاوي 🇬🇧📚**\nمدرس لغة إنجليزية يساعد الطلاب على فهم القواعد، وتطوير حصيلة الكلمات، والتدرب على القراءة وحل الأسئلة بطريقة مبسطة ومنظمة.",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "g10h05d32",
+      "name": "الدكتور كيرلس القس - كيكه",
+      "specialty": "مادة الفيزياء",
+      "subjectId": "physics",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://www.doctorinphysics.com/",
+      "photo": "https://i.postimg.cc/cLy3HKRs/images-(1).jpg",
+      "style": "الدكتور كيرلس القس، وهو أحد أشهر مادة الفيزياء لطلاب الثانوية العامة  وبكالوريا",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "mvsjuiz0q",
+      "name": "مستر مينا دياب",
+      "specialty": "الجبر و الهندسة",
+      "subjectId": "math",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://romeo311020.github.io/mina-diad/",
+      "photo": "https://i.postimg.cc/cHpRVyTv/mina-diab.png",
+      "style": "مستر مينا دياب 📐📚\nمدرس رياضيات يهتم بتبسيط المفاهيم والقوانين، وتدريب الطلاب على حل المسائل وفهم الأفكار بطريقة منظمة، مع التركيز على الاستعداد الجيد للامتحانات.",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "3lpxi882c",
+      "name": "البشمهندس أحمد عصام الدين",
+      "specialty": "الجبر و الهندسة",
+      "subjectId": "math",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://jawacademy.net/",
+      "photo": "https://i.postimg.cc/N0L2C1Y6/teacher-1761616840.jpg",
+      "style": "يجمع بين التفكير الهندسي والرياضي، مع تغطية كورسات مخصصة للتخصصاتعلى منصته",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "f82axcu5o",
+      "name": "الأستاذ رضا الفاروق",
+      "specialty": "أستاذ اللغة العربية",
+      "subjectId": "arabic",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://mrredaelfarouk.com/",
+      "photo": "https://i.postimg.cc/DZ4TNz8H/images-(2).jpg",
+      "style": "الأستاذ رضا الفاروق\nالأستاذ رضا الفاروق، مُعلِّم أول اللغة العربية: تخرَّج في كُلية الآداب والتربية بتقدير امتياز مع مرتبة الشرف، خبرة واحد وثلاثين عامًا في تدريس اللغة العربية. قام بتدريس مناهج الثَّانوية العامة باختلاف أشكالِها. صاحب موسوعة اللواء في اللغة العربية. أوَّل من لُقِّب بصانع الأوائل لأنه لا يخلو عامٌ بفضل الله إلا وعنده عدد من الأوائل.",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "8ekgz9iui",
+      "name": "احمد طارق",
+      "specialty": "اندجليزي",
+      "subjectId": "انجليزي",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://ahmed-tarek.net/",
+      "photo": "https://i.postimg.cc/k431nMTp/images-(3).jpg",
+      "style": "لو الأنجليزي مقلقك عبقري لغه هيلحقك\nمستر أحمد طارق هيساعدك بخبرة كبيرة، أفكار مبتكرة، واستراتيجيات مراجعة ذكية توصلك لأعلى الدرجات",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "oj8c0o18q",
+      "name": "محمد عبد المعبود",
+      "specialty": "الفيزياء",
+      "subjectId": "physics",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://abdelmaaboud.com/",
+      "photo": "https://i.postimg.cc/Bb2gnyh3/images-(4).jpg",
+      "style": "محمد عبدالمعبود، خبرة تتجاوز 27 سنة في تدريس الفيزياء للثانوية العامة، وآلاف الطلاب حققوا التفوق والدرجات النهائية.",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "odcnz4kqn",
+      "name": "م/ محمود مجدي",
+      "specialty": "الفيزياء",
+      "subjectId": "physics",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://mahmoud-magdy.com/",
+      "photo": "https://i.postimg.cc/V6Q0kN2J/images-(5).jpg",
+      "style": "محمود مجدي: يقدم محتوى قوي ومبسط يناسب فهم كافة مستويات الطلاب.",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "v5ayrntlt",
+      "name": "محمد عبد الجواد",
+      "specialty": "الكيمياء",
+      "subjectId": "chem",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://magacademy.co/",
+      "photo": "https://i.postimg.cc/Pf6f6xKw/images-(6).jpg",
+      "style": "يتميز الدانتيله بسلاسة وقدرته على توصيل النصوص المعقدة بطريقة مبسطة.",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "ab919mhyf",
+      "name": "الاسطرة  خالد صقر",
+      "specialty": "الكمياء",
+      "subjectId": "chem",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://khaled-sakr.com/",
+      "photo": "https://i.postimg.cc/4dYGqvW7/images-(7).jpg",
+      "style": "الاسطورة - عرف شهادته وشرحه المفصل الذي يغطي جميع الأجزاء التجريبية",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "jrrdez64i",
+      "name": "الدكتور أحمد الجوهري",
+      "specialty": "الأحياء",
+      "subjectId": "biology",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://ahmed-elgohary.com/",
+      "photo": "https://i.postimg.cc/xdKMHHKw/images-(8).jpg",
+      "style": "أكبر منصة تعليمية مصممة خصيصًا لطلاب المرحلة الثانوية العامة والأزهرية في مادتي العلوم وعلوم الأرض والعلوم المتكاملة",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "9b5gdv4b3",
+      "name": "مستر محمد أيمن",
+      "specialty": "الأحياء",
+      "subjectId": "biology",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://mohammed-ayman.com/",
+      "photo": "https://i.postimg.cc/6qSyF5rz/images-(9).jpg",
+      "style": "مستر محمد أيمن : معروف بتبسيط المعلومة وأسلوب الشرح الممتع",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "nwgqury25",
+      "name": "مُستر أحمد السقا",
+      "specialty": "برمجة و ذكاء اصطناعي",
+      "subjectId": "برمجة-و-ذكاء-اصطناعي",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://mrahmedelsaka.com/",
+      "photo": "https://i.postimg.cc/Zq2dWq2K/images-(13).jpg",
+      "style": ": يقدم دروساً مُبسطة وتفاعلية لتعليم برامج الهواة",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "sle3spdio",
+      "name": "مهندس محمد غنيم",
+      "specialty": "برمجه و ذكاء اصطناعي",
+      "subjectId": "برمجة-و-ذكاء-اصطناعي",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://codingwithghonaim.com/",
+      "photo": "https://i.postimg.cc/1RpRQB9t/images-(10).jpg",
+      "style": "خبير في شرح مناهج البرمجة والذكاء الصناعي والكورسات المتقدمة لطلاب المرحلة الثانوية",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "ozjhtuyfp",
+      "name": "المورخ أحمد عادل",
+      "specialty": "تاريخ",
+      "subjectId": "تاريخ",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://mr-ahmed-adel.com/",
+      "photo": "https://i.postimg.cc/4yzVkTWr/images-(12).jpg",
+      "style": "صاحب قناة \"كلام مؤرخين\" ومنصة بسّطتهالك",
+      "nextLesson": "الدرس القادم قريباً"
+    },
+    {
+      "id": "hry0uhqu9",
+      "name": "مصطفى عرفة",
+      "specialty": "تاريخ",
+      "subjectId": "تاريخ",
+      "rating": 4.9,
+      "students": 1000,
+      "website": "https://www.youtube.com/@-mostafaarafa4617",
+      "photo": "https://i.postimg.cc/MGKtW92T/images-(11).jpg",
+      "style": "شرح تفصيلي وأسلوب قريب - مجاني",
+      "nextLesson": "الدرس القادم قريباً"
+    }
+  ],
+  "books": [
+    {
+      "id": "hqd72hx28",
+      "title": "مازمه الشرح الخاصة ب مستر محمد صلاح _ كورس تاسيس ف النحو",
+      "subjectId": "arabic",
+      "subjectName": "العربية",
+      "url": "https://api.bassthalk.com/books/vi5TB9gyAjcsBauAnXUgSg981ZHBmtjmXJg08bEK.pdf?_gl=1*1yiqz2n*_gcl_au*MTMyODAwMzIxOS4xNzg1MDg1ODI1",
+      "description": "الملف ده خاص بطلاب \"البــكالوريا\" اللي المستر بيشرح منه في المحاضرة التأسيسية، علشان تقدروا تصوّروا الملزمة وتتابعوا مع المستر. ❤️"
+    },
+    {
+      "id": "8znnnqcvl",
+      "title": "كتاب برمجة _ كتاب المدرسة",
+      "subjectId": "برمجة-و-ذكاء-اصطناعي",
+      "subjectName": "برمجة و ذكاء اصطناعي",
+      "url": "https://drive.google.com/file/d/1nvTIpgmOogO1vV0f73G6-2eXdBhl-f8q/view?usp=sharing",
+      "description": "كتاب برمجه و ذكاء اصطناعي الصف الثاني الباكروليا - كتاب المدرسة 2026"
+    },
+    {
+      "id": "wuaoiiwbl",
+      "title": "كتاب التاريخ - كتاب المدرسة",
+      "subjectId": "تاريخ",
+      "subjectName": "تاريخ",
+      "url": "https://drive.google.com/file/d/11oY6Sv96DrBTG5ov11_P5TC7naAoqOEQ/view?usp=drivesdk",
+      "description": "كتاب التاريخ ل الصف الثاني الباكروليا 2026"
+    },
+    {
+      "id": "jiws41qkz",
+      "title": "اللغة العربية - كتاب المدرسة",
+      "subjectId": "arabic",
+      "subjectName": "العربية",
+      "url": "https://ellibrary.moe.gov.eg/EgyptianBaccalaureate/CoreSubjects/Arabic/",
+      "description": "الصف الثاني الباكروليا - كتاب المدرسة 2026"
+    },
+    {
+      "id": "czb4rkyvi",
+      "title": "اللغة الأجنبية الأولى- اللغة الإنجليزية  - كتاب المدرسة",
+      "subjectId": "انجليزي",
+      "subjectName": "انجليزي",
+      "url": "https://ellibrary.moe.gov.eg/EgyptianBaccalaureate/CoreSubjects/FirstForeignLanguage/english/",
+      "description": "الصف الثاني الباكروليا - كتاب الدرسة"
+    },
+    {
+      "id": "2o9713o98",
+      "title": "الرياضيات - كتاب المدرسة",
+      "subjectId": "math",
+      "subjectName": "الرياضيات",
+      "url": "https://ellibrary.moe.gov.eg/EgyptianBaccalaureate/SpecializedSubjects/Medicine-LifeSciences/Mathematics/",
+      "description": "الصف الثاني الباكروليا - كتاب المدرسة"
+    },
+    {
+      "id": "n8ubidv6r",
+      "title": "الفيزياء- كتاب المدرسة",
+      "subjectId": "physics",
+      "subjectName": "الفيزياء",
+      "url": "https://ellibrary.moe.gov.eg/EgyptianBaccalaureate/SpecializedSubjects/Medicine-LifeSciences/Physics/",
+      "description": "الصف الثاني الباكروليا - كتاب المدرسة"
+    },
+    {
+      "id": "5xlu3u4zq",
+      "title": "الكيمياء - كتاب المدرسة",
+      "subjectId": "chem",
+      "subjectName": "الكيمياء",
+      "url": "https://ellibrary.moe.gov.eg/EgyptianBaccalaureate/SpecializedSubjects/Engineering-ComputerScience/Chemistry/",
+      "description": "الصف الثاني الباكروليا - كتاب المدرسة"
+    }
+  ],
+  "freeCourses": [
+    {
+      "id": "lecture-otj3x9qgg",
+      "teacherName": "أ. محمد صلاح",
+      "teacherImage": "https://i.postimg.cc/5yY7SHKk/9w-XEad-JBSJJzv6bvw-DL2Lh-HJBVi-PQHe-Rv-NHVa-YA9.jpg",
+      "lectureTitle": "المحاضرة التأسيسية في النحو 2027| بكالوريا وثانوية عامة مع أ. محمد صلاح",
+      "subject": "العربية",
+      "duration": "3:13:7",
+      "category": "تأسيس في النحو",
+      "embedUrl": "https://www.youtube.com/embed/1l6-MzGJ5DA?si=bGt1jjMWKLQz0mVw",
+      "thumbnail": "https://i.postimg.cc/d1FZYbjK/Screenshot-2026-08-20-140526.png",
+      "description": "",
+      "published": true,
+      "createdAt": "2026-08-20T11:07:58.499Z"
+    },
+    {
+      "id": "lecture-z4pd5uxxl",
+      "teacherName": "أ محمد صلاح",
+      "teacherImage": "https://i.postimg.cc/5yY7SHKk/9w-XEad-JBSJJzv6bvw-DL2Lh-HJBVi-PQHe-Rv-NHVa-YA9.jpg",
+      "lectureTitle": "المحاضرة التأسيسية في البلاغة 2027| بكالوريا وثانوية عامة مع أ. محمد صلاح",
+      "subject": "العربية",
+      "duration": "2:49:32",
+      "category": "تأسيس",
+      "embedUrl": "https://www.youtube.com/embed/xpndcdEmJVs?si=fllOL5ibd4GP8lfE",
+      "thumbnail": "https://i.postimg.cc/vByhNS1T/Screenshot-2026-08-20-141259.png",
+      "description": "",
+      "published": true,
+      "createdAt": "2026-08-20T11:17:12.356Z"
+    },
+    {
+      "id": "lecture-e4n7ttj6o",
+      "teacherName": "المهندس كمال المراكبي",
+      "teacherImage": "https://i.postimg.cc/PxnfVzqN/images-(4).jpg",
+      "lectureTitle": "الدرس الاول برمجه ثانيه بكالوريا 2027 | شرح درس تكنولوجيا المعلومات والتحول الاجتماعي",
+      "subject": "برمجة و ذكاء اصطناعي",
+      "duration": "1:02:11",
+      "category": "الدرس الاول برمجه",
+      "embedUrl": "https://www.youtube.com/embed/pqwRmKuYc58?si=ebyAZ8V7C2mGsMwq",
+      "thumbnail": "https://i.postimg.cc/gJ4zmSvv/Screenshot-2026-08-21-022744.png",
+      "description": "شرح درس تكنولوجيا المعلومات والتحول الاجتماعي",
+      "published": true,
+      "createdAt": "2026-08-20T23:30:52.351Z"
+    },
+    {
+      "id": "lecture-m8rkbpde6",
+      "teacherName": "المهندس كمال المراكبي",
+      "teacherImage": "https://i.postimg.cc/PxnfVzqN/images-(4).jpg",
+      "lectureTitle": "المحاضرة الأولى من الكورس التأسيسي في البرمجة لطلاب أولى ثانوي بكالوريا دفعة 2027",
+      "subject": "برمجة و ذكاء اصطناعي",
+      "duration": "50:21",
+      "category": "تأسيس",
+      "embedUrl": "https://www.youtube.com/embed/Xg4Gx0uBnzE?si=p4tkM7Yn4dWefNV4",
+      "thumbnail": "https://i.postimg.cc/SRWwmJFb/Screenshot-2026-08-21-023830.png",
+      "description": "الكورس التأسيسي في البرمجة لطلاب أولى ثانوي بكالوريا دفعة 2027",
+      "published": true,
+      "createdAt": "2026-08-20T23:43:11.079Z"
+    },
+    {
+      "id": "lecture-tjv30c4cr",
+      "teacherName": "المهندس كمال المراكبي",
+      "teacherImage": "https://i.postimg.cc/PxnfVzqN/images-(4).jpg",
+      "lectureTitle": "المحاضرة الثانية | كورس تأسيسي برمجة بكالوريا 2027 - أساسيات البرمجة من الصفر | المنهج الجديد",
+      "subject": "برمجة و ذكاء اصطناعي",
+      "duration": "39:05",
+      "category": "تأسيس",
+      "embedUrl": "https://www.youtube.com/embed/P5exsaqpceU?si=Ag-0Lopverb_31sD",
+      "thumbnail": "https://i.postimg.cc/tgWdSPhH/Screenshot-2026-08-21-024531.png",
+      "description": "الكورس التأسيسي في البرمجة لطلاب أولى ثانوي بكالوريا دفعة 2027",
+      "published": true,
+      "createdAt": "2026-08-20T23:48:28.687Z"
+    },
+    {
+      "id": "lecture-b2wfm5azg",
+      "teacherName": "المهندس كمال المراكبي",
+      "teacherImage": "https://i.postimg.cc/PxnfVzqN/images-(4).jpg",
+      "lectureTitle": "المحاضرة الثالثة | كورس تأسيسي برمجة بكالوريا 2027 - أساسيات البرمجة من الصفر | المنهج الجديد",
+      "subject": "برمجة و ذكاء اصطناعي",
+      "duration": "54:21",
+      "category": "تأسيس",
+      "embedUrl": "https://www.youtube.com/embed/R55Y9FtU9yM?si=WneKJIjyYZ5KWOjK\" title=",
+      "thumbnail": "https://i.postimg.cc/ncXDSBJK/Screenshot-2026-08-21-024908.png",
+      "description": "الكورس التأسيسي في البرمجة لطلاب أولى ثانوي بكالوريا دفعة 2027",
+      "published": true,
+      "createdAt": "2026-08-20T23:51:43.527Z"
+    },
+    {
+      "id": "lecture-7pjmh7evr",
+      "teacherName": "المهندس كمال المراكبي",
+      "teacherImage": "https://i.postimg.cc/PxnfVzqN/images-(4).jpg",
+      "lectureTitle": "كورس تأسيس برمجة تانيه بكالوريا 2027 | المحاضره الرابعه | برمجه تانيه بكالوريا 2027",
+      "subject": "برمجة و ذكاء اصطناعي",
+      "duration": "40:00",
+      "category": "تأسيس",
+      "embedUrl": "https://www.youtube.com/embed/lQ9JxHAGv08?si=rKq0znAbw8sIANst",
+      "thumbnail": "https://i.postimg.cc/rwCFfwKS/Screenshot-2026-08-21-025242.png",
+      "description": "الكورس التأسيسي في البرمجة لطلاب أولى ثانوي بكالوريا دفعة 2027",
+      "published": true,
+      "createdAt": "2026-08-20T23:54:26.255Z"
+    },
+    {
+      "id": "lecture-k223apjm0",
+      "teacherName": "دكتور كيرلس - كيكه",
+      "teacherImage": "https://i.postimg.cc/cLy3HKRs/images-(1).jpg",
+      "lectureTitle": "المحاضرة التأسيسية الأولي في الفيزياء بكالوريا وعام وازهر/ الكورس التأسيسي 2027 / دكتور كيرلس فيزياء",
+      "subject": "الفيزياء",
+      "duration": "1:14:34",
+      "category": "تأسيس",
+      "embedUrl": "https://www.youtube.com/embed/wcO2dRxFdU4?si=2OkYtA9ZhtqWJuvF",
+      "thumbnail": "https://i.postimg.cc/pLZ5pZY5/Screenshot-2026-08-21-025529.png",
+      "description": "لكورس التأسيسي  في الفزياء 2027 / دكتور كيرلس فيزياء",
+      "published": true,
+      "createdAt": "2026-08-21T00:01:32.807Z"
+    }
+  ],
+  "profiles": []
+}
